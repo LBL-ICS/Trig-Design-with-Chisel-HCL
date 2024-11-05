@@ -14,7 +14,7 @@
 */
 
 
-module tb_cos();
+module tb_Cos();
 parameter TEST_SIZE = 9;
 `ifdef COS_N32_PD32_BW32
 parameter LATENCY = 67;
@@ -23,7 +23,9 @@ parameter LATENCY = 51;
 `elsif COS_N32_PD8_BW32
 parameter LATENCY = 43;
 `elsif COS_N32_PD4_BW32
-parameter LATENCY = 39;
+parameter LATENCY = 40;
+`elsif COS_N32_PD1_BW32
+parameter LATENCY = 37;
 `endif
 
 parameter ERROR_TOLERANCE = 1;

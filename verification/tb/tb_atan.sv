@@ -24,6 +24,8 @@ parameter LATENCY = 51;
 parameter LATENCY = 43;
 `elsif ATAN_N32_PD4_BW32
 parameter LATENCY = 39;
+`elsif ATAN_N32_PD1_BW32
+parameter LATENCY = 1;
 `endif
 
 parameter ERROR_TOLERANCE = 1;
