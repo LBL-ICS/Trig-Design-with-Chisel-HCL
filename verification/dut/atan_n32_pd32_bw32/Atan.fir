@@ -432,7 +432,7 @@ circuit Atan :
     atantable[28] <= UInt<64>("h10") @[VCORDIC.scala 101:17]
     atantable[29] <= UInt<64>("h8") @[VCORDIC.scala 102:17]
     atantable[30] <= UInt<64>("h4") @[VCORDIC.scala 103:17]
-    atantable[31] <= UInt<64>("h3243f6c00") @[VCORDIC.scala 104:17]
+    atantable[31] <= UInt<64>("h2") @[VCORDIC.scala 105:17]
     inst tofixedx0 of Float32ToFixed64 @[VCORDIC.scala 107:33]
     tofixedx0.clock <= clock
     tofixedx0.reset <= reset
