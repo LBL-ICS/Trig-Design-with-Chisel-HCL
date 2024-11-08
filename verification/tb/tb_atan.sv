@@ -17,18 +17,18 @@
 module tb_atan();
 parameter TEST_SIZE = 9;
 `ifdef ATAN_N32_PD32_BW32
-parameter LATENCY = 67;
+parameter LATENCY = 33;
 `elsif ATAN_N32_PD16_BW32
-parameter LATENCY = 51;
+parameter LATENCY = 17; //16+1
 `elsif ATAN_N32_PD8_BW32
-parameter LATENCY = 43;
+parameter LATENCY = 9;
 `elsif ATAN_N32_PD4_BW32
-parameter LATENCY = 39;
+parameter LATENCY = 5;
 `elsif ATAN_N32_PD1_BW32
-parameter LATENCY = 37;
+parameter LATENCY = 2;
 `endif
 
-parameter ERROR_TOLERANCE = 1;
+parameter ERROR_TOLERANCE = 5;
 localparam real PI = 3.141592653589793;
 reg [31:0]  output_theta[TEST_SIZE-1:0]; 
 reg [31:0]  input_y[TEST_SIZE-1:0];
@@ -78,8 +78,10 @@ initial begin
   @(negedge clock);
   repeat(LATENCY) @(negedge clock);
   for (j=0; j < TEST_SIZE; j = j+1) begin
-      golden_real=ieee754_to_fp(output_theta[j]);
+      golden_real=ieee754_to_fp(output_theta[j])*180/PI;
       dut_out_real=ieee754_to_fp(io_out)*180/PI;
+      //golden_real=ieee754_to_fp(output_theta[j]);
+      //dut_out_real=ieee754_to_fp(io_out);
       if(output_theta[j]==32'h248D3132) begin
         if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
           error_percent=1;

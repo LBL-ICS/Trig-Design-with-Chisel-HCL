@@ -9,7 +9,7 @@ import FP_Modules.FloatingPointDesigns._
 import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 /* Module will run 4 iterations per rounds_param, so 8 rounds_param runs 32 iterations */
-class VCORDIC(bw: Int ,  pipeline_depth: Int , round_parameter: Int) extends Module {
+class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   require(bw == 32)
   /*
   Vector CORDIC for atan function:
@@ -36,7 +36,7 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , round_parameter: Int) extends Mod
 
   var iterperround = 0
   var iterations = 0
-  var rounds = 32
+  //var rounds =30
   if (pipeline_depth == 16) {
     iterperround = 1
 
@@ -101,8 +101,8 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , round_parameter: Int) extends Mod
   atantable(28) := scala.BigInt("0000000000000010", 16).U(64.W) //Q32.32 fixed point of 0.000000
   atantable(29) := scala.BigInt("0000000000000008", 16).U(64.W) //Q32.32 fixed point of 0.000000
   atantable(30) := scala.BigInt("0000000000000004", 16).U(64.W) //Q32.32 fixed point of 0.000000
-  atantable(31) := scala.BigInt("00000003243f6c00", 16).U(64.W) //Q32.32 fixed point of 3.141593
-
+  // atantable(31) := scala.BigInt("00000003243f6c00", 16).U(64.W) //Q32.32 fixed point of 3.141593
+  atantable(31) := scala.BigInt("0000000000000002", 16).U(64.W)
 
   private val tofixedx0 = Module(new Float32ToFixed64())
   private val tofixedy0 = Module(new Float32ToFixed64())
@@ -227,141 +227,212 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , round_parameter: Int) extends Mod
   else if (bw == 32 && pipeline_depth == 4) {
 
 
-    var reg = 0
-    for (n <- 0 to rounds - 1 by 1) {
+    var iter = 0
+    for (n <- 0 to rounds - 1 by iterperround) {
+      for (i <- 1 to iterperround) {
+        var prevn = n + i - 1
+        if (i == 1) {
+          val cond = yr(iter) < 0.S(64.W)
 
+          val xterm = Mux(cond, -xr(iter), xr(iter))
+          val yterm = Mux(cond, -yr(iter), yr(iter))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
 
-      if (n % 4 == 0) { // first iteration
+          x(n + i) := xr(iter) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := yr(iter) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := zr(iter) + zterm.asSInt
+        }
+        else if (i == 2) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
 
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
 
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -xr(reg), xr(reg))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -yr(reg), yr(reg))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
+        else if (i == 3) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
 
-        x(n + 1) := xr(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := yr(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := zr(n) + fxthetaterm.asSInt
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 4) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
 
 
       }
-      else if (n % 4 == 1 || n % 4 == 2) {
 
 
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
+      xr(iter + 1) := x(n + iterperround)
+      yr(iter + 1) := y(n + iterperround)
+      zr(iter + 1) := z(n + iterperround)
 
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
+      iter = iter + 1
 
 
-      }
 
-      else if (n % 4 == 3) {
-
-
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
-
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
-
-        reg = reg + 1
-
-
-        zr(reg) := z(n + 1)
-        xr(reg) := x(n + 1)
-        yr(reg) := y(n + 1)
-
-      }
 
 
     }
-
-
     val tofloatxout = Module(new Fixed64ToFloat32())
     val tofloatyout = Module(new Fixed64ToFloat32())
     val tofloatzout = Module(new Fixed64ToFloat32())
 
-
-    tofloatxout.io.in := xr(reg).asUInt
-    tofloatyout.io.in := yr(reg).asUInt
-    tofloatzout.io.in := zr(reg).asUInt
-
+    //Translate back to floating point
+    tofloatxout.io.in := xr(iter).asUInt
+    tofloatyout.io.in := yr(iter).asUInt
+    tofloatzout.io.in := zr(iter).asUInt
 
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
 
 
+
+
   }
+
+
+
+
+
+
 
 
   else if (pipeline_depth == 2) {
 
-    var reg = 0
-    for (n <- 0 to rounds - 1 by 1) {
+    var iter = 0
+    for (n <- 0 to rounds - 1 by iterperround) {
+      for (i <- 1 to iterperround) {
+        var prevn = n + i - 1
+        if (i == 1) {
+          val cond = yr(iter) < 0.S(64.W)
 
-      if (n % 8 == 0) { // first iteration
+          val xterm = Mux(cond, -xr(iter), xr(iter))
+          val yterm = Mux(cond, -yr(iter), yr(iter))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := xr(iter) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := yr(iter) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := zr(iter) + zterm.asSInt
+        }
+        else if (i == 2) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 3) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 4) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
 
 
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -xr(reg), xr(reg))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -yr(reg), yr(reg))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
+        else if (i == 5) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
 
-        x(n + 1) := xr(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := yr(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := zr(n) + fxthetaterm.asSInt
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 6) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 7) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
+
+        else if (i == 8) {
+          val cond = y(prevn) < 0.S(64.W)
+          val xterm = Mux(cond, -x(prevn), x(prevn))
+          val yterm = Mux(cond, -y(prevn), y(prevn))
+          val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+          x(n + i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+          y(n + i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+          z(n + i) := z(prevn) + zterm.asSInt
+        }
 
 
       }
-      else if (n % 8 == 1 || n % 8 == 2 || n % 8 == 3 || n % 8 == 4 || n % 8 == 5 || n % 8 == 6) {
 
 
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
+      xr(iter + 1) := x(n + iterperround)
+      yr(iter + 1) := y(n + iterperround)
+      zr(iter + 1) := z(n + iterperround)
 
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
+      iter = iter + 1
 
 
-      }
 
-      else if (n % 8 == 7) {
-
-
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
-
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
-
-        reg = reg + 1
-
-
-        zr(reg) := z(n + 1)
-        xr(reg) := x(n + 1)
-        yr(reg) := y(n + 1)
-      }
 
 
     }
-
     val tofloatxout = Module(new Fixed64ToFloat32())
     val tofloatyout = Module(new Fixed64ToFloat32())
     val tofloatzout = Module(new Fixed64ToFloat32())
 
-
-    tofloatxout.io.in := xr(reg).asUInt
-    tofloatyout.io.in := yr(reg).asUInt
-    tofloatzout.io.in := zr(reg).asUInt
+    //Translate back to floating point
+    tofloatxout.io.in := xr(iter).asUInt
+    tofloatyout.io.in := yr(iter).asUInt
+    tofloatzout.io.in := zr(iter).asUInt
 
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
@@ -372,67 +443,84 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , round_parameter: Int) extends Mod
   else if (pipeline_depth == 1) {
 
 
-    for (n <- 0 to rounds - 1 by 1) {
+
+    var iter =0
 
 
-      if (n == 0) {
+    var n =0
+    for (i <- 1 to rounds) {
+      val prevn = i - 1
+
+      if (i == 1) {
+        val cond = yr(0) < 0.S(64.W)
+
+        val xterm = Mux(cond, -xr(0), xr(0))
+        val yterm = Mux(cond, -yr(0), yr(0))
+        val zterm = Mux(cond, -atantable(0), atantable(0))
+
+        x(1) := xr(0) + (yterm >> 0.asUInt).asSInt
+        y(1) := yr(0) - (xterm >> 0.asUInt).asSInt
+        z(1) := zr(0) + zterm.asSInt
+      }
 
 
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -xr(0), xr(0))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -yr(0), yr(0))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
 
-        x(n + 1) := xr(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := yr(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := zr(n) + fxthetaterm.asSInt
+
+      else if (i == rounds) {
+        val cond = y(prevn) < 0.S(64.W)
+        val xterm = Mux(cond, -x(prevn), x(prevn))
+        val yterm = Mux(cond, -y(prevn), y(prevn))
+        val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
+
+        x(i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+        y(i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+        z(i) := z(prevn) + zterm.asSInt
+
+
+        xr(1) := x(rounds)
+        yr(1) := y(rounds)
+        zr( 1) := z(rounds)
+        iter = iter +1
 
 
       }
 
-      else if (n == rounds - 2) {
+      else   {
+        val cond = y(prevn) < 0.S(64.W)
+        val xterm = Mux(cond, -x(prevn), x(prevn))
+        val yterm = Mux(cond, -y(prevn), y(prevn))
+        val zterm = Mux(cond, -atantable(prevn), atantable(prevn))
 
-
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
-
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
-
-
-        zr(1) := z(n + 1)
-        xr(1) := x(n + 1)
-        yr(1) := y(n + 1)
-      }
-
-
-      else {
-        val fxxterm = Mux(yr(n) < 0.S(64.W), -x(n), x(n))
-        val fxyterm = Mux(yr(n) < 0.S(64.W), -y(n), y(n))
-        val fxthetaterm = Mux(yr(n) < 0.S(64.W), -atantable(n), atantable(n))
-
-        x(n + 1) := x(n) + (fxyterm >> n.asUInt).asSInt
-        y(n + 1) := y(n) - (fxxterm >> n.asUInt).asSInt
-        z(n + 1) := z(n) + fxthetaterm.asSInt
-
+        x(i) := x(prevn) + (yterm >> prevn.asUInt).asSInt
+        y(i) := y(prevn) - (xterm >> prevn.asUInt).asSInt
+        z(i) := z(prevn) + zterm.asSInt
       }
 
 
     }
 
+
+
+
+
+
     val tofloatxout = Module(new Fixed64ToFloat32())
     val tofloatyout = Module(new Fixed64ToFloat32())
     val tofloatzout = Module(new Fixed64ToFloat32())
 
-
-    tofloatxout.io.in := xr(1).asUInt
-    tofloatyout.io.in := yr(1).asUInt
-    tofloatzout.io.in := zr(1).asUInt
+    //Translate back to floating point
+    tofloatxout.io.in := xr(iter).asUInt
+    tofloatyout.io.in := yr(iter).asUInt
+    tofloatzout.io.in := zr(iter).asUInt
 
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
+
+
+
+
+
 
   }
 

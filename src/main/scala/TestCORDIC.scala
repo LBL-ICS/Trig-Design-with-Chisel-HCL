@@ -15,4 +15,8 @@ object Main extends App {
   val pw2 = new PrintWriter("Sin.v")
   pw2.println(getVerilogString(new Sin(32,1)))
   pw2.close()
+
+  val pw3 = new PrintWriter("Atan.v")
+  pw3.println(getVerilogString(new Atan(32,4,32)))
+  pw3.close()
 }

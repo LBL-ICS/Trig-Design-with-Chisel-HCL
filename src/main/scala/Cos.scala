@@ -14,7 +14,9 @@ class Cos(bw: Int =32, pipeline_depth: Int) extends Module {
   require(bw == 32 && (pipeline_depth == 1 || pipeline_depth == 2 || pipeline_depth == 4 || pipeline_depth ==16 || pipeline_depth == 8))
   val io = IO(new Bundle() {
     val in = Input(UInt(bw.W))
+    val ready = Input(Bool())
     val out = Output(UInt(bw.W))
+    val valid = Output(Bool())
   })
 
   /* Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
@@ -30,6 +32,10 @@ class Cos(bw: Int =32, pipeline_depth: Int) extends Module {
   private val tofixedz0 = Module(new FloatToFixed32())
   reducer.io.in := io.in
   tofixedz0.io.in := reducer.io.out
+
+
+  val  cos_rv = Module(new ShiftReg(37, 1))
+  cos_rv.io.in := io.in
 
 
 
