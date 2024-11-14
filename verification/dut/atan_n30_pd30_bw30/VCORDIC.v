@@ -98,12 +98,6 @@ module VCORDIC(
   reg [63:0] _RAND_90;
   reg [63:0] _RAND_91;
   reg [63:0] _RAND_92;
-  reg [63:0] _RAND_93;
-  reg [63:0] _RAND_94;
-  reg [63:0] _RAND_95;
-  reg [63:0] _RAND_96;
-  reg [63:0] _RAND_97;
-  reg [63:0] _RAND_98;
 `endif // RANDOMIZE_REG_INIT
   wire [31:0] tofixedx0_io_in; // @[VCORDIC.scala 107:33]
   wire [63:0] tofixedx0_io_out; // @[VCORDIC.scala 107:33]
@@ -148,8 +142,6 @@ module VCORDIC(
   reg [63:0] xr_28; // @[VCORDIC.scala 120:27]
   reg [63:0] xr_29; // @[VCORDIC.scala 120:27]
   reg [63:0] xr_30; // @[VCORDIC.scala 120:27]
-  reg [63:0] xr_31; // @[VCORDIC.scala 120:27]
-  reg [63:0] xr_32; // @[VCORDIC.scala 120:27]
   reg [63:0] yr_0; // @[VCORDIC.scala 121:27]
   reg [63:0] yr_1; // @[VCORDIC.scala 121:27]
   reg [63:0] yr_2; // @[VCORDIC.scala 121:27]
@@ -181,8 +173,6 @@ module VCORDIC(
   reg [63:0] yr_28; // @[VCORDIC.scala 121:27]
   reg [63:0] yr_29; // @[VCORDIC.scala 121:27]
   reg [63:0] yr_30; // @[VCORDIC.scala 121:27]
-  reg [63:0] yr_31; // @[VCORDIC.scala 121:27]
-  reg [63:0] yr_32; // @[VCORDIC.scala 121:27]
   reg [63:0] zr_0; // @[VCORDIC.scala 122:27]
   reg [63:0] zr_1; // @[VCORDIC.scala 122:27]
   reg [63:0] zr_2; // @[VCORDIC.scala 122:27]
@@ -214,8 +204,6 @@ module VCORDIC(
   reg [63:0] zr_28; // @[VCORDIC.scala 122:27]
   reg [63:0] zr_29; // @[VCORDIC.scala 122:27]
   reg [63:0] zr_30; // @[VCORDIC.scala 122:27]
-  reg [63:0] zr_31; // @[VCORDIC.scala 122:27]
-  reg [63:0] zr_32; // @[VCORDIC.scala 122:27]
   wire  _fxxterm_T = $signed(yr_0) < 64'sh0; // @[VCORDIC.scala 144:31]
   wire [63:0] _fxxterm_T_3 = 64'sh0 - $signed(xr_0); // @[VCORDIC.scala 144:44]
   wire [63:0] fxxterm = $signed(yr_0) < 64'sh0 ? $signed(_fxxterm_T_3) : $signed(xr_0); // @[VCORDIC.scala 144:24]
@@ -632,34 +620,6 @@ module VCORDIC(
   wire [63:0] y_30 = $signed(yr_29) - $signed(_y_30_T); // @[VCORDIC.scala 150:25]
   wire [63:0] _z_30_T = _fxxterm_T_116 ? _fxthetaterm_T_89 : 64'h8; // @[VCORDIC.scala 151:39]
   wire [63:0] z_30 = $signed(zr_29) + $signed(_z_30_T); // @[VCORDIC.scala 151:25]
-  wire  _fxxterm_T_120 = $signed(yr_30) < 64'sh0; // @[VCORDIC.scala 144:31]
-  wire [63:0] _fxxterm_T_123 = 64'sh0 - $signed(xr_30); // @[VCORDIC.scala 144:44]
-  wire [63:0] fxxterm_30 = $signed(yr_30) < 64'sh0 ? $signed(_fxxterm_T_123) : $signed(xr_30); // @[VCORDIC.scala 144:24]
-  wire [63:0] _fxyterm_T_123 = 64'sh0 - $signed(yr_30); // @[VCORDIC.scala 145:44]
-  wire [63:0] fxyterm_30 = _fxxterm_T_120 ? $signed(_fxyterm_T_123) : $signed(yr_30); // @[VCORDIC.scala 145:24]
-  wire [63:0] _fxthetaterm_T_92 = 64'h0 - 64'h4; // @[VCORDIC.scala 146:48]
-  wire [33:0] _GEN_58 = fxyterm_30[63:30]; // @[VCORDIC.scala 149:36]
-  wire [63:0] _x_31_T = {{30{_GEN_58[33]}},_GEN_58}; // @[VCORDIC.scala 149:36]
-  wire [63:0] x_31 = $signed(xr_30) + $signed(_x_31_T); // @[VCORDIC.scala 149:25]
-  wire [33:0] _GEN_59 = fxxterm_30[63:30]; // @[VCORDIC.scala 150:36]
-  wire [63:0] _y_31_T = {{30{_GEN_59[33]}},_GEN_59}; // @[VCORDIC.scala 150:36]
-  wire [63:0] y_31 = $signed(yr_30) - $signed(_y_31_T); // @[VCORDIC.scala 150:25]
-  wire [63:0] _z_31_T = _fxxterm_T_120 ? _fxthetaterm_T_92 : 64'h4; // @[VCORDIC.scala 151:39]
-  wire [63:0] z_31 = $signed(zr_30) + $signed(_z_31_T); // @[VCORDIC.scala 151:25]
-  wire  _fxxterm_T_124 = $signed(yr_31) < 64'sh0; // @[VCORDIC.scala 144:31]
-  wire [63:0] _fxxterm_T_127 = 64'sh0 - $signed(xr_31); // @[VCORDIC.scala 144:44]
-  wire [63:0] fxxterm_31 = $signed(yr_31) < 64'sh0 ? $signed(_fxxterm_T_127) : $signed(xr_31); // @[VCORDIC.scala 144:24]
-  wire [63:0] _fxyterm_T_127 = 64'sh0 - $signed(yr_31); // @[VCORDIC.scala 145:44]
-  wire [63:0] fxyterm_31 = _fxxterm_T_124 ? $signed(_fxyterm_T_127) : $signed(yr_31); // @[VCORDIC.scala 145:24]
-  wire [63:0] _fxthetaterm_T_95 = 64'h0 - 64'h2; // @[VCORDIC.scala 146:48]
-  wire [32:0] _GEN_60 = fxyterm_31[63:31]; // @[VCORDIC.scala 149:36]
-  wire [63:0] _x_32_T = {{31{_GEN_60[32]}},_GEN_60}; // @[VCORDIC.scala 149:36]
-  wire [63:0] x_32 = $signed(xr_31) + $signed(_x_32_T); // @[VCORDIC.scala 149:25]
-  wire [32:0] _GEN_61 = fxxterm_31[63:31]; // @[VCORDIC.scala 150:36]
-  wire [63:0] _y_32_T = {{31{_GEN_61[32]}},_GEN_61}; // @[VCORDIC.scala 150:36]
-  wire [63:0] y_32 = $signed(yr_31) - $signed(_y_32_T); // @[VCORDIC.scala 150:25]
-  wire [63:0] _z_32_T = _fxxterm_T_124 ? _fxthetaterm_T_95 : 64'h2; // @[VCORDIC.scala 151:39]
-  wire [63:0] z_32 = $signed(zr_31) + $signed(_z_32_T); // @[VCORDIC.scala 151:25]
   Float32ToFixed64 tofixedx0 ( // @[VCORDIC.scala 107:33]
     .io_in(tofixedx0_io_in),
     .io_out(tofixedx0_io_out)
@@ -688,9 +648,9 @@ module VCORDIC(
   assign tofixedx0_io_in = 32'h3f800000; // @[VCORDIC.scala 111:19]
   assign tofixedy0_io_in = io_in_y0; // @[VCORDIC.scala 112:19]
   assign tofixedz0_io_in = 32'h0; // @[VCORDIC.scala 113:19]
-  assign tofloatxout_io_in = xr_32; // @[VCORDIC.scala 166:35]
-  assign tofloatyout_io_in = yr_32; // @[VCORDIC.scala 167:35]
-  assign tofloatzout_io_in = zr_32; // @[VCORDIC.scala 168:35]
+  assign tofloatxout_io_in = xr_30; // @[VCORDIC.scala 166:35]
+  assign tofloatyout_io_in = yr_30; // @[VCORDIC.scala 167:35]
+  assign tofloatzout_io_in = zr_30; // @[VCORDIC.scala 168:35]
   always @(posedge clock) begin
     if (reset) begin // @[VCORDIC.scala 120:27]
       xr_0 <= 64'sh0; // @[VCORDIC.scala 120:27]
@@ -847,16 +807,6 @@ module VCORDIC(
     end else begin
       xr_30 <= x_30; // @[VCORDIC.scala 153:17]
     end
-    if (reset) begin // @[VCORDIC.scala 120:27]
-      xr_31 <= 64'sh0; // @[VCORDIC.scala 120:27]
-    end else begin
-      xr_31 <= x_31; // @[VCORDIC.scala 153:17]
-    end
-    if (reset) begin // @[VCORDIC.scala 120:27]
-      xr_32 <= 64'sh0; // @[VCORDIC.scala 120:27]
-    end else begin
-      xr_32 <= x_32; // @[VCORDIC.scala 153:17]
-    end
     if (reset) begin // @[VCORDIC.scala 121:27]
       yr_0 <= 64'sh0; // @[VCORDIC.scala 121:27]
     end else begin
@@ -1011,16 +961,6 @@ module VCORDIC(
       yr_30 <= 64'sh0; // @[VCORDIC.scala 121:27]
     end else begin
       yr_30 <= y_30; // @[VCORDIC.scala 154:17]
-    end
-    if (reset) begin // @[VCORDIC.scala 121:27]
-      yr_31 <= 64'sh0; // @[VCORDIC.scala 121:27]
-    end else begin
-      yr_31 <= y_31; // @[VCORDIC.scala 154:17]
-    end
-    if (reset) begin // @[VCORDIC.scala 121:27]
-      yr_32 <= 64'sh0; // @[VCORDIC.scala 121:27]
-    end else begin
-      yr_32 <= y_32; // @[VCORDIC.scala 154:17]
     end
     if (reset) begin // @[VCORDIC.scala 122:27]
       zr_0 <= 64'sh0; // @[VCORDIC.scala 122:27]
@@ -1177,22 +1117,12 @@ module VCORDIC(
     end else begin
       zr_30 <= z_30; // @[VCORDIC.scala 155:17]
     end
-    if (reset) begin // @[VCORDIC.scala 122:27]
-      zr_31 <= 64'sh0; // @[VCORDIC.scala 122:27]
-    end else begin
-      zr_31 <= z_31; // @[VCORDIC.scala 155:17]
-    end
-    if (reset) begin // @[VCORDIC.scala 122:27]
-      zr_32 <= 64'sh0; // @[VCORDIC.scala 122:27]
-    end else begin
-      zr_32 <= z_32; // @[VCORDIC.scala 155:17]
-    end
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
         if (~reset) begin
-          $fwrite(32'h80000002,"round = 32"); // @[VCORDIC.scala 169:11]
+          $fwrite(32'h80000002,"round = 30"); // @[VCORDIC.scala 169:11]
         end
     `ifdef PRINTF_COND
       end
@@ -1298,141 +1228,129 @@ initial begin
   _RAND_30 = {2{`RANDOM}};
   xr_30 = _RAND_30[63:0];
   _RAND_31 = {2{`RANDOM}};
-  xr_31 = _RAND_31[63:0];
+  yr_0 = _RAND_31[63:0];
   _RAND_32 = {2{`RANDOM}};
-  xr_32 = _RAND_32[63:0];
+  yr_1 = _RAND_32[63:0];
   _RAND_33 = {2{`RANDOM}};
-  yr_0 = _RAND_33[63:0];
+  yr_2 = _RAND_33[63:0];
   _RAND_34 = {2{`RANDOM}};
-  yr_1 = _RAND_34[63:0];
+  yr_3 = _RAND_34[63:0];
   _RAND_35 = {2{`RANDOM}};
-  yr_2 = _RAND_35[63:0];
+  yr_4 = _RAND_35[63:0];
   _RAND_36 = {2{`RANDOM}};
-  yr_3 = _RAND_36[63:0];
+  yr_5 = _RAND_36[63:0];
   _RAND_37 = {2{`RANDOM}};
-  yr_4 = _RAND_37[63:0];
+  yr_6 = _RAND_37[63:0];
   _RAND_38 = {2{`RANDOM}};
-  yr_5 = _RAND_38[63:0];
+  yr_7 = _RAND_38[63:0];
   _RAND_39 = {2{`RANDOM}};
-  yr_6 = _RAND_39[63:0];
+  yr_8 = _RAND_39[63:0];
   _RAND_40 = {2{`RANDOM}};
-  yr_7 = _RAND_40[63:0];
+  yr_9 = _RAND_40[63:0];
   _RAND_41 = {2{`RANDOM}};
-  yr_8 = _RAND_41[63:0];
+  yr_10 = _RAND_41[63:0];
   _RAND_42 = {2{`RANDOM}};
-  yr_9 = _RAND_42[63:0];
+  yr_11 = _RAND_42[63:0];
   _RAND_43 = {2{`RANDOM}};
-  yr_10 = _RAND_43[63:0];
+  yr_12 = _RAND_43[63:0];
   _RAND_44 = {2{`RANDOM}};
-  yr_11 = _RAND_44[63:0];
+  yr_13 = _RAND_44[63:0];
   _RAND_45 = {2{`RANDOM}};
-  yr_12 = _RAND_45[63:0];
+  yr_14 = _RAND_45[63:0];
   _RAND_46 = {2{`RANDOM}};
-  yr_13 = _RAND_46[63:0];
+  yr_15 = _RAND_46[63:0];
   _RAND_47 = {2{`RANDOM}};
-  yr_14 = _RAND_47[63:0];
+  yr_16 = _RAND_47[63:0];
   _RAND_48 = {2{`RANDOM}};
-  yr_15 = _RAND_48[63:0];
+  yr_17 = _RAND_48[63:0];
   _RAND_49 = {2{`RANDOM}};
-  yr_16 = _RAND_49[63:0];
+  yr_18 = _RAND_49[63:0];
   _RAND_50 = {2{`RANDOM}};
-  yr_17 = _RAND_50[63:0];
+  yr_19 = _RAND_50[63:0];
   _RAND_51 = {2{`RANDOM}};
-  yr_18 = _RAND_51[63:0];
+  yr_20 = _RAND_51[63:0];
   _RAND_52 = {2{`RANDOM}};
-  yr_19 = _RAND_52[63:0];
+  yr_21 = _RAND_52[63:0];
   _RAND_53 = {2{`RANDOM}};
-  yr_20 = _RAND_53[63:0];
+  yr_22 = _RAND_53[63:0];
   _RAND_54 = {2{`RANDOM}};
-  yr_21 = _RAND_54[63:0];
+  yr_23 = _RAND_54[63:0];
   _RAND_55 = {2{`RANDOM}};
-  yr_22 = _RAND_55[63:0];
+  yr_24 = _RAND_55[63:0];
   _RAND_56 = {2{`RANDOM}};
-  yr_23 = _RAND_56[63:0];
+  yr_25 = _RAND_56[63:0];
   _RAND_57 = {2{`RANDOM}};
-  yr_24 = _RAND_57[63:0];
+  yr_26 = _RAND_57[63:0];
   _RAND_58 = {2{`RANDOM}};
-  yr_25 = _RAND_58[63:0];
+  yr_27 = _RAND_58[63:0];
   _RAND_59 = {2{`RANDOM}};
-  yr_26 = _RAND_59[63:0];
+  yr_28 = _RAND_59[63:0];
   _RAND_60 = {2{`RANDOM}};
-  yr_27 = _RAND_60[63:0];
+  yr_29 = _RAND_60[63:0];
   _RAND_61 = {2{`RANDOM}};
-  yr_28 = _RAND_61[63:0];
+  yr_30 = _RAND_61[63:0];
   _RAND_62 = {2{`RANDOM}};
-  yr_29 = _RAND_62[63:0];
+  zr_0 = _RAND_62[63:0];
   _RAND_63 = {2{`RANDOM}};
-  yr_30 = _RAND_63[63:0];
+  zr_1 = _RAND_63[63:0];
   _RAND_64 = {2{`RANDOM}};
-  yr_31 = _RAND_64[63:0];
+  zr_2 = _RAND_64[63:0];
   _RAND_65 = {2{`RANDOM}};
-  yr_32 = _RAND_65[63:0];
+  zr_3 = _RAND_65[63:0];
   _RAND_66 = {2{`RANDOM}};
-  zr_0 = _RAND_66[63:0];
+  zr_4 = _RAND_66[63:0];
   _RAND_67 = {2{`RANDOM}};
-  zr_1 = _RAND_67[63:0];
+  zr_5 = _RAND_67[63:0];
   _RAND_68 = {2{`RANDOM}};
-  zr_2 = _RAND_68[63:0];
+  zr_6 = _RAND_68[63:0];
   _RAND_69 = {2{`RANDOM}};
-  zr_3 = _RAND_69[63:0];
+  zr_7 = _RAND_69[63:0];
   _RAND_70 = {2{`RANDOM}};
-  zr_4 = _RAND_70[63:0];
+  zr_8 = _RAND_70[63:0];
   _RAND_71 = {2{`RANDOM}};
-  zr_5 = _RAND_71[63:0];
+  zr_9 = _RAND_71[63:0];
   _RAND_72 = {2{`RANDOM}};
-  zr_6 = _RAND_72[63:0];
+  zr_10 = _RAND_72[63:0];
   _RAND_73 = {2{`RANDOM}};
-  zr_7 = _RAND_73[63:0];
+  zr_11 = _RAND_73[63:0];
   _RAND_74 = {2{`RANDOM}};
-  zr_8 = _RAND_74[63:0];
+  zr_12 = _RAND_74[63:0];
   _RAND_75 = {2{`RANDOM}};
-  zr_9 = _RAND_75[63:0];
+  zr_13 = _RAND_75[63:0];
   _RAND_76 = {2{`RANDOM}};
-  zr_10 = _RAND_76[63:0];
+  zr_14 = _RAND_76[63:0];
   _RAND_77 = {2{`RANDOM}};
-  zr_11 = _RAND_77[63:0];
+  zr_15 = _RAND_77[63:0];
   _RAND_78 = {2{`RANDOM}};
-  zr_12 = _RAND_78[63:0];
+  zr_16 = _RAND_78[63:0];
   _RAND_79 = {2{`RANDOM}};
-  zr_13 = _RAND_79[63:0];
+  zr_17 = _RAND_79[63:0];
   _RAND_80 = {2{`RANDOM}};
-  zr_14 = _RAND_80[63:0];
+  zr_18 = _RAND_80[63:0];
   _RAND_81 = {2{`RANDOM}};
-  zr_15 = _RAND_81[63:0];
+  zr_19 = _RAND_81[63:0];
   _RAND_82 = {2{`RANDOM}};
-  zr_16 = _RAND_82[63:0];
+  zr_20 = _RAND_82[63:0];
   _RAND_83 = {2{`RANDOM}};
-  zr_17 = _RAND_83[63:0];
+  zr_21 = _RAND_83[63:0];
   _RAND_84 = {2{`RANDOM}};
-  zr_18 = _RAND_84[63:0];
+  zr_22 = _RAND_84[63:0];
   _RAND_85 = {2{`RANDOM}};
-  zr_19 = _RAND_85[63:0];
+  zr_23 = _RAND_85[63:0];
   _RAND_86 = {2{`RANDOM}};
-  zr_20 = _RAND_86[63:0];
+  zr_24 = _RAND_86[63:0];
   _RAND_87 = {2{`RANDOM}};
-  zr_21 = _RAND_87[63:0];
+  zr_25 = _RAND_87[63:0];
   _RAND_88 = {2{`RANDOM}};
-  zr_22 = _RAND_88[63:0];
+  zr_26 = _RAND_88[63:0];
   _RAND_89 = {2{`RANDOM}};
-  zr_23 = _RAND_89[63:0];
+  zr_27 = _RAND_89[63:0];
   _RAND_90 = {2{`RANDOM}};
-  zr_24 = _RAND_90[63:0];
+  zr_28 = _RAND_90[63:0];
   _RAND_91 = {2{`RANDOM}};
-  zr_25 = _RAND_91[63:0];
+  zr_29 = _RAND_91[63:0];
   _RAND_92 = {2{`RANDOM}};
-  zr_26 = _RAND_92[63:0];
-  _RAND_93 = {2{`RANDOM}};
-  zr_27 = _RAND_93[63:0];
-  _RAND_94 = {2{`RANDOM}};
-  zr_28 = _RAND_94[63:0];
-  _RAND_95 = {2{`RANDOM}};
-  zr_29 = _RAND_95[63:0];
-  _RAND_96 = {2{`RANDOM}};
-  zr_30 = _RAND_96[63:0];
-  _RAND_97 = {2{`RANDOM}};
-  zr_31 = _RAND_97[63:0];
-  _RAND_98 = {2{`RANDOM}};
-  zr_32 = _RAND_98[63:0];
+  zr_30 = _RAND_92[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
