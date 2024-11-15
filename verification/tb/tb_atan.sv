@@ -16,16 +16,16 @@
 
 module tb_atan();
 parameter TEST_SIZE = 9;
-`ifdef ATAN_N32_PD32_BW32
-parameter LATENCY = 33;
-`elsif ATAN_N32_PD16_BW32
+`ifdef ATAN_N30_PD30_BW32
+parameter LATENCY = 32;
+`elsif ATAN_N30_PD15_BW32
 parameter LATENCY = 17; //16+1
-`elsif ATAN_N32_PD8_BW32
-parameter LATENCY = 9;
-`elsif ATAN_N32_PD4_BW32
-parameter LATENCY = 5;
-`elsif ATAN_N32_PD1_BW32
-parameter LATENCY = 2;
+`elsif ATAN_N30_PD10_BW32
+parameter LATENCY = 12;
+`elsif ATAN_N30_PD5_BW32
+parameter LATENCY = 7;
+`elsif ATAN_N30_PD1_BW32
+parameter LATENCY = 3;
 `endif
 
 parameter ERROR_TOLERANCE = 5;
@@ -40,17 +40,21 @@ initial begin
    $readmemh("../golden/rtl-atan-output.txt",output_theta);
 end
 
+reg         ready;
 reg         clock;
 reg         reset;
 reg  [31:0] io_in;
 wire [31:0] io_out;
+wire        valid ;
 
  always #5 clock = ~clock;
 
 Atan u_Atan(
   .clock (clock ),
   .reset (reset ),
+  .ready (ready ),
   .io_in (io_in ),
+  .valid (valid ),
   .io_out(io_out)
 );
   
@@ -60,16 +64,19 @@ initial begin
    reset = 1'b1;
    clock = 1'b0;
    io_in = 32'h0;  
+   ready = 1'b0;
    #12;
    reset = 1'b0;
    @(posedge clock);
 
+  ready = 1'b1;
   for (i=0; i < TEST_SIZE; i = i+1) begin
     io_in = input_y[i];  
     dut_in_real=ieee754_to_fp(io_in); //*180/PI;
     $display("At %dns, the input y: %h and %f", $time, io_in, dut_in_real);
     @(posedge clock);
   end
+   ready = 1'b0;
 end
 
 initial begin

@@ -10,26 +10,26 @@ z2
 cModel Technology
 Z0 dC:/Mirror/GitProject/Trig-Design-with-Chisel-HCL/verification/sim
 vAtan
-Z1 !s110 1731081320
+Z1 !s110 1731680674
 !i10b 1
 !s100 0Sj_nUM1OGela5_HoIFHh3
-IUXSofkWoDOY9lQ5^^c_jG1
+Ic`6RV`eRd4m@:[elcXG_Y2
 R0
-Z2 w1731023871
-8../dut/atan_n32_pd32_bw32/Atan.v
-F../dut/atan_n32_pd32_bw32/Atan.v
-!i122 106
+Z2 w1731564028
+8../dut/atan_n30_pd1_bw32/Atan.v
+F../dut/atan_n30_pd1_bw32/Atan.v
+!i122 108
 Z3 L0 1 27
 Z4 VDg1SIo80bB@j0V0VzS_@n1
 Z5 OV;L;2021.1;73
 r1
 !s85 0
 31
-Z6 !s108 1731081320.000000
-!s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n32_pd32_bw32/Float32ToFixed64.v|../dut/atan_n32_pd32_bw32/Fixed64ToFloat32.v|../dut/atan_n32_pd32_bw32/VCORDIC.v|../dut/atan_n32_pd32_bw32/CLZ64.v|../dut/atan_n32_pd32_bw32/Atan.v|
-Z7 !s90 -reportprogress|300|+define+ATAN_N32_PD32_BW32|-f|../filelist/filelist_atan_n32_pd32_bw32.f|
+Z6 !s108 1731680674.000000
+!s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n30_pd1_bw32/Float32ToFixed64.v|../dut/atan_n30_pd1_bw32/Fixed64ToFloat32.v|../dut/atan_n30_pd1_bw32/VCORDIC.v|../dut/atan_n30_pd1_bw32/CLZ64.v|../dut/atan_n30_pd1_bw32/Atan.v|
+Z7 !s90 -reportprogress|300|+define+ATAN_N30_PD1_BW32|-f|../filelist/filelist_atan_n30_pd1_bw32.f|
 !i113 1
-Z8 !s92 +define+ATAN_N32_PD32_BW32
+Z8 !s92 +define+ATAN_N30_PD1_BW32
 Z9 tCvgOpt 0
 n@atan
 vCLZ32
@@ -59,12 +59,12 @@ vCLZ64
 R1
 !i10b 1
 !s100 o>aQ1Kc9Ob?k?>e2B5?H:3
-ILclWMYF63`^G>Bj7^ND<?1
+IL>lGUYl>SCak55XK41AYT1
 R0
 R2
-8../dut/atan_n32_pd32_bw32/CLZ64.v
-F../dut/atan_n32_pd32_bw32/CLZ64.v
-!i122 106
+8../dut/atan_n30_pd1_bw32/CLZ64.v
+F../dut/atan_n30_pd1_bw32/CLZ64.v
+!i122 108
 L0 1 28
 R4
 R5
@@ -72,7 +72,7 @@ r1
 !s85 0
 31
 R6
-Z16 !s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n32_pd32_bw32/Float32ToFixed64.v|../dut/atan_n32_pd32_bw32/Fixed64ToFloat32.v|../dut/atan_n32_pd32_bw32/VCORDIC.v|../dut/atan_n32_pd32_bw32/CLZ64.v|../dut/atan_n32_pd32_bw32/Atan.v|
+Z16 !s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n30_pd1_bw32/Float32ToFixed64.v|../dut/atan_n30_pd1_bw32/Fixed64ToFloat32.v|../dut/atan_n30_pd1_bw32/VCORDIC.v|../dut/atan_n30_pd1_bw32/CLZ64.v|../dut/atan_n30_pd1_bw32/Atan.v|
 R7
 !i113 1
 R8
@@ -151,12 +151,12 @@ vFixed64ToFloat32
 R1
 !i10b 1
 !s100 ?ENVX=bSWz[4M6@@U3dk;1
-ImP6P]0ihLQbm]<FF3f5@o0
+I4@iPYGS`3iLI@PhPYg5Cn0
 R0
 R2
-8../dut/atan_n32_pd32_bw32/Fixed64ToFloat32.v
-F../dut/atan_n32_pd32_bw32/Fixed64ToFloat32.v
-!i122 106
+8../dut/atan_n30_pd1_bw32/Fixed64ToFloat32.v
+F../dut/atan_n30_pd1_bw32/Fixed64ToFloat32.v
+!i122 108
 Z18 L0 1 31
 R4
 R5
@@ -197,12 +197,12 @@ vFloat32ToFixed64
 R1
 !i10b 1
 !s100 W0cN=f69GT6H9m_=gKC?>2
-I8]bJGLAf25:_D9n8[DWek1
+IJY=gd7SLfCbPI5h2TX:nC2
 R0
 R2
-8../dut/atan_n32_pd32_bw32/Float32ToFixed64.v
-F../dut/atan_n32_pd32_bw32/Float32ToFixed64.v
-!i122 106
+8../dut/atan_n30_pd1_bw32/Float32ToFixed64.v
+F../dut/atan_n30_pd1_bw32/Float32ToFixed64.v
+!i122 108
 L0 1 22
 R4
 R5
@@ -424,16 +424,16 @@ vtb_atan
 Z26 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
 R1
 !i10b 1
-!s100 O:Hc6QAdchJXDbMkKBioA3
-I9QT;;FoK9>D5SA<5JeWIk2
+!s100 Jf=1El]z7gY0JV2T2e7T53
+INCS@?A3SAG;znZGcE:@6N1
 S1
 R0
-w1731081318
+w1731680418
 8../tb/tb_atan.sv
 F../tb/tb_atan.sv
 Z27 F../tb/tb_func.sv
-!i122 106
-L0 17 192
+!i122 108
+L0 17 199
 R4
 R5
 r1
@@ -499,19 +499,19 @@ R9
 Xtb_func_sv_unit
 R26
 R1
-VNRd;[7cB9iNhN;Y8dWbV63
+VGXnBPbTeTR1FzhSnNj4WJ2
 r1
 !s85 0
 !i10b 1
 !s100 FcX=?Y5mCGJK5d;XKemTC1
-INRd;[7cB9iNhN;Y8dWbV63
+IGXnBPbTeTR1FzhSnNj4WJ2
 !i103 1
 S1
 R0
 w1727890706
 8../tb/tb_func.sv
 R27
-!i122 106
+!i122 108
 L0 17 0
 R5
 31
@@ -594,14 +594,14 @@ R9
 vVCORDIC
 R1
 !i10b 1
-!s100 dYQ8kKo?<zhiiZ4:G;9Mc0
-IjRGO2@nc73I]Te3fRHKK30
+!s100 5?4OFEU_:g3W]i3lhTBPR3
+IUDoIenGI<KN]ST[R990fK1
 R0
 R2
-8../dut/atan_n32_pd32_bw32/VCORDIC.v
-F../dut/atan_n32_pd32_bw32/VCORDIC.v
-!i122 106
-L0 1 1443
+8../dut/atan_n30_pd1_bw32/VCORDIC.v
+F../dut/atan_n30_pd1_bw32/VCORDIC.v
+!i122 108
+L0 1 553
 R4
 R5
 r1
