@@ -34,10 +34,10 @@ vsim work.tb_atan -t 1ns
 ################## #################### mus  ####################################
 add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/clock
 add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/reset
-add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/ready
+#add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/ready
 add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/io_in
 add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/io_out
-add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/valid
+#add wave -noupdate -format logic -radix hexadecimal tb_atan/u_Atan/valid
 
 add wave -position insertpoint /tb_atan/u_Atan/vcordic_clock
 add wave -position insertpoint /tb_atan/u_Atan/vcordic/clock

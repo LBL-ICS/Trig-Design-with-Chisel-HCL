@@ -10,7 +10,7 @@ import FP_Modules.FloatingPointDesigns._
 import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 
-class Cos(bw: Int =32, pipeline_depth: Int) extends Module {
+class Cos(bw: Int =32, pipeline_depth: Int, rounds : Int) extends Module {
   require(bw == 32 && (pipeline_depth == 1 || pipeline_depth == 2 || pipeline_depth == 4 || pipeline_depth ==16 || pipeline_depth == 8))
   val io = IO(new Bundle() {
     val in = Input(UInt(bw.W))
@@ -35,10 +35,19 @@ class Cos(bw: Int =32, pipeline_depth: Int) extends Module {
 
 
   val  cos_rv = Module(new ShiftReg(37, 1))
-  cos_rv.io.in := io.in
+  cos_rv.io.in := io.ready
+  io.valid := cos_rv.io.out
 
 
+  var latency = ((rounds/16)*pipeline_depth)+1
 
+
+  val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
+  shift_reg(0) := io.ready
+  for(i <- 1 until latency){
+    shift_reg(i) := shift_reg(i-1)
+  }
+  io.valid := shift_reg((latency) - 1)
 
 
   val cordic = Module(new CORDIC(bw, pipeline_depth, 16))
@@ -75,6 +84,6 @@ object CosMain extends App {
       "-X", "verilog",
       "-e", "verilog",
       "--target-dir", "verification/dut/Cos"),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 2)))
+    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 2,16)))
   )
 }

@@ -17,21 +17,21 @@
 module tb_atan();
 parameter TEST_SIZE = 9;
 `ifdef ATAN_N30_PD30_BW32
-parameter LATENCY = 32;
+parameter LATENCY = 33;
 `elsif ATAN_N30_PD15_BW32
 parameter LATENCY = 17; //16+1
 `elsif ATAN_N30_PD10_BW32
-parameter LATENCY = 12;
+parameter LATENCY = 9;
 `elsif ATAN_N30_PD5_BW32
-parameter LATENCY = 7;
+parameter LATENCY = 5;
 `elsif ATAN_N30_PD1_BW32
-parameter LATENCY = 3;
+parameter LATENCY = 2;
 `endif
 
 parameter ERROR_TOLERANCE = 5;
 localparam real PI = 3.141592653589793;
-reg [31:0]  output_theta[TEST_SIZE-1:0]; 
-reg [31:0]  input_y[TEST_SIZE-1:0];
+reg [31:0]  output_theta[0:TEST_SIZE-1]; 
+reg [31:0]  input_y[0:TEST_SIZE-1];
 
 `include "tb_func.sv"
 
@@ -52,9 +52,9 @@ wire        valid ;
 Atan u_Atan(
   .clock (clock ),
   .reset (reset ),
-  .ready (ready ),
+  //.ready (ready ),
   .io_in (io_in ),
-  .valid (valid ),
+  //.valid (valid ),
   .io_out(io_out)
 );
   
@@ -64,19 +64,19 @@ initial begin
    reset = 1'b1;
    clock = 1'b0;
    io_in = 32'h0;  
-   ready = 1'b0;
+   //ready = 1'b0;
    #12;
    reset = 1'b0;
    @(posedge clock);
 
-  ready = 1'b1;
+  //ready = 1'b1;
   for (i=0; i < TEST_SIZE; i = i+1) begin
     io_in = input_y[i];  
     dut_in_real=ieee754_to_fp(io_in); //*180/PI;
     $display("At %dns, the input y: %h and %f", $time, io_in, dut_in_real);
     @(posedge clock);
   end
-   ready = 1'b0;
+   //ready = 1'b0;
 end
 
 initial begin

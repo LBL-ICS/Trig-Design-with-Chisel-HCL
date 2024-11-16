@@ -9,16 +9,30 @@ import FP_Modules.FloatingPointDesigns._
 import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 
-class Sin(bw: Int =32, pipeline_depth: Int) extends Module {
+class Sin(bw: Int =32, pipeline_depth: Int, rounds : Int) extends Module {
   require(bw == 32 && (pipeline_depth == 1 || pipeline_depth == 2 || pipeline_depth == 4 || pipeline_depth ==16 || pipeline_depth == 8))
   val io = IO(new Bundle() {
     val in = Input(UInt(bw.W))
     val out = Output(UInt(bw.W))
+    val ready = Input(UInt(1.W))
+    val valid = Output(UInt(1.W))
   })
 
   /* Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
    are known to already be inside (0, 2*PI) this step should be removed. */
   private val reducer = Module(new TrigRangeReducer(32))
+
+
+  var latency = ((rounds/16)*pipeline_depth)+1
+
+
+  val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
+  shift_reg(0) := io.ready
+  for(i <- 1 until latency){
+    shift_reg(i) := shift_reg(i-1)
+  }
+  io.valid := shift_reg((latency) - 1)
+
 
   /* These values demarcate the four angle quadrants and are in Q4.28 fixed point */
   private val PI_DIV_TWO = 0x1921fb60L.S
@@ -35,13 +49,8 @@ class Sin(bw: Int =32, pipeline_depth: Int) extends Module {
   cordic.io.in_x0 := 1058764014.U //This is k ~ .607 as a single precision IEEE 754 float
   cordic.io.in_y0 := 0.U
 
-  /*
-    TODO: Do range reduction specifically for sine rather than just subtracting PI/2 from theta to use cosine (while
-    this is valid for the entire Q4.28 input range, it requires an additional integer subtraction)
-  */
 
-  private val adjangle = PI_DIV_TWO - tofixedz0.io.out.asSInt
-  private val theta = Mux(adjangle < 0.S, adjangle + TWO_PI, adjangle)
+  private val theta = Mux(tofixedz0.io.out.asSInt < 0.S, tofixedz0.io.out.asSInt + TWO_PI, tofixedz0.io.out.asSInt)
   private val outmode = cordic.io.out_mode
 
   when(theta >= THREE_PI_DIV_TWO) {
@@ -63,6 +72,8 @@ class Sin(bw: Int =32, pipeline_depth: Int) extends Module {
     io.out := cordic.io.out_x
   }
 
+
+
 }
 
 object SinMain extends App {
@@ -71,6 +82,6 @@ object SinMain extends App {
       "-X", "verilog",
       "-e", "verilog",
       "--target-dir", "verification/dut/Sin"),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(32,1)))
+    Seq(ChiselGeneratorAnnotation(() => new Sin(32,1,16)))
   )
 }
