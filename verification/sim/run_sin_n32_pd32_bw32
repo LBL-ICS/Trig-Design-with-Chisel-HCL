@@ -62,4 +62,4 @@ add wave -position insertpoint /tb_sin/u_Sin/reducer/extractor/io_out_frac
 add wave -position insertpoint /tb_sin/u_Sin/reducer/mul/io_in_a
 add wave -position insertpoint /tb_sin/u_Sin/reducer/mul/io_out_s
 
-run 1us                                                                            
+run 100us                                                                            

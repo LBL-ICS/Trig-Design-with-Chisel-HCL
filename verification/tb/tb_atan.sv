@@ -15,7 +15,7 @@
 
 
 module tb_atan();
-parameter TEST_SIZE = 9;
+parameter TEST_SIZE = 10000;
 `ifdef ATAN_N30_PD30_BW32
 parameter LATENCY = 33;
 `elsif ATAN_N30_PD15_BW32
@@ -59,6 +59,7 @@ Atan u_Atan(
 );
   
 integer i,j; 
+integer y_input;
 real dut_in_real, golden_real, dut_out_real, error_percent;
 initial begin
    reset = 1'b1;
@@ -69,52 +70,90 @@ initial begin
    reset = 1'b0;
    @(posedge clock);
 
+`ifdef ATAN_N30_PD30_BW32
+  y_input=$fopen("./atan_n30_pd30_bw32/y_input.log","w");
+`elsif ATAN_N30_PD15_BW32
+  y_input=$fopen("./atan_n30_pd15_bw32/y_input.log","w");
+`elsif ATAN_N30_PD10_BW32
+  y_input=$fopen("./atan_n30_pd10_bw32/y_input.log","w");
+`elsif ATAN_N30_PD5_BW32
+  y_input=$fopen("./atan_n30_pd5_bw32/y_input.log","w");
+`elsif ATAN_N30_PD1_BW32
+  y_input=$fopen("./atan_n30_pd1_bw32/y_input.log","w");
+`endif
+
   //ready = 1'b1;
   for (i=0; i < TEST_SIZE; i = i+1) begin
     io_in = input_y[i];  
     dut_in_real=ieee754_to_fp(io_in); //*180/PI;
-    $display("At %dns, the input y: %h and %f", $time, io_in, dut_in_real);
+    $fwrite(y_input,"At %dns, the input y: %h and %f\n", $time, io_in, dut_in_real);
     @(posedge clock);
   end
    //ready = 1'b0;
 end
+
+integer atan_report;
+integer atan_report_ieee754;
 
 initial begin
   wait (~reset);
   @(posedge clock);
   @(negedge clock);
   repeat(LATENCY) @(negedge clock);
+`ifdef ATAN_N30_PD30_BW32
+  atan_report=$fopen("./atan_n30_pd30_bw32/atan_report.log","w");
+  atan_report_ieee754=$fopen("./atan_n30_pd30_bw32/atan_report_ieee754.log","w");
+`elsif ATAN_N30_PD15_BW32
+  atan_report=$fopen("./sim/sin/atan_n30_pd15_bw32_report.log","w");
+  atan_report_ieee754=$fopen("./atan_n30_pd15_bw32/atan_report_ieee754.log","w");
+`elsif ATAN_N30_PD10_BW32
+  atan_report=$fopen("./sim/sin/atan_n30_pd10_bw32_report.log","w");
+  atan_report_ieee754=$fopen("./atan_n30_pd10_bw32/atan_report_ieee754.log","w");
+`elsif ATAN_N30_PD5_BW32
+  atan_report=$fopen("./sim/sin/atan_n30_pd5_bw32_report.log","w");
+  atan_report_ieee754=$fopen("./atan_n30_pd5_bw32/atan_report_ieee754.log","w");
+`elsif ATAN_N30_PD1_BW32
+  atan_report=$fopen("./sim/sin/atan_n30_pd1_bw32_report.log","w");
+  atan_report_ieee754=$fopen("./atan_n30_pd1_bw32/atan_report_ieee754.log","w");
+`endif
+      $fwrite(atan_report, "==========================================\n");
+      $fwrite(atan_report, "Atan Simulation\n"                    );
+      $fwrite(atan_report, "==========================================\n");
+      $fwrite(atan_report_ieee754, "==========================================\n");
+      $fwrite(atan_report_ieee754, "Atan Simulation\n"                    );
+      $fwrite(atan_report_ieee754, "==========================================\n");
+
   for (j=0; j < TEST_SIZE; j = j+1) begin
       golden_real=ieee754_to_fp(output_theta[j])*180/PI;
       dut_out_real=ieee754_to_fp(io_out)*180/PI;
       //golden_real=ieee754_to_fp(output_theta[j]);
       //dut_out_real=ieee754_to_fp(io_out);
-      if(output_theta[j]==32'h248D3132) begin
-        if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
-          error_percent=1;
-        end else begin
-          error_percent=2;
-        end
-        //$display("Monitor at %dns, cos output: %f, expected: %f", $time, dut_out_real, golden_real);
-      end else begin
+      //if(output_theta[j]==32'h248D3132) begin
+      //  if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
+      //    error_percent=1;
+      //  end else begin
+      //    error_percent=2;
+      //  end
+      //  //$display("Monitor at %dns, cos output: %f, expected: %f", $time, dut_out_real, golden_real);
+      //end else begin
         error_percent  = (dut_out_real-golden_real)/golden_real*100;
         if (error_percent < 0) begin
             error_percent  = -error_percent;
         end
-      end
+      //end
 
     if(error_percent<=ERROR_TOLERANCE) begin
-      //$display("At %dns, the test case PASS! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_theta[j]);
-      $display("At %dns, the test case PASS! error_percent: %f, arctan output: %f, expected: %f", $time, error_percent, dut_out_real, golden_real);
-      //$display("At %dns, the test case Pass! error_percent: %f, cos output: %h", $time, error_percent, output_theta[j]);
-      //$display("At %dns, the test case Pass! error_percent: %f, cos output: %f", $time, error_percent, golden_real);
+      $fwrite(atan_report,"At %dns, the test case PASS! error_percent: %f, arctan output: %f, expected: %f\n", $time, error_percent, dut_out_real, golden_real);
+      $fwrite(atan_report_ieee754,"At %dns, the test case PASS! error_percent: %f, arctan output: %h, expected: %h\n", $time, error_percent, io_out, output_theta[j]);
     end else begin
-      //$display("At %dns, the test case FAIL! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_theta[j]);
-      $display("At %dns, the test case FAIL! error_percent: %f, arctan output: %f, expected: %f", $time, error_percent, dut_out_real, golden_real);
+      $fwrite(atan_report,"At %dns, the test case FAIL! error_percent: %f, arctan output: %f, expected: %f\n", $time, error_percent, dut_out_real, golden_real);
+      $fwrite(atan_report_ieee754,"At %dns, the test case FAIL! error_percent: %f, arctan output: %h, expected: %h\n", $time, error_percent, io_out, output_theta[j]);
     end
     @(negedge clock);
   end
   
+  $fclose(atan_report);
+  $fclose(atan_report_ieee754);
 end
 endmodule
 
