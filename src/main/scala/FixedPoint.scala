@@ -19,7 +19,7 @@ import scala.util.DynamicVariable
 
 
 class FloatToFixed16 extends Module {
-  /* Converts a half precision float to a Q4.12 fixed point number */
+  /** Converts a half precision float to a Q4.12 fixed point number */
 
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(16.W))

@@ -241,7 +241,7 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
   io.valid := shift_reg((latency) - 1)
 
 
-
+//
 
 }
 

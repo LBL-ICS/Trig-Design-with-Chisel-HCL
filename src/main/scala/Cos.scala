@@ -19,7 +19,7 @@ class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
     val valid = Output(Bool())
   })
 
-  /* Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
+  /** Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
  are known to already be inside (0, 2*PI) this step should be removed. */
   private val reducer = Module(new TrigRangeReducer(bw))
 

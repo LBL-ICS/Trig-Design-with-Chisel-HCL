@@ -10,7 +10,7 @@ import ChiselMathLibsMario2.FloatingPointDesigns2._
 import chisel3.stage.ChiselStage
 
 class TrigRangeReducer(bw: Int) extends Module {
-  /* Reduces a single precision floating point angle to between -2*pi and 2*pi.
+  /** Reduces a single precision floating point angle to between -2*pi and 2*pi.
   This uses a division and multiplication, which is very slow. Consider replacing with
   Double Modular Range Reduction in the future */
   val io = IO(new Bundle() {

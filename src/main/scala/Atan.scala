@@ -19,7 +19,7 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
   }
   )
 
-  /* for bw = 32, if 6 digits of precision are good enough, z = atan(y) is PI/2 to 6 decimal places by y=1E7,
+  /** for bw = 32, if 6 digits of precision are good enough, z = atan(y) is PI/2 to 6 decimal places by y=1E7,
   and it is also 0 to 6 decimal places by y=1E-7. Going farther outside that range will not change the
    result inside of 6 decimal places; this is important because 1E7 to 1E-7 is representable by a Q32.32
     fixed point number, and fixed point operations are much faster and less complex than floating point ones.

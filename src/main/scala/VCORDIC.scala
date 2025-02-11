@@ -10,7 +10,7 @@ import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
 
-  /*
+  /**
   Vector CORDIC for atan function:
   This takes and produces single precision values. However, internally, 64 bit Q32.32 fixed point
   is used for all arithmetic.

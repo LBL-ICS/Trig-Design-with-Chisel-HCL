@@ -9,7 +9,7 @@ import FP_Modules.FloatingPointDesigns._
 import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 
-/* Module will run 4 iterations per rounds_param, so 8 rounds_param runs 32 iterations */
+/** Module will run 4 iterations per rounds_param, so 8 rounds_param runs 32 iterations */
 class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   val io = IO(new Bundle() {
     val in_x0: UInt = Input(UInt(bw.W))
