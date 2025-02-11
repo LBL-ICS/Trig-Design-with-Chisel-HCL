@@ -14,19 +14,19 @@
 // ------------------------------------------
 // --Convert IEEE754 to FP ------------------
 // ------------------------------------------
-function real ieee754_to_fp (input [15:0] ieee754_data);
+function real ieee754_to_fp (input [31:0] ieee754_data);
 reg sign ;
-reg [4:0] exponent ;
-reg [9:0] mantissa;
+reg [7:0] exponent ;
+reg [22:0] mantissa;
 
 integer int_exp   ;
 real mantissa_val ; // Divide by 2^23
 real fp_output    ; 
 
 // Extracting sign, exponent, and mantissa
-sign     = ieee754_data[15];
-exponent = ieee754_data[14:10];
-mantissa = ieee754_data[9:0];
+sign     = ieee754_data[31];
+exponent = ieee754_data[30:23];
+mantissa = ieee754_data[22:0];
 
 //$display("debug task, ieee754_data input is %h", ieee754_data);
 //$display("debug task, sign input is %h", sign);
@@ -34,8 +34,8 @@ mantissa = ieee754_data[9:0];
 //$display("debug task, mantissa input is %h", mantissa);
 
 // Calculating floating-point value
-int_exp      = exponent - 15;
-mantissa_val = 1.0 + (mantissa / 1024.0); // Divide by 2^23
+int_exp      = exponent - 127;
+mantissa_val = 1.0 + (mantissa / 8388608.0); // Divide by 2^23
 fp_output    = (sign ? -1 : 1) * mantissa_val * (2.0 ** int_exp);
 //$display("debug task, int exp is %d", int_exp);
 //$display("debug task, mantissa val is %f", mantissa_val);
@@ -56,7 +56,7 @@ endfunction
 // --Compare two numbers in IEEE754 Format---
 // --Set 5 Percent as the boundary ---------- 
 // ------------------------------------------
-function ieee754_golden_dut_comp(input [15:0] golden_result, input [15:0] dut_result, output error_flag);
+function ieee754_golden_dut_comp(input [31:0] golden_result, input [31:0] dut_result, output error_flag);
 real error_percent;
 error_percent = (ieee754_to_fp(golden_result)-ieee754_to_fp(dut_result))/ieee754_to_fp(golden_result)*100;
 if(error_percent<0) begin

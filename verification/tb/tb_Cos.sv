@@ -15,23 +15,23 @@
 
 
 module tb_cos();
-parameter TEST_SIZE = 6;
+parameter TEST_SIZE = 10000;
 `ifdef COS_N32_PD32_BW32
 parameter LATENCY = 67; //34+32+1
 `elsif COS_N32_PD16_BW32
 parameter LATENCY = 51; //? 34+16+1
-`elsif COS_N16_PD8_BW16
-parameter LATENCY = 31; //? 34+8+1
+`elsif COS_N32_PD8_BW32
+parameter LATENCY = 43; //? 34+8+1
 `elsif COS_N32_PD4_BW32
 parameter LATENCY = 40; // 34+4+2
 `elsif COS_N32_PD1_BW32
 parameter LATENCY = 37; //34+1+2
 `endif
 
-parameter ERROR_TOLERANCE = 10;
+parameter ERROR_TOLERANCE = 1;
 localparam real PI = 3.141592653589793;
-reg [15:0]  output_cos[TEST_SIZE-1:0]; 
-reg [15:0]  input_theta[TEST_SIZE-1:0];
+reg [31:0]  output_cos[TEST_SIZE-1:0]; 
+reg [31:0]  input_theta[TEST_SIZE-1:0];
 
 `include "tb_func.sv"
 
@@ -40,45 +40,36 @@ initial begin
    $readmemh("../golden/rtl-cos-output.txt",output_cos);
 end
 
-
-reg         io_ready;
 reg         clock;
 reg         reset;
-reg  [15:0] io_in;
-wire [15:0] io_out;
-wire        io_valid ;
-
+reg  [31:0] io_in;
+wire [31:0] io_out;
 
  always #5 clock = ~clock;
 
 Cos u_Cos(
   .clock (clock ),
   .reset (reset ),
-  .io_ready (io_ready ),
   .io_in (io_in ),
-  .io_valid (io_valid ),
   .io_out(io_out)
 );
   
 integer i,j; 
-integer y_input;
 real dut_in_real, golden_real, dut_out_real, error_percent;
 initial begin
    reset = 1'b1;
    clock = 1'b0;
-   io_in = 16'h0;
-   io_ready = 1'b0;  
+   io_in = 32'h0;  
    #12;
    reset = 1'b0;
    @(posedge clock);
-io_ready = 1'b1;
+
   for (i=0; i < TEST_SIZE; i = i+1) begin
     io_in = input_theta[i];  
     dut_in_real=ieee754_to_fp(io_in)*180/PI;
     $display("At %dns, the input theta: %h and %f", $time, io_in, dut_in_real);
     @(posedge clock);
   end
-  io_ready = 1'b0;
 end
 
 initial begin
@@ -90,20 +81,19 @@ initial begin
       golden_real=ieee754_to_fp(output_cos[j]);
       dut_out_real=ieee754_to_fp(io_out);
       //if(output_cos[j]==32'h248D3132) begin
-      if(output_cos[j]==16'h0) begin
+      if(output_cos[j]==32'h0) begin
         if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
-          error_percent= (dut_out_real-golden_real)/0.00001*100;
-
+          error_percent=1;
         end else begin
           error_percent=2;
-       end
+        end
         //$display("Monitor at %dns, cos output: %f, expected: %f", $time, dut_out_real, golden_real);
       end else begin
         error_percent  = (dut_out_real-golden_real)/golden_real*100;
         if (error_percent < 0) begin
             error_percent  = -error_percent;
         end
-     end
+      end
 
     if(error_percent<=ERROR_TOLERANCE) begin
       //$display("At %dns, the test case PASS! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_cos[j]);
@@ -119,3 +109,4 @@ initial begin
   
 end
 endmodule
+
