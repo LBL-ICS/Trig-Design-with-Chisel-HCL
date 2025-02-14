@@ -71,6 +71,6 @@
   },
   {
     "class":"firrtl.transforms.BlackBoxTargetDirAnno",
-    "targetDir":"verification/dut/Cos"
+    "targetDir":"verification/dut/cos_n32_pd8_bw32"
   }
 ]

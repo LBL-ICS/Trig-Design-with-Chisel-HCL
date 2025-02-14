@@ -71,6 +71,6 @@
   },
   {
     "class":"firrtl.transforms.BlackBoxTargetDirAnno",
-    "targetDir":"verification/dut/Sin"
+    "targetDir":"verification/dut/sin_n32_pd8_bw32"
   }
 ]
