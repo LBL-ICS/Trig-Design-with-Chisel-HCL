@@ -1,12 +1,13 @@
 package Trig
 
 import chisel3._
+import chiseltest._
+import org.scalatest.flatspec.AnyFlatSpec
+import chiseltest.WriteVcdAnnotation
+import chiseltest.VerilatorBackendAnnotation
+import chisel3.stage.ChiselGeneratorAnnotation
+import circt.stage.{ChiselStage, FirtoolOption}
 
-import java.io.PrintWriter
-import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns._
-import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
 
@@ -225,7 +226,14 @@ object AtanMain extends App {
     Array(
       "-X", "verilog",
       "-e", "verilog",
-      "--target-dir", "verification/dut/atan_n16_pd8_bw16"),
-    Seq(ChiselGeneratorAnnotation(() => new Atan(16,4,16)))
+      "--target-dir", "verification/dut/atan_n64_pd8_bw128"),
+    Seq(ChiselGeneratorAnnotation(() => new Atan(128,8,64))) // bw, pd, rounds
+  )
+}
+
+object Atan extends App {
+  (new ChiselStage).execute(
+    Array("--target", "verilog"),
+    Seq(ChiselGeneratorAnnotation(() => new Atan(128, 8,64)))
   )
 }

@@ -2,9 +2,9 @@ package ChiselMathLibsMario2
 import BinaryDesigns2._
 import chisel3._
 import chisel3.util.ShiftRegister
-import Chisel.{ log2Ceil, log2Floor}
+import chisel3.util.{Counter, ShiftRegister, log2Ceil, log2Floor}
 import chiseltest.RawTester.test
-import chisel3.tester._
+
 
 import java.io.PrintWriter
 import scala.collection.mutable

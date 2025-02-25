@@ -1,12 +1,13 @@
 package Trig
 
 import chisel3._
+import chiseltest._
+import org.scalatest.flatspec.AnyFlatSpec
+import chiseltest.WriteVcdAnnotation
+import chiseltest.VerilatorBackendAnnotation
+import chisel3.stage.ChiselGeneratorAnnotation
+import circt.stage.{ChiselStage, FirtoolOption}
 
-import java.io.PrintWriter
-import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns._
-import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 
 /** Module will run 4 iterations per rounds_param, so 8 rounds_param runs 32 iterations */
@@ -113,7 +114,7 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable(28) := 1.U //Q4.28 fixed point of 0.000000
   atantable(29) := 0.U //Q4.28 fixed point of 0.000000
   atantable(30) := 0.U //Q4.28 fixed point of 0.000000
-  atantable(31) := 843314880.U //Q4.28 fixed point of 3.141593
+  atantable(31) := 0.U //Q4.28 fixed point of 3.141593
 
 
 

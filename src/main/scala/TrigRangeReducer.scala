@@ -4,10 +4,10 @@ import chisel3._
 
 import java.io.PrintWriter
 import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns.FP_extract
-import ChiselMathLibsMario2.FloatingPointDesigns2._
-import chisel3.stage.ChiselStage
+import ChiselMathLibsMario.BinaryDesigns._
+import ChiselMathLibsMario.FPUnits._
+
+
 
 class TrigRangeReducer(bw: Int) extends Module {
   /** Reduces a single precision floating point angle to between -2*pi and 2*pi.
@@ -15,15 +15,19 @@ class TrigRangeReducer(bw: Int) extends Module {
   Double Modular Range Reduction in the future */
   val io = IO(new Bundle() {
     val in = Input(UInt(bw.W))
+
     val out = Output(UInt(bw.W))
   }
   )
 
 
 
-  val divider = Module(new FP_div_bwccs(bw))
-  val extractor = Module(new FP_extract(bw))
-  val mul = Module(new FP_multiplier_10ccs(bw))
+
+//  val divider = Module(new FP_div(bw,15))
+//  val extractor = Module(new FP_floor(bw))
+//  val mul = Module(new FP_mult(bw, 1))
+
+
 
 
 
@@ -33,88 +37,94 @@ class TrigRangeReducer(bw: Int) extends Module {
   val TWO_PI128 = scala.BigInt("4001921FB54442EE9DC81E87958E2EC6", 16).U(128.W) // 2*pi as a quad precision float
 
 if (bw ==16) {
-  divider.io.in_valid := 1.U
+  val divider = Module(new FP_div(bw,10)).io
+  divider.in_valid := 1.U
+  divider.in_en := 1.U
+  divider.in_a := io.in
+  divider.in_b := TWO_PI16
+  val extractor = Module(new FP_floor(bw)).io
+  extractor.in_en := 1.U
+  extractor.in_valid := 1.U
+  extractor.in_data := 0.U(1.W) ## divider.out_s(bw-2,0)
+  val sign = ShiftRegister(divider.out_s(bw-1), 1)
+  val mul = Module(new FP_mult(bw,3)).io
+  mul.in_en := 1.U
+  mul.in_valid := 1.U
+  mul.in_a := sign ## extractor.out_frac(bw-2,0)
+  mul.in_b := TWO_PI16
+  io.out := mul.out_s
 
-  divider.io.in_en := 1.U
-  divider.io.in_a := io.in
-  divider.io.in_b := TWO_PI16
-
-  val reg1 = Reg(UInt(bw.W))
-
-  reg1 := divider.io.out_s
-
-  extractor.io.in_a := reg1
-
-
-  mul.io.in_en := 1.U
-  mul.io.in_a := extractor.io.out_frac
-  mul.io.in_b := TWO_PI16
-  io.out := mul.io.out_s
 
 
 }
  else if (bw ==32) {
-    divider.io.in_valid := 1.U
+   val divider = Module(new FP_div(bw,15)).io
+   divider.in_valid := 1.U
+   divider.in_en := 1.U
+   divider.in_a := io.in
+   divider.in_b := TWO_PI32
+   val extractor = Module(new FP_floor(bw)).io
+   extractor.in_en := 1.U
+   extractor.in_valid := 1.U
+   extractor.in_data := 0.U(1.W) ## divider.out_s(bw-2,0)
+   val sign = ShiftRegister(divider.out_s(bw-1), 1)
+   val mul = Module(new FP_mult(bw,3)).io
+   mul.in_en := 1.U
+   mul.in_valid := 1.U
+   mul.in_a := sign ## extractor.out_frac(bw-2,0)
+   mul.in_b := TWO_PI32
+   io.out := mul.out_s
 
-    divider.io.in_en := 1.U
-    divider.io.in_a := io.in
-    divider.io.in_b := TWO_PI32
 
-    val reg1 = Reg(UInt(bw.W))
-
-    reg1 := divider.io.out_s
-
-    extractor.io.in_a := reg1
-
-
-    mul.io.in_en := 1.U
-    mul.io.in_a := extractor.io.out_frac
-    mul.io.in_b := TWO_PI32
-    io.out := mul.io.out_s
 
 
   }
  else if (bw ==64) {
-    divider.io.in_valid := 1.U
-
-    divider.io.in_en := 1.U
-    divider.io.in_a := io.in
-    divider.io.in_b := TWO_PI64
-
-    val reg1 = Reg(UInt(bw.W))
-
-    reg1 := divider.io.out_s
-
-    extractor.io.in_a := reg1
-
-
-    mul.io.in_en := 1.U
-    mul.io.in_a := extractor.io.out_frac
-    mul.io.in_b := TWO_PI64
-    io.out := mul.io.out_s
+   val divider = Module(new FP_div(bw,15)).io
+   divider.in_valid := 1.U
+   divider.in_en := 1.U
+   divider.in_a := io.in
+   divider.in_b := TWO_PI64
+   val extractor = Module(new FP_floor(bw)).io
+   extractor.in_en := 1.U
+   extractor.in_valid := 1.U
+   extractor.in_data := 0.U(1.W) ## divider.out_s(bw-2,0)
+   val sign = ShiftRegister(divider.out_s(bw-1), 1)
+   val mul = Module(new FP_mult(bw,3)).io
+   mul.in_en := 1.U
+   mul.in_valid := 1.U
+   mul.in_a := sign ## extractor.out_frac(bw-2,0)
+   mul.in_b := TWO_PI64
+   io.out := mul.out_s
 
 
   }
 
 
-else if (bw == 128) {
-  divider.io.in_valid := 1.U
+ else if (bw == 128) {
 
-  divider.io.in_en := 1.U
-  divider.io.in_a := io.in
-  divider.io.in_b := TWO_PI128
+  val divider = Module(new FP_div(bw,15)).io
+  divider.in_valid := 1.U
 
-  val reg1 = Reg(UInt(bw.W))
+  divider.in_en := 1.U
+  divider.in_a := io.in
+  divider.in_b := TWO_PI128
 
-  reg1 := divider.io.out_s
+  //val reg1 = Reg(UInt(bw.W))
+  val extractor = Module(new FP_floor(bw)).io
+//  reg1 := divider.io.out_s
+  extractor.in_en := 1.U
+  extractor.in_valid := 1.U
+  extractor.in_data := 0.U(1.W) ## divider.out_s(bw-2,0)
 
-  extractor.io.in_a := reg1
+  val sign = ShiftRegister(divider.out_s(bw-1), 1)
+  val mul = Module(new FP_mult(bw,3)).io
 
-
-  mul.io.in_en := 1.U
-  mul.io.in_a := extractor.io.out_frac
-  mul.io.in_b := TWO_PI128
-  io.out := mul.io.out_s
+  mul.in_en := 1.U
+  mul.in_valid := 1.U
+  mul.in_a := sign ## extractor.out_frac(bw-2,0)
+  mul.in_b := TWO_PI128
+  io.out := mul.out_s
 
 
 }

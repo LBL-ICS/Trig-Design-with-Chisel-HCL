@@ -1,14 +1,14 @@
 package Trig
 
+
 import chisel3._
-
-import java.io.PrintWriter
-import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns._
-
-import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
-
+import chiseltest._
+import org.scalatest.flatspec.AnyFlatSpec
+import chiseltest.WriteVcdAnnotation
+import chiseltest.VerilatorBackendAnnotation
+import chisel3.stage.ChiselGeneratorAnnotation
+import circt.stage.{ChiselStage, FirtoolOption}
+import ChiselMathLibsMario.BinaryDesigns._
 
 class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
 
@@ -21,7 +21,7 @@ class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
 
   /** Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
  are known to already be inside (0, 2*PI) this step should be removed. */
-  private val reducer = Module(new TrigRangeReducer(bw))
+  val reducer = Module(new TrigRangeReducer(bw))
 
 
 
@@ -185,10 +185,10 @@ if(bw ==16) {
 
   if(bw == 32 && (pipeline_depth == 1)){
 
-     latency = ((rounds/16)*pipeline_depth)+34+1
+     latency = ((rounds/16)*pipeline_depth)+19
   }
   else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
-     latency = ((rounds / 16) * pipeline_depth) + 34 + 2
+     latency = ((rounds / 16) * pipeline_depth) + 20
   }
 
 
@@ -196,35 +196,35 @@ if(bw ==16) {
 
   else if (bw == 64 && (pipeline_depth == 1) ){
 
-    latency = ((rounds / 16) * pipeline_depth) + 62  //
+    latency = ((rounds / 16) * pipeline_depth) + 17  //
 
 
   }
 
   else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 22 + 1 //
+    latency = ((rounds / 16) * pipeline_depth) + 15 //
 
 
   }
 
   else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 65  //
+    latency = ((rounds / 16) * pipeline_depth) + 20  //
 
 
   }
 
   else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 125  //
+    latency = ((rounds / 16) * pipeline_depth) + 20  //
 
 
   }
 
   else if (bw == 128 && (pipeline_depth == 1) ){
 
-    latency = ((rounds / 16) * pipeline_depth) + 122  //
+    latency = ((rounds / 16) * pipeline_depth) +17  //
 
 
   }
@@ -250,7 +250,36 @@ object CosMain extends App {
     Array(
       "-X", "verilog",
       "-e", "verilog",
-      "--target-dir", "verification/dut/cos_n128_pd8_bw128"),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 1,64)))
+      "--target-dir", "verification/dut/cos_n32_pd8_bw32"),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 8,64))) //bw , pd , rounds
+  )
+}
+
+
+object Cos_16bw_8pd_16n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n16_pd8_bw16" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(16, 16,16)))
+  )
+}
+
+object Cos_32bw_8pd_32n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n32_pd8_bw32" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 16,32)))
+  )
+}
+
+object Cos_64bw_8pd_64n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd8_bw64" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(64, 16,64)))
+  )
+}
+
+object Cos_128bw_8pd_64n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n128_pd8_bw128" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 16,64)))
   )
 }

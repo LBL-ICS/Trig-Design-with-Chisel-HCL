@@ -2,19 +2,18 @@
 package Trig
 import chisel3._
 import chiseltest.internal._
+//
 import java.io.PrintWriter
 import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns._
-import chisel3.stage.ChiselStage
-import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
+import ChiselMathLibsMario.BinaryDesigns._
+import ChiselMathLibsMario.FPUnits._
 import org.scalatest.flatspec.AnyFlatSpec
 import chiseltest.iotesters.PeekPokeTester
 import chiseltest._
 import org.scalatest._
 import org.scalatest.exceptions.TestFailedException
 
-import scala.util.DynamicVariable
+
 
 
 
@@ -278,9 +277,9 @@ class FixedToFloat32 extends Module {
   leadingzeros := 0x0L.U(14.W) ## clz32.io.out(4,0)
 
   exp := ((4.S - 1.S) - leadingzeros.asSInt) + 127.S
-  frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (16.U - 10.U));
+  frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (32.U - 23.U));
 
-  io.out := io.in(15) ## exp.asUInt ## frac(9,0)
+  io.out := io.in(31) ## exp.asUInt ## frac(22,0)
 }
 
 
@@ -374,35 +373,4 @@ class Fixed64ToFloat32 extends Module {
   io.out := io.in(63) ## exp.asUInt ## frac(22,0)
 }
 
-
-
-object floattofixed extends App {
-  (new ChiselStage).execute(
-    Array(
-      "-X", "verilog",
-      "-e", "verilog",
-      "--target-dir", "verification/dut/float64tofixed64"),
-    Seq(ChiselGeneratorAnnotation(() => new FixedToFloat16()))
-  )
-}
-
-
-class FixedToFloat64Tester2(dut: FixedToFloat64) extends PeekPokeTester(dut) {
-
-  poke(dut.io.in, BigInt("1000000000000000", 16))
-  step(1)
-  println(f"Output: 0x${peek(dut.io.out).toString(16)}")
-
-  // Test 2
-  poke(dut.io.in, BigInt("F000000000000000", 16))
-  step(1)
-  println(f"Output: 0x${peek(dut.io.out).toString(16)}")
-
-
-}
-
-class BasicTest extends AnyFlatSpec with ChiselScalatestTester {
-  behavior of "MyModule"
-  // test here
-}
 

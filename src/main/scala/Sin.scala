@@ -1,12 +1,13 @@
 package Trig
 
 import chisel3._
+import chiseltest._
+import org.scalatest.flatspec.AnyFlatSpec
+import chiseltest.WriteVcdAnnotation
+import chiseltest.VerilatorBackendAnnotation
+import chisel3.stage.ChiselGeneratorAnnotation
+import circt.stage.{ChiselStage, FirtoolOption}
 
-import java.io.PrintWriter
-import chisel3.util._
-import Binary_Modules.BinaryDesigns._
-import FP_Modules.FloatingPointDesigns._
-import chisel3.stage.{ChiselGeneratorAnnotation, ChiselStage}
 
 
 class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
@@ -188,10 +189,10 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
 
   if(bw == 32 && (pipeline_depth == 1)){
 
-    latency = ((rounds/16)*pipeline_depth)+34+1 // 34 from reducer
+    latency = ((rounds/16)*pipeline_depth)+19
   }
   else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
-    latency = ((rounds / 16) * pipeline_depth) + 34 + 2 // 34 from reducer
+    latency = ((rounds / 16) * pipeline_depth) + 20
   }
 
 
@@ -199,39 +200,38 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
 
   else if (bw == 64 && (pipeline_depth == 1) ){
 
-    latency = ((rounds / 16) * pipeline_depth) + 62  //
+    latency = ((rounds / 16) * pipeline_depth) + 17  //
 
 
   }
 
   else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 22 + 1 //
+    latency = ((rounds / 16) * pipeline_depth) + 15 //
 
 
   }
 
   else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 65  //
+    latency = ((rounds / 16) * pipeline_depth) + 20  //
 
 
   }
 
   else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
 
-    latency = ((rounds / 16) * pipeline_depth) + 125  //
+    latency = ((rounds / 16) * pipeline_depth) + 20  //
 
 
   }
 
   else if (bw == 128 && (pipeline_depth == 1) ){
 
-    latency = ((rounds / 16) * pipeline_depth) + 122  //
+    latency = ((rounds / 16) * pipeline_depth) +17  //
 
 
   }
-
 
   val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
   shift_reg(0) := io.ready
@@ -241,7 +241,10 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
   io.valid := shift_reg((latency) - 1)
 
 
-//
+
+
+
+
 
 }
 
@@ -250,7 +253,36 @@ object SinMain extends App {
     Array(
       "-X", "verilog",
       "-e", "verilog",
-      "--target-dir", "verification/dut/sin_n128_pd8_bw128"),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(128,1,64)))
+      "--target-dir", "verification/dut/sin_n64_pd8_bw128"),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(128,8,64)))
+  )
+}
+
+
+object Sin_16bw_8pd_16n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n16_pd8_bw16" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(16, 1,16)))
+  )
+}
+
+object Sin_32bw_8pd_32n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n32_pd8_bw32" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(32, 1,32)))
+  )
+}
+
+object Sin_64bw_8pd_64n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n64_pd8_bw64" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(64, 1,64)))
+  )
+}
+
+object Sin_128bw_8pd_64n extends App {
+  (new ChiselStage).execute(
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n128_pd8_bw128" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(128, 1,64)))
   )
 }
