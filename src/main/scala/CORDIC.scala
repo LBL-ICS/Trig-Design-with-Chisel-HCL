@@ -27,42 +27,21 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
 
   var iterperround = 0
 
-
   if (pipeline_depth == 16) {
     iterperround = 1
-
-
-  }
+ }
   else if (pipeline_depth == 8) {
-
-
-    iterperround = 2
-
+   iterperround = 2
   }
   else if (pipeline_depth == 4) {
-
     iterperround = 4
-
-
   }
-
   else if (pipeline_depth == 2) {
-
     iterperround = 8
-
-
   }
-
   else if (pipeline_depth == 1) {
-
     iterperround = 16
-
-
-  }
-
-
-
-
+ }
   val atantable16 = Wire(Vec(16, UInt(bw.W))) // 16 bw atan table in Q4.12 fixed-point
   atantable16(0) := 3217.U
   atantable16(1) := 1608.U
@@ -80,7 +59,6 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable16(13) := 0.U
   atantable16(14) := 0.U
   atantable16(15) := 0.U
-
 
   val atantable = Wire(Vec(32, UInt(32.W))) // mux
   atantable(0) := 210828720.U //Q4.28 fixed point of 0.785398 == 45 deg
@@ -115,8 +93,6 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable(29) := 0.U //Q4.28 fixed point of 0.000000
   atantable(30) := 0.U //Q4.28 fixed point of 0.000000
   atantable(31) := 0.U //Q4.28 fixed point of 3.141593
-
-
 
   val atantable64 = Wire(Vec(64, UInt(64.W))) // 64 bw atan table in Q4.60 fixed point
   atantable64(0) := 905502432259640320L.U // Q4.60 fixed point of 0.785398
@@ -184,18 +160,8 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable64(62) := 0.U // Q4.60 fixed point of 0.000000
   atantable64(63) := 0.U // Q4.60 fixed point of 0.000000
 
-
-
-
-
-
-
-
-
   val atantable128_64 = Wire(Vec(64, UInt(128.W))) // 128 bw atan table in Q64.64 fixed point
-
-
-  atantable128_64(0) := scala.BigInt("0000000000000000C90FDAA22168C000", 16).U(128.W)
+ atantable128_64(0) := scala.BigInt("0000000000000000C90FDAA22168C000", 16).U(128.W)
   atantable128_64(1) := scala.BigInt("000000000000000076B19C1586ED3C00", 16).U(128.W)
   atantable128_64(2) := scala.BigInt("00000000000000003EB6EBF25901BA00", 16).U(128.W)
   atantable128_64(3) := scala.BigInt("00000000000000001FD5BA9AAC2F6E00", 16).U(128.W)
@@ -260,7 +226,6 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable128_64(62) := scala.BigInt("00000000000000000000000000000004", 16).U(128.W)
   atantable128_64(63) := scala.BigInt("00000000000000000000000000000002", 16).U(128.W)
 
-
   val x = Wire(Vec(rounds + 1, SInt(bw.W)))
   val y = Wire(Vec(rounds + 1, SInt(bw.W)))
   val theta = Wire(Vec(rounds + 1, SInt(bw.W))) // actual theta
@@ -273,129 +238,86 @@ class CORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   val z0sr = RegInit(VecInit(Seq.fill(rounds + 1)(0.S(bw.W))))
   val modesr = RegInit(VecInit(Seq.fill(rounds + 1)(0.U(2.W))))
 
-
-
-
-if(bw==16) {
-
+  if(bw==16) {
   val tofixedx0 = Module(new FloatToFixed16()) //**
   val tofixedy0 = Module(new FloatToFixed16()) //**
-
-
   tofixedx0.io.in := io.in_x0
   tofixedy0.io.in := io.in_y0
-
   val fixedx0 = tofixedx0.io.out
   val fixedy0 = tofixedy0.io.out
   val fixedz0 = io.in_z0
-
-
   theta(0) := 0.S
   x(0) := fixedx0.asSInt
   y(0) := fixedy0.asSInt
   z0s(0) := fixedz0.asSInt
   modes(0) := io.in_mode
-
   thetar(0) := 0.S
   xr(0) := fixedx0.asSInt
   yr(0) := fixedy0.asSInt
   z0sr(0) := fixedz0.asSInt
   modesr(0) := io.in_mode
-  //}
-
 }
   else   if(bw ==32){
 
     val tofixedx0 = Module(new FloatToFixed32()) //**
     val tofixedy0 = Module(new FloatToFixed32()) //**
-
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = io.in_z0
-
-
     theta(0) := 0.S
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
     z0s(0) := fixedz0.asSInt
     modes(0) := io.in_mode
-
     thetar(0) := 0.S
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
     z0sr(0) := fixedz0.asSInt
     modesr(0) := io.in_mode
-
-
   }
 
   else if(bw ==64){
 
     val tofixedx0 = Module(new FloatToFixed64()) //**
     val tofixedy0 = Module(new FloatToFixed64()) //**
-
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = io.in_z0
-
-
     theta(0) := 0.S
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
     z0s(0) := fixedz0.asSInt
     modes(0) := io.in_mode
-
     thetar(0) := 0.S
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
     z0sr(0) := fixedz0.asSInt
     modesr(0) := io.in_mode
-
-
   }
-
 
   else if(bw ==128){
-
     val tofixedx0 = Module(new FloatToFixed128()) //**
     val tofixedy0 = Module(new FloatToFixed128()) //**
-
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = io.in_z0
-
-
     theta(0) := 0.S
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
     z0s(0) := fixedz0.asSInt
     modes(0) := io.in_mode
-
     thetar(0) := 0.S
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
     z0sr(0) := fixedz0.asSInt
     modesr(0) := io.in_mode
-
-
   }
-
-
-
-
-
 
 
   if (bw == 16 && pipeline_depth == 16) {
@@ -403,11 +325,9 @@ if(bw==16) {
     var iter = 0
     for (n <- 0 to rounds - 1 by iterperround) {
 
-
       val fxxterm = Mux(thetar(n) > z0sr(n), -xr(n), xr(n))
       val fxyterm = Mux(thetar(n) > z0sr(n), -yr(n), yr(n))
       val fxthetaterm = Mux(thetar(n) > z0sr(n), -atantable16(n), atantable16(n))
-
 
       theta(n + 1) := thetar(n) + fxthetaterm.asSInt
       x(n + 1) := xr(n) - (fxyterm >> n.asUInt).asSInt
@@ -424,11 +344,9 @@ if(bw==16) {
       iter = iter + 1
     }
 
-
     val tofloatxout = Module(new FixedToFloat16())
     val tofloatyout = Module(new FixedToFloat16())
     val tofloatzout = Module(new FixedToFloat16())
-
 
     tofloatxout.io.in := xr(iter).asUInt
     tofloatyout.io.in := yr(iter).asUInt
@@ -438,7 +356,6 @@ if(bw==16) {
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
-
   }
 
   else if (bw == 32 && pipeline_depth == 16) {
@@ -451,7 +368,6 @@ if(bw==16) {
       val fxyterm = Mux(thetar(n) > z0sr(n), -yr(n), yr(n))
       val fxthetaterm = Mux(thetar(n) > z0sr(n), -atantable(n), atantable(n))
 
-
       theta(n + 1) := thetar(n) + fxthetaterm.asSInt
       x(n + 1) := xr(n) - (fxyterm >> n.asUInt).asSInt
       y(n + 1) := (fxxterm >> n.asUInt).asSInt + yr(n)
@@ -467,11 +383,9 @@ if(bw==16) {
       iter = iter + 1
     }
 
-
     val tofloatxout = Module(new FixedToFloat32())
     val tofloatyout = Module(new FixedToFloat32())
     val tofloatzout = Module(new FixedToFloat32())
-
 
     tofloatxout.io.in := xr(iter).asUInt
     tofloatyout.io.in := yr(iter).asUInt
@@ -510,11 +424,9 @@ if(bw==16) {
       iter = iter + 1
     }
 
-
     val tofloatxout = Module(new FixedToFloat64())
     val tofloatyout = Module(new FixedToFloat64())
     val tofloatzout = Module(new FixedToFloat64())
-
 
     tofloatxout.io.in := xr(iter).asUInt
     tofloatyout.io.in := yr(iter).asUInt
@@ -527,8 +439,6 @@ if(bw==16) {
 
   }
 
-
-
   else if (bw == 128 && pipeline_depth == 16) {
 
     var iter = 0
@@ -538,7 +448,6 @@ if(bw==16) {
       val fxxterm = Mux(thetar(n) > z0sr(n), -xr(n), xr(n))
       val fxyterm = Mux(thetar(n) > z0sr(n), -yr(n), yr(n))
       val fxthetaterm = Mux(thetar(n) > z0sr(n), -atantable128_64(n), atantable128_64(n))
-
 
       theta(n + 1) := thetar(n) + fxthetaterm.asSInt
       x(n + 1) := xr(n) - (fxyterm >> n.asUInt).asSInt
@@ -554,7 +463,6 @@ if(bw==16) {
 
       iter = iter + 1
     }
-
 
     val tofloatxout = Module(new FixedToFloat128())
     val tofloatyout = Module(new FixedToFloat128())
@@ -767,7 +675,6 @@ if(bw==16) {
           val fxyterm = Mux(theta(prevn) > z0s(prevn), -y(prevn), y(prevn))
           val fxthetaterm = Mux(theta(prevn) > z0s(prevn), -atantable128_64(prevn), atantable128_64(prevn))
 
-
           theta(n + i) := theta(prevn) + fxthetaterm.asSInt;
           x(n + i) := x(prevn) - (fxyterm >> prevn.asUInt).asSInt
           y(n + i) := (fxxterm >> prevn.asUInt).asSInt + y(prevn)
@@ -790,7 +697,6 @@ if(bw==16) {
       iter = iter + 1
     }
 
-
     val tofloatxout = Module(new FixedToFloat128())
     val tofloatyout = Module(new FixedToFloat128())
     val tofloatzout = Module(new FixedToFloat128())
@@ -803,18 +709,14 @@ if(bw==16) {
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
-
   }
 
   else if ( bw == 16 && pipeline_depth == 4) {
 
-
     var reg = 0
     for (n <- 0 to rounds - 1 by 1) {
 
-
       if (n % 4 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -826,11 +728,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 4 == 1 || n % 4 == 2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -841,12 +740,9 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + y(n)
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
-
-
       }
 
       else if (n % 4 == 3) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -871,11 +767,9 @@ if(bw==16) {
 
     }
 
-
     val tofloatxout = Module(new FixedToFloat16())
     val tofloatyout = Module(new FixedToFloat16())
     val tofloatzout = Module(new FixedToFloat16())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -885,20 +779,14 @@ if(bw==16) {
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
-
-
   }
 
-
   else if ( bw == 32 && pipeline_depth == 4) {
-
 
     var reg = 0
     for (n <- 0 to rounds - 1 by 1) {
 
-
       if (n % 4 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -910,11 +798,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 4 == 1 || n % 4 == 2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -925,12 +810,9 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + y(n)
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
-
-
       }
 
       else if (n % 4 == 3) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -944,22 +826,17 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
     }
-
 
     val tofloatxout = Module(new FixedToFloat32())
     val tofloatyout = Module(new FixedToFloat32())
     val tofloatzout = Module(new FixedToFloat32())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -970,18 +847,13 @@ if(bw==16) {
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
 
-
   }
-
   else if ( bw == 64 && pipeline_depth == 4) {
-
 
     var reg = 0
     for (n <- 0 to rounds - 1 by 1) {
 
-
       if (n % 4 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -993,11 +865,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 4 == 1 || n % 4 == 2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1009,11 +878,9 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
       }
 
       else if (n % 4 == 3) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1027,22 +894,16 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
     }
-
-
     val tofloatxout = Module(new FixedToFloat64())
     val tofloatyout = Module(new FixedToFloat64())
     val tofloatzout = Module(new FixedToFloat64())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1052,19 +913,14 @@ if(bw==16) {
     io.out_x := tofloatxout.io.out
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
-
-
   }
 
   else if ( bw == 128 && pipeline_depth == 4) {
 
-
     var reg = 0
     for (n <- 0 to rounds - 1 by 1) {
 
-
       if (n % 4 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -1076,11 +932,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 4 == 1 || n % 4 == 2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1091,12 +944,9 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + y(n)
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
-
-
       }
 
       else if (n % 4 == 3) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1110,22 +960,17 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
     }
-
 
     val tofloatxout = Module(new FixedToFloat128())
     val tofloatyout = Module(new FixedToFloat128())
     val tofloatzout = Module(new FixedToFloat128())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1136,7 +981,6 @@ if(bw==16) {
     io.out_y := tofloatyout.io.out
     io.out_z := tofloatzout.io.out
 
-
   }
 
   else if (bw ==16 && pipeline_depth == 2){
@@ -1145,7 +989,6 @@ if(bw==16) {
     for (n <- 0 to rounds-1 by 1) {
 
       if (n % 8 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -1157,8 +1000,6 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 8 == 1 || n % 8 == 2 || n % 8 == 3 ||n % 8 == 4 ||n % 8 == 5 ||n % 8 == 6 ) {
 
@@ -1172,8 +1013,6 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + y(n)
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
-
-
       }
 
       else if (n % 8 == 7) {
@@ -1198,16 +1037,11 @@ if(bw==16) {
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat16())
     val tofloatyout = Module(new FixedToFloat16())
     val tofloatzout = Module(new FixedToFloat16())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1219,16 +1053,12 @@ if(bw==16) {
     io.out_z := tofloatzout.io.out
   }
 
-
-
-
   else if (bw == 32 && pipeline_depth == 2){
 
     var reg = 0
     for (n <- 0 to rounds-1 by 1) {
 
       if (n % 8 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -1240,11 +1070,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 8 == 1 || n % 8 == 2 || n % 8 == 3 ||n % 8 == 4 ||n % 8 == 5 ||n % 8 == 6 ) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1256,11 +1083,9 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
       }
 
       else if (n % 8 == 7) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1274,23 +1099,16 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
-
-
     }
-
     val tofloatxout = Module(new FixedToFloat32())
     val tofloatyout = Module(new FixedToFloat32())
     val tofloatzout = Module(new FixedToFloat32())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1302,14 +1120,12 @@ if(bw==16) {
     io.out_z := tofloatzout.io.out
   }
 
-
   else if (bw == 64 && pipeline_depth == 2){
 
     var reg = 0
     for (n <- 0 to rounds-1 by 1) {
 
       if (n % 8 == 0) { // first iteration
-
 
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
@@ -1321,11 +1137,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 8 == 1 || n % 8 == 2 || n % 8 == 3 ||n % 8 == 4 ||n % 8 == 5 ||n % 8 == 6 ) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1337,11 +1150,9 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
       }
 
       else if (n % 8 == 7) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1355,23 +1166,17 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat64())
     val tofloatyout = Module(new FixedToFloat64())
     val tofloatzout = Module(new FixedToFloat64())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1390,7 +1195,6 @@ if(bw==16) {
 
       if (n % 8 == 0) { // first iteration
 
-
         val fxxterm = Mux(thetar(reg) > z0sr(reg), -xr(reg), xr(reg))
         val fxyterm = Mux(thetar(reg) > z0sr(reg), -yr(reg), yr(reg))
         val fxthetaterm = Mux(thetar(reg) > z0sr(reg), -atantable128_64(n), atantable128_64(n))
@@ -1401,11 +1205,8 @@ if(bw==16) {
         z0s(n + 1) := z0sr(reg)
         modes(n + 1) := modesr(reg)
 
-
-
       }
       else if (n % 8 == 1 || n % 8 == 2 || n % 8 == 3 ||n % 8 == 4 ||n % 8 == 5 ||n % 8 == 6 ) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1417,11 +1218,9 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
       }
 
       else if (n % 8 == 7) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1435,23 +1234,17 @@ if(bw==16) {
 
         reg = reg + 1
 
-
         thetar(reg) := theta(n + 1)
         xr(reg) := x(n + 1)
         yr(reg) := y(n + 1)
         z0sr(reg) := z0s(n + 1)
         modesr(reg) := modes(n + 1)
       }
-
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat128())
     val tofloatyout = Module(new FixedToFloat128())
     val tofloatzout = Module(new FixedToFloat128())
-
 
     tofloatxout.io.in := xr(reg).asUInt
     tofloatyout.io.in := yr(reg).asUInt
@@ -1463,17 +1256,11 @@ if(bw==16) {
     io.out_z := tofloatzout.io.out
   }
 
-
   else if(bw == 16 && pipeline_depth == 1 ){
-
-
 
     for (n <- 0 to rounds - 1 by 1) {
 
-
-
     if (n == 0 ){
-
 
       val fxxterm = Mux(thetar(0) > z0sr(0), -xr(0), xr(0))
       val fxyterm = Mux(thetar(0) > z0sr(0), -yr(0), yr(0))
@@ -1485,12 +1272,9 @@ if(bw==16) {
       z0s(n + 1) := z0sr(0)
       modes(n + 1) := modesr(0)
 
-
-
     }
 
     else if (n == rounds-2) {
-
 
       val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
       val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1502,16 +1286,12 @@ if(bw==16) {
       z0s(n + 1) := z0s(n)
       modes(n + 1) := modes(n)
 
-
-
-
       thetar(1) := theta(n + 1)
       xr(1) := x(n + 1)
       yr(1) := y(n + 1)
       z0sr(1) := z0s(n + 1)
       modesr(1) := modes(n + 1)
     }
-
 
     else {
       val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
@@ -1525,16 +1305,11 @@ if(bw==16) {
       modes(n + 1) := modes(n)
 
     }
-
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat16())
     val tofloatyout = Module(new FixedToFloat16())
     val tofloatzout = Module(new FixedToFloat16())
-
 
     tofloatxout.io.in := xr(1).asUInt
     tofloatyout.io.in := yr(1).asUInt
@@ -1549,14 +1324,9 @@ if(bw==16) {
 
   else if(bw == 32 && pipeline_depth == 1 ){
 
-
-
     for (n <- 0 to rounds - 1 by 1) {
 
-
-
       if (n == 0 ){
-
 
         val fxxterm = Mux(thetar(0) > z0sr(0), -xr(0), xr(0))
         val fxyterm = Mux(thetar(0) > z0sr(0), -yr(0), yr(0))
@@ -1568,12 +1338,9 @@ if(bw==16) {
         z0s(n + 1) := z0sr(0)
         modes(n + 1) := modesr(0)
 
-
-
       }
 
       else if (n == rounds-2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1585,16 +1352,12 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
-
-
         thetar(1) := theta(n + 1)
         xr(1) := x(n + 1)
         yr(1) := y(n + 1)
         z0sr(1) := z0s(n + 1)
         modesr(1) := modes(n + 1)
       }
-
 
       else {
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
@@ -1609,15 +1372,11 @@ if(bw==16) {
 
       }
 
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat32())
     val tofloatyout = Module(new FixedToFloat32())
     val tofloatzout = Module(new FixedToFloat32())
-
 
     tofloatxout.io.in := xr(1).asUInt
     tofloatyout.io.in := yr(1).asUInt
@@ -1632,11 +1391,7 @@ if(bw==16) {
 
   else if(bw == 64 && pipeline_depth == 1 ){
 
-
-
     for (n <- 0 to rounds - 1 by 1) {
-
-
 
       if (n == 0 ){
 
@@ -1651,12 +1406,9 @@ if(bw==16) {
         z0s(n + 1) := z0sr(0)
         modes(n + 1) := modesr(0)
 
-
-
       }
 
       else if (n == rounds-2) {
-
 
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
         val fxyterm = Mux(theta(n) > z0s(n), -y(n), y(n))
@@ -1668,16 +1420,12 @@ if(bw==16) {
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
 
-
-
-
         thetar(1) := theta(n + 1)
         xr(1) := x(n + 1)
         yr(1) := y(n + 1)
         z0sr(1) := z0s(n + 1)
         modesr(1) := modes(n + 1)
       }
-
 
       else {
         val fxxterm = Mux(theta(n) > z0s(n), -x(n), x(n))
@@ -1691,9 +1439,6 @@ if(bw==16) {
         modes(n + 1) := modes(n)
 
       }
-
-
-
 
     }
 
@@ -1715,11 +1460,7 @@ if(bw==16) {
 
   else if(bw == 128 && pipeline_depth == 1 ){
 
-
-
     for (n <- 0 to rounds - 1 by 1) {
-
-
 
       if (n == 0 ){
 
@@ -1733,8 +1474,6 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + yr(0)
         z0s(n + 1) := z0sr(0)
         modes(n + 1) := modesr(0)
-
-
 
       }
 
@@ -1750,8 +1489,6 @@ if(bw==16) {
         y(n + 1) := (fxxterm >> n.asUInt).asSInt + y(n)
         z0s(n + 1) := z0s(n)
         modes(n + 1) := modes(n)
-
-
 
 
         thetar(1) := theta(n + 1)
@@ -1775,9 +1512,6 @@ if(bw==16) {
 
       }
 
-
-
-
     }
 
     val tofloatxout = Module(new FixedToFloat128())
@@ -1795,10 +1529,7 @@ if(bw==16) {
     io.out_z := tofloatzout.io.out
 
   }
-
 }
-
-
 
 
 

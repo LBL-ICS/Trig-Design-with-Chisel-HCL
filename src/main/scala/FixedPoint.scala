@@ -14,9 +14,6 @@ import org.scalatest._
 import org.scalatest.exceptions.TestFailedException
 
 
-
-
-
 class FloatToFixed16 extends Module {
   /** Converts a half precision float to a Q4.12 fixed point number */
 
@@ -24,11 +21,6 @@ class FloatToFixed16 extends Module {
     val in : UInt = Input(UInt(16.W))
     val out : UInt = Output(UInt(16.W))
   })
-
-
-
-
-
 
   val frac : UInt = ("b000000".U(6.W) ## io.in(9, 0))
   val exp : UInt = io.in(14, 10)
@@ -39,9 +31,7 @@ class FloatToFixed16 extends Module {
     ((frac(15,0) | 0x0400.U(16.W)) << 2.U) >> (-shiftamt).asUInt,
     ((frac(15,0) | 0x0400.U(16.W)) << 2.U) << (shiftamt).asUInt).asUInt
   io.out := Mux(io.in(15) === 1.U, 0.U - data, data)
-
 }
-
 
 class FloatToFixed32 extends Module {
   /* Converts a single precision float to a Q4.28 fixed point number */
@@ -78,9 +68,6 @@ class FloatToFixed64 extends Module {
   io.out := Mux(io.in(63) === 1.U, 0.U - data, data)
 }
 
-
-
-
 class FloatToFixed128 extends Module {
   /* Converts a double precision float to a Q64.64 fixed point number */
   val io = IO(new Bundle() {
@@ -97,7 +84,6 @@ class FloatToFixed128 extends Module {
     ((frac(127,0) | scala.BigInt("00010000000000000000000000000000", 16).U(128.W)) << 16.U) << (shiftamt).asUInt).asUInt
   io.out := Mux(io.in(127) === 1.U, 0.U - data, data)
 }
-
 
 
 class Float32ToFixed64 extends Module {
@@ -117,15 +103,10 @@ class Float32ToFixed64 extends Module {
   io.out := Mux(io.in(31) === 1.U, 0.U - data, data)
 }
 
-
-
-
-
-
 class CLZ16 extends Module{
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(16.W))
-    val out : UInt = Output(UInt(4.W))
+    val out : UInt = Output(UInt(5.W))
   })
   /* Uses a sequence of masks in a binary search to find the number of leading zeros */
   val x = io.in
@@ -134,16 +115,17 @@ class CLZ16 extends Module{
   val bx = Mux((ax & 0xFF00L.U) === 0.U, ax << 8, ax)
   val cx = Mux((bx & 0xF000L.U) === 0.U, bx << 4, bx)
   val dx = Mux((cx & 0xC000L.U) === 0.U, cx << 2, cx)
+  val ex = Mux((dx & 0x8000L.U) === 0.U, dx << 1, dx)
 
-  io.out := ((ax & 0xFF00L.U) === 0.U) ## ((bx & 0xF000L.U) === 0.U) ## ((cx & 0xC000L.U) === 0.U) ##
+  val zeros = ((ax & 0xFF00L.U) === 0.U) ## ((bx & 0xF000L.U) === 0.U) ## ((cx & 0xC000L.U) === 0.U) ##
     ((dx & 0x8000L.U) === 0.U)
-
+  io.out := Mux(io.in === 0.U, 16.U, zeros)
 }
 
 class CLZ32 extends Module{
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(32.W))
-    val out : UInt = Output(UInt(5.W))
+    val out : UInt = Output(UInt(6.W))
   })
   /* Uses a sequence of masks in a binary search to find the number of leading zeros */
   val x = io.in
@@ -153,18 +135,19 @@ class CLZ32 extends Module{
   val cx = Mux((bx & 0xFF000000L.U) === 0.U, bx << 8, bx)
   val dx = Mux((cx & 0xF0000000L.U) === 0.U, cx << 4, cx)
   val ex = Mux((dx & 0xC0000000L.U) === 0.U, dx << 2, dx)
+  val fx = Mux((ex & 0x80000000L.U) === 0.U, ex << 1, ex)
 
-  io.out := ((ax & 0xFFFF0000L.U) === 0.U) ## ((bx & 0xFF000000L.U) === 0.U) ## ((cx & 0xF0000000L.U) === 0.U) ##
+  val zeros = ((ax & 0xFFFF0000L.U) === 0.U) ## ((bx & 0xFF000000L.U) === 0.U) ## ((cx & 0xF0000000L.U) === 0.U) ##
     ((dx & 0xC0000000L.U) === 0.U) ## ((ex & 0x80000000L.U) === 0.U)
 
+  io.out := Mux(io.in === 0.U, 32.U, zeros)
 }
 
 class CLZ64 extends Module{
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(64.W))
-    val out : UInt = Output(UInt(6.W))
+    val out : UInt = Output(UInt(7.W))
   })
-
   val mask1 = scala.BigInt("FFFFFFFF00000000", 16).U(64.W)
   val mask2 = scala.BigInt("FFFF000000000000", 16).U(64.W)
   val mask3 = scala.BigInt("FF00000000000000", 16).U(64.W)
@@ -177,23 +160,24 @@ class CLZ64 extends Module{
   val x = io.in
   val zx = x
 
-
  val ax = Mux((zx & mask1) === 0.U, zx << 32, zx)
  val bx = Mux((ax & mask2) === 0.U, ax << 16, ax)
  val cx = Mux((bx & mask3) === 0.U, bx << 8, bx)
  val dx = Mux((cx & mask4) === 0.U, cx << 4, cx)
  val ex = Mux((dx & mask5) === 0.U, dx << 2, dx)
+  val fx = Mux((ex & mask6) === 0.U, ex << 1, ex)
 
-  io.out := ((zx & mask1) === 0.U) ## ((ax & mask2) === 0.U) ##
+  val zeros = ((zx & mask1) === 0.U) ## ((ax & mask2) === 0.U) ##
     ((bx & mask3) === 0.U) ## ((cx & mask4) === 0.U) ##
     ((dx & mask5) === 0.U) ## ((ex & mask6) === 0.U)
 
+  io.out := Mux(io.in === 0.U, 64.U, zeros)
 }
 
 class CLZ128 extends Module{
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(128.W))
-    val out : UInt = Output(UInt(7.W))
+    val out : UInt = Output(UInt(8.W))
   })
   /* Uses a sequence of masks in a binary search to find the number of leading zeros */
   val x = io.in
@@ -213,9 +197,9 @@ class CLZ128 extends Module{
   val dx = Mux((cx & mask4) === 0.U, cx << 8, cx)
   val ex = Mux((dx & mask5) === 0.U, dx << 4, dx)
   val fx = Mux((ex & mask6) === 0.U, ex << 2, ex)
+  val gx = Mux((fx & mask7) === 0.U, fx << 1, fx)
 
-
-  io.out := ((zx & mask1) === 0.U) ##
+  val zeros = ((zx & mask1) === 0.U) ##
     ((ax & mask2) === 0.U) ##
     ((bx & mask3) === 0.U) ##
     ((cx & mask4) === 0.U) ##
@@ -223,8 +207,7 @@ class CLZ128 extends Module{
     ((ex & mask6)  === 0.U) ##
     ((fx & mask7) === 0.U)
 
-
-
+  io.out := Mux(io.in === 0.U, 128.U, zeros)
 }
 
 
@@ -234,23 +217,18 @@ class FixedToFloat16 extends Module {
     val in : UInt = Input(UInt(16.W))
     val out : UInt = Output(UInt(16.W))
   })
-
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(5.W))
   val frac = Wire(SInt(10.W))
-
   val data = Wire(UInt(16.W))
   data := Mux(io.in(15) === 1.U, (~io.in).asUInt + 1.U, io.in)
   sign := io.in(15).asSInt
-
   val clz16 = Module(new CLZ16())
   clz16.io.in := data.asUInt
   val leadingzeros = Wire(UInt(19.W))
   leadingzeros := 0x0L.U(15.W) ## clz16.io.out(3,0)
-
   exp := ((4.S - 1.S) - leadingzeros.asSInt) + 15.S
   frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (16.U - 10.U));
-
   io.out := io.in(15) ## exp.asUInt ## frac(9,0)
 }
 
@@ -266,19 +244,15 @@ class FixedToFloat32 extends Module {
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(8.W))
   val frac = Wire(SInt(23.W))
-
   val data = Wire(UInt(32.W))
   data := Mux(io.in(31) === 1.U, (~io.in).asUInt + 1.U, io.in)
   sign := io.in(31).asSInt
-
   val clz32 = Module(new CLZ32())
   clz32.io.in := data.asUInt
   val leadingzeros = Wire(UInt(19.W))
   leadingzeros := 0x0L.U(14.W) ## clz32.io.out(4,0)
-
   exp := ((4.S - 1.S) - leadingzeros.asSInt) + 127.S
   frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (32.U - 23.U));
-
   io.out := io.in(31) ## exp.asUInt ## frac(22,0)
 }
 
@@ -293,7 +267,6 @@ class FixedToFloat64 extends Module {
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(11.W))
   val frac = Wire(SInt(52.W))
-
   val data = Wire(UInt(64.W))
   data := Mux(io.in(63) === 1.U, (~io.in).asUInt + 1.U, io.in)
   sign := io.in(63).asSInt
@@ -301,14 +274,10 @@ class FixedToFloat64 extends Module {
   clz64.io.in := data.asUInt
   val leadingzeros = Wire(UInt(19.W))
   leadingzeros := 0x0L.U(13.W) ## clz64.io.out(5,0)
-
   exp := ((4.S - 1.S) - leadingzeros.asSInt) + 1023.S
   frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (64.U - 52.U));
-
   io.out := io.in(63) ## exp.asUInt ## frac(51,0)
 }
-
-
 
 
 class FixedToFloat128 extends Module {
@@ -321,29 +290,17 @@ class FixedToFloat128 extends Module {
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(15.W))
   val frac = Wire(SInt(112.W))
-
   val data = Wire(UInt(128.W))
   data := Mux(io.in(127) === 1.U, (~io.in).asUInt + 1.U, io.in)
   sign := io.in(127).asSInt
   val clz128 = Module(new CLZ128())
   clz128.io.in := data.asUInt
-
-
-    val leadingzeros = Wire(UInt(19.W))
-
-    leadingzeros := 0x0L.U(12.W) ## clz128.io.out(6,0)
-
-
-
-    exp := ((64.S - 1.S) - leadingzeros.asSInt) + 16383.S
-
-    frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (128.U - 112.U));
-
-    io.out := io.in(127) ## exp.asUInt ## frac(111,0)
+  val leadingzeros = Wire(UInt(19.W))
+  leadingzeros := 0x0L.U(12.W) ## clz128.io.out(6,0)
+  exp := ((64.S - 1.S) - leadingzeros.asSInt) + 16383.S
+  frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (128.U - 112.U));
+  io.out := io.in(127) ## exp.asUInt ## frac(111,0)
 }
-
-
-
 
 
 class Fixed64ToFloat32 extends Module {
@@ -357,19 +314,15 @@ class Fixed64ToFloat32 extends Module {
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(8.W))
   val frac = Wire(SInt(64.W))
-
   val data = Wire(UInt(64.W))
   data := Mux(io.in(63) === 1.U, (~io.in).asUInt + 1.U, io.in)
   sign := io.in(63).asSInt
-
   val clz64 = Module(new CLZ64())
   clz64.io.in := data.asUInt
   val leadingzeros = Wire(UInt(19.W))
   leadingzeros := 0x0L.U(13.W) ## clz64.io.out(5,0)
-
   exp := ((32.S - 1.S) - leadingzeros.asSInt) + 127.S
   frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (64.U - 23.U));
-
   io.out := io.in(63) ## exp.asUInt ## frac(22,0)
 }
 

@@ -8,485 +8,315 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-Z0 dC:/Mirror/GitProject/Trig-Design-with-Chisel-HCL/verification/sim
+dC:/Mirror/GitProject/Trig-Design-with-Chisel-HCL/verification/sim
 vAtan
-Z1 !s110 1731977075
+!s110 1740458414
 !i10b 1
-!s100 0Sj_nUM1OGela5_HoIFHh3
-If8;fa7@]AaKBC5Jmb8bb>0
-R0
-Z2 w1731564386
-8../dut/atan_n30_pd30_bw32/Atan.v
-F../dut/atan_n30_pd30_bw32/Atan.v
-!i122 124
-Z3 L0 1 27
-Z4 VDg1SIo80bB@j0V0VzS_@n1
-Z5 OV;L;2021.1;73
+!s100 A_z^kd81T05zN>WN9;EGU0
+INYiOR18VA:h5i1T4HKFfh1
+Z0 VDg1SIo80bB@j0V0VzS_@n1
+Z1 dC:/exp_chisel/exp/verification/sim
+w1739562951
+8../dut/atan_n16_pd8_bw16/Atan.v
+F../dut/atan_n16_pd8_bw16/Atan.v
+L0 1
+Z2 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1731977075.000000
-!s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n30_pd30_bw32/Float32ToFixed64.v|../dut/atan_n30_pd30_bw32/Fixed64ToFloat32.v|../dut/atan_n30_pd30_bw32/VCORDIC.v|../dut/atan_n30_pd30_bw32/CLZ64.v|../dut/atan_n30_pd30_bw32/Atan.v|
-Z7 !s90 -reportprogress|300|+define+ATAN_N30_PD30_BW32|-f|../filelist/filelist_atan_n30_pd30_bw32.f|
+!s108 1740458414.000000
+!s107 ..\tb\tb_func_atan_16.sv|../tb/tb_atan16.sv|../tb/tb_func_atan_16.sv|../dut/atan_n16_pd8_bw16/FloatToFixed16.v|../dut/atan_n16_pd8_bw16/FixedToFloat16.v|../dut/atan_n16_pd8_bw16/VCORDIC.v|../dut/atan_n16_pd8_bw16/CLZ16.v|../dut/atan_n16_pd8_bw16/Atan.v|
+Z3 !s90 -reportprogress|300|+define+ATAN_N16_PD8_BW16|-f|../filelist/filelist_atan_n16_pd8_bw16.f|
 !i113 1
-Z8 !s92 +define+ATAN_N30_PD30_BW32
-Z9 tCvgOpt 0
+Z4 !s92 +define+ATAN_N16_PD8_BW16
+Z5 tCvgOpt 0
 n@atan
-vCLZ32
-Z10 !s110 1731975611
+vAtan_n16_pd8_bw16
+Z6 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z7 !s110 1740587191
 !i10b 1
-!s100 Z[>9n[l<18I7cYPMdkE2?2
-I5Ez<Ic0NjTX@f>aedOY1c1
+!s100 HUo8=6n>i6D5Rm]m^?NA?0
+Ing41=EnVF41Jf6DQOC1Ch0
 R0
-Z11 w1730407566
-8../dut/sin_n32_pd32_bw32/CLZ32.v
-F../dut/sin_n32_pd32_bw32/CLZ32.v
-!i122 119
-L0 1 24
+Z8 !s105 Atan_n16_pd8_bw16_sv_unit
+S1
+R1
+Z9 w1740587115
+Z10 8../dut/atan_n16_pd8_bw16/Atan_n16_pd8_bw16.sv
+Z11 F../dut/atan_n16_pd8_bw16/Atan_n16_pd8_bw16.sv
+L0 447
+R2
+r1
+!s85 0
+31
+Z12 !s108 1740587191.000000
+Z13 !s107 ..\tb\tb_func_atan_16.sv|../tb/tb_atan16.sv|../tb/tb_func_atan_16.sv|../dut/atan_n16_pd8_bw16/Atan_n16_pd8_bw16.sv|
+R3
+!i113 1
 R4
 R5
+n@atan_n16_pd8_bw16
+vCLZ128
+R6
+Z14 !s110 1740585619
+!i10b 1
+!s100 69`DV3][7TiTalDY6PQIo1
+I2@0=R4m7A8fhDnz][>KVS1
+R0
+Z15 !s105 Sin_sv_unit
+S1
+R1
+Z16 w1740459971
+Z17 8../dut/sin_n128_pd8_bw128/Sin.sv
+Z18 F../dut/sin_n128_pd8_bw128/Sin.sv
+L0 1810
+R2
 r1
 !s85 0
 31
-Z12 !s108 1731975611.000000
-Z13 !s107 ../tb/tb_sin.sv|../tb/tb_func.sv|../dut/sin_n32_pd32_bw32/twoscomplement.v|../dut/sin_n32_pd32_bw32/TrigRangeReducer.v|../dut/sin_n32_pd32_bw32/multiplier.v|../dut/sin_n32_pd32_bw32/leadingOneDetector.v|../dut/sin_n32_pd32_bw32/full_subtractor.v|../dut/sin_n32_pd32_bw32/full_adder.v|../dut/sin_n32_pd32_bw32/FP_multiplier_bw32.v|../dut/sin_n32_pd32_bw32/FP_extract.v|../dut/sin_n32_pd32_bw32/FP_divider_bw32.v|../dut/sin_n32_pd32_bw32/FloatToFixed32.v|../dut/sin_n32_pd32_bw32/FixedToFloat32.v|../dut/sin_n32_pd32_bw32/divider_BW48_v3.v|../dut/sin_n32_pd32_bw32/CORDIC.v|../dut/sin_n32_pd32_bw32/CLZ32.v|../dut/sin_n32_pd32_bw32/Sin.v|
-Z14 !s90 -reportprogress|300|+define+SIN_N32_PD32_BW32|-f|../filelist/filelist_sin_n32_pd32_bw32.f|
+Z19 !s108 1740585618.000000
+Z20 !s107 ..\tb\tb_func128.sv|../tb/tb_sin128.sv|../tb/tb_func128.sv|../dut/sin_n128_pd8_bw128/Sin.sv|
+Z21 !s90 -reportprogress|300|+define+SIN_N128_PD8_BW128|-f|../filelist/filelist_sin_n128_pd8_bw128.f|
 !i113 1
-Z15 !s92 +define+SIN_N32_PD32_BW32
-R9
+Z22 !s92 +define+SIN_N128_PD8_BW128
+R5
+n@c@l@z128
+vCLZ16
+R6
+Z23 !s110 1740606554
+!i10b 1
+!s100 jQo2JRlaAUd`?nTB8[;0m0
+I?8j?NL5zIDGjPOi2ZBkC]2
+R0
+Z24 !s105 Cos_n16_pd8_bw16_sv_unit
+S1
+R1
+Z25 w1740605845
+Z26 8../dut/cos_n16_pd8_bw16/Cos_n16_pd8_bw16.sv
+Z27 F../dut/cos_n16_pd8_bw16/Cos_n16_pd8_bw16.sv
+L0 728
+R2
+r1
+!s85 0
+31
+Z28 !s108 1740606554.000000
+Z29 !s107 ..\tb\tb_func.sv|../tb/tb_cos.sv|../tb/tb_func.sv|../dut/cos_n16_pd8_bw16/Cos_n16_pd8_bw16.sv|
+Z30 !s90 -reportprogress|300|+define+COS_N16_PD8_BW16|-f|../filelist/filelist_cos_n16_pd8_bw16.f|
+!i113 1
+Z31 !s92 +define+COS_N16_PD8_BW16
+R5
+n@c@l@z16
+vCLZ32
+R6
+Z32 !s110 1740534191
+!i10b 1
+!s100 UomJ`0OEUPcQg^=n10]LH0
+IOeEM198^Scc9m37Gz1kQ]1
+R0
+R15
+S1
+R1
+Z33 w1740459536
+Z34 8../dut/sin_n32_pd8_bw32/Sin.sv
+Z35 F../dut/sin_n32_pd8_bw32/Sin.sv
+L0 955
+R2
+r1
+!s85 0
+31
+Z36 !s108 1740534191.000000
+Z37 !s107 ..\tb\tb_func32.sv|../tb/tb_sin32.sv|../tb/tb_func32.sv|../dut/sin_n32_pd8_bw32/Sin.sv|
+Z38 !s90 -reportprogress|300|+define+SIN_N32_PD8_BW32|-f|../filelist/filelist_sin_n32_pd8_bw32.f|
+!i113 1
+Z39 !s92 +define+SIN_N32_PD8_BW32
+R5
 n@c@l@z32
 vCLZ64
-R1
+R6
+Z40 !s110 1740608716
 !i10b 1
-!s100 o>aQ1Kc9Ob?k?>e2B5?H:3
-I@MNZ=74@1UI>I<k:aY3km2
+!s100 IO?cHJFgoT7_2JKei[`^N3
+I^BdXTh5EG=if8YTaZ5B2@1
 R0
+Z41 !s105 Cos_sv_unit
+S1
+R1
+Z42 w1740608616
+Z43 8../dut/cos_n64_pd8_bw64/Cos.sv
+Z44 F../dut/cos_n64_pd8_bw64/Cos.sv
+L0 1205
 R2
-8../dut/atan_n30_pd30_bw32/CLZ64.v
-F../dut/atan_n30_pd30_bw32/CLZ64.v
-!i122 124
-L0 1 28
-R4
-R5
 r1
 !s85 0
 31
-R6
-Z16 !s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n30_pd30_bw32/Float32ToFixed64.v|../dut/atan_n30_pd30_bw32/Fixed64ToFloat32.v|../dut/atan_n30_pd30_bw32/VCORDIC.v|../dut/atan_n30_pd30_bw32/CLZ64.v|../dut/atan_n30_pd30_bw32/Atan.v|
-R7
+Z45 !s108 1740608716.000000
+Z46 !s107 ..\tb\tb_func64.sv|../tb/tb_cos64.sv|../tb/tb_func64.sv|../dut/cos_n64_pd8_bw64/Cos.sv|
+Z47 !s90 -reportprogress|300|+define+COS_N64_PD8_BW64|-f|../filelist/filelist_cos_n64_pd8_bw64.f|
 !i113 1
-R8
-R9
+Z48 !s92 +define+COS_N64_PD8_BW64
+R5
 n@c@l@z64
 vCORDIC
-R10
+R6
+R40
 !i10b 1
-!s100 M7GAlb3F3L]9LQeDIegCz0
-IX5[26nV3T0TbQ:GY6<Ug20
+!s100 9_]V@RmD@nmTD5RT<]LFY2
+IFccM7dllS2cB^W>cKzdlG3
 R0
-R11
-8../dut/sin_n32_pd32_bw32/CORDIC.v
-F../dut/sin_n32_pd32_bw32/CORDIC.v
-!i122 119
-L0 1 2008
-R4
-R5
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1243
+R2
 r1
 !s85 0
 31
-R12
-R13
-R14
+R45
+R46
+R47
 !i113 1
-R15
-R9
+R48
+R5
 n@c@o@r@d@i@c
+vcordic_128_64
+R6
+Z49 !s110 1740154824
+!i10b 1
+!s100 :`F=3jMJRifGN9EOjnTdR3
+INm4IhZnQ_]7RVnQOl:iB23
+R0
+R41
+S1
+Z50 dC:/IC_research/verification/sim
+Z51 w1740154761
+Z52 8../dut/cos_n128_pd8_bw128/Cos.sv
+Z53 F../dut/cos_n128_pd8_bw128/Cos.sv
+L0 1313
+R2
+r1
+!s85 0
+31
+Z54 !s108 1740154824.000000
+Z55 !s107 ..\tb\tb_func128.sv|../tb/tb_cos128.sv|../tb/tb_func128.sv|../dut/cos_n128_pd8_bw128/Cos.sv|
+Z56 !s90 -reportprogress|300|+define+COS_N128_PD8_BW128|-f|../filelist/filelist_cos_n128_pd8_bw128.f|
+!i113 1
+Z57 !s92 +define+COS_N128_PD8_BW128
+R5
 vCos
-Z17 !s110 1730912508
+R6
+R40
 !i10b 1
-!s100 Ld5NO7SU>C7D<46?:_n4Q0
-I2:RbalXQG4`G8GVPD^UBz2
+!s100 cf4SS]aUdXi9_Hkc;N25=0
+IEHS7JXjTm<RYz:agNZ3D20
 R0
-w1730402079
-8../dut/cos_n32_pd32_bw32/Cos.v
-F../dut/cos_n32_pd32_bw32/Cos.v
-!i122 91
-Z18 L0 1 59
-R4
-R5
+R41
+S1
+R1
+R42
+R43
+R44
+Z58 L0 2814
+R2
 r1
 !s85 0
 31
-Z19 !s108 1730912508.000000
-Z20 !s107 ../tb/tb_cos.sv|../tb/tb_func.sv|../dut/cos_n32_pd32_bw32/twoscomplement.v|../dut/cos_n32_pd32_bw32/TrigRangeReducer.v|../dut/cos_n32_pd32_bw32/multiplier.v|../dut/cos_n32_pd32_bw32/leadingOneDetector.v|../dut/cos_n32_pd32_bw32/full_subtractor.v|../dut/cos_n32_pd32_bw32/full_adder.v|../dut/cos_n32_pd32_bw32/FP_multiplier_bw32.v|../dut/cos_n32_pd32_bw32/FP_extract.v|../dut/cos_n32_pd32_bw32/FP_divider_bw32.v|../dut/cos_n32_pd32_bw32/FloatToFixed32.v|../dut/cos_n32_pd32_bw32/FixedToFloat32.v|../dut/cos_n32_pd32_bw32/divider_BW48_v3.v|../dut/cos_n32_pd32_bw32/CORDIC.v|../dut/cos_n32_pd32_bw32/CLZ32.v|../dut/cos_n32_pd32_bw32/Cos.v|
-Z21 !s90 -reportprogress|300|+define+COS_N32_PD32_BW32|-f|../filelist/filelist_cos_n32_pd32_bw32.f|
+R45
+R46
+R47
 !i113 1
-Z22 !s92 +define+COS_N32_PD32_BW32
-R9
+R48
+R5
 n@cos
-vdivider_BW48_v3
-R10
-!i10b 1
-!s100 mU1KIzl:4nY7g<]CNgTZe2
-Ihc7kflG:[CI<0WVCADO0z0
-R0
-R11
-8../dut/sin_n32_pd32_bw32/divider_BW48_v3.v
-F../dut/sin_n32_pd32_bw32/divider_BW48_v3.v
-!i122 119
-L0 1 3687
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-ndivider_@b@w48_v3
-vFixed64ToFloat32
-R1
-!i10b 1
-!s100 ?ENVX=bSWz[4M6@@U3dk;1
-Im8GCJJZ?>DCgSPYYVCQiM3
-R0
-R2
-8../dut/atan_n30_pd30_bw32/Fixed64ToFloat32.v
-F../dut/atan_n30_pd30_bw32/Fixed64ToFloat32.v
-!i122 124
-Z23 L0 1 31
-R4
-R5
-r1
-!s85 0
-31
+vCos_n16_pd8_bw16
 R6
-R16
-R7
-!i113 1
-R8
-R9
-n@fixed64@to@float32
-vFixedToFloat32
-R10
-!i10b 1
-!s100 XT2JDiI3BD@B0Ve[^[5O=2
-IUf[9_Lg?o2d0j>W?0E@9K3
-R0
-R11
-8../dut/sin_n32_pd32_bw32/FixedToFloat32.v
-F../dut/sin_n32_pd32_bw32/FixedToFloat32.v
-!i122 119
 R23
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@fixed@to@float32
-vFloat32ToFixed64
-R1
 !i10b 1
-!s100 W0cN=f69GT6H9m_=gKC?>2
-I?`eS?K>AQBS[4C1fznF??2
+!s100 gH4lPn>61lHeJl9MmWM5E1
+Io=S[CLTY6QCdS22f2Pc<<1
 R0
-R2
-8../dut/atan_n30_pd30_bw32/Float32ToFixed64.v
-F../dut/atan_n30_pd30_bw32/Float32ToFixed64.v
-!i122 124
-L0 1 22
-R4
-R5
-r1
-!s85 0
-31
-R6
-R16
-R7
-!i113 1
-R8
-R9
-n@float32@to@fixed64
-vFloatToFixed32
-R10
-!i10b 1
-!s100 gHl5fdYE[ke6]PARiCfLO1
-I5cz^VkYS:91B<]M8D63Rf3
-R0
-R11
-8../dut/sin_n32_pd32_bw32/FloatToFixed32.v
-F../dut/sin_n32_pd32_bw32/FloatToFixed32.v
-!i122 119
-L0 1 21
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@float@to@fixed32
-vFP_divider_bw32
-R10
-!i10b 1
-!s100 Md9zBFhCWb3fSYCMog7aQ3
-IRmR8JmQZSL_YDSVfUd1nT0
-R0
-R11
-8../dut/sin_n32_pd32_bw32/FP_divider_bw32.v
-F../dut/sin_n32_pd32_bw32/FP_divider_bw32.v
-!i122 119
-L0 1 454
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@f@p_divider_bw32
-vFP_extract
-R10
-!i10b 1
-!s100 ib3mlZS[GTeS2:`d@DgE72
-IV5;h[ba<E5`MD2a55Y^Y<3
-R0
-R11
-8../dut/sin_n32_pd32_bw32/FP_extract.v
-F../dut/sin_n32_pd32_bw32/FP_extract.v
-!i122 119
-L0 1 35
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@f@p_extract
-vFP_multiplier_bw32
-R10
-!i10b 1
-!s100 ]lE^:Taa06TWMd2dKPNm82
-Ig7P^jUC:<3O]<L@9gZ8eB3
-R0
-R11
-8../dut/sin_n32_pd32_bw32/FP_multiplier_bw32.v
-F../dut/sin_n32_pd32_bw32/FP_multiplier_bw32.v
-!i122 119
-L0 1 579
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@f@p_multiplier_bw32
-vfull_adder
-R10
-!i10b 1
-!s100 QCdfn1Nb;d5FD^n@W1gRX3
-I0>ECNIzCjgT0>4cg99ZoI2
-R0
-R11
-8../dut/sin_n32_pd32_bw32/full_adder.v
-F../dut/sin_n32_pd32_bw32/full_adder.v
-!i122 119
-Z24 L0 1 12
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-vfull_subtractor
-R10
-!i10b 1
-!s100 hRl6=WkQ<V]gRNNYPOd`82
-IBaObfo>iiYE[`IH:45KIF0
-R0
-R11
-8../dut/sin_n32_pd32_bw32/full_subtractor.v
-F../dut/sin_n32_pd32_bw32/full_subtractor.v
-!i122 119
 R24
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-vleadingOneDetector
-R10
-!i10b 1
-!s100 WPII=J]eR8[c1j]LlD6j<1
-I_`l9IT6@J;b?KbIS:b9Jk0
-R0
-R11
-8../dut/sin_n32_pd32_bw32/leadingOneDetector.v
-F../dut/sin_n32_pd32_bw32/leadingOneDetector.v
-!i122 119
-R3
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-nleading@one@detector
-vmultiplier
-R10
-!i10b 1
-!s100 0o1K03zeF9;AYh`0Sk6Uo3
-I7I0[6IC@UeO2H^jj1hDK?0
-R0
-R11
-8../dut/sin_n32_pd32_bw32/multiplier.v
-F../dut/sin_n32_pd32_bw32/multiplier.v
-!i122 119
-Z25 L0 1 7
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-vSin
-R10
-!i10b 1
-!s100 bY>hF]=QHEZDn51TGGc5n2
-IjULz1FGKOX>QCU8_7KmW43
-R0
-R11
-8../dut/sin_n32_pd32_bw32/Sin.v
-F../dut/sin_n32_pd32_bw32/Sin.v
-!i122 119
-R18
-R4
-R5
-r1
-!s85 0
-31
-R12
-R13
-R14
-!i113 1
-R15
-R9
-n@sin
-vtb_atan
-Z26 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+S1
 R1
-!i10b 1
-!s100 4@`oo85SM5aoaa=KE>8X_0
-I_1oSzCCPBaiValXhF;:@@3
-S1
-R0
-w1731977071
-8../tb/tb_atan.sv
-F../tb/tb_atan.sv
-Z27 F../tb/tb_func.sv
-!i122 124
-L0 17 238
-R4
-R5
+R25
+R26
+R27
+L0 1186
+R2
 r1
 !s85 0
 31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@cos_n16_pd8_bw16
+vCos_n64_pd8_bw64
 R6
-R16
-R7
-!i113 1
-R8
-R9
-vtb_Cos
-R26
-!s110 1730402020
+!s110 1740608521
 !i10b 1
-!s100 kaM55Rlc=K9XcElEkd5Wm2
-I1A=PgdF`[kazIg8X_PO[[1
-S1
+!s100 >2YH1DnSg^CDGMnLeh_Ug0
+IL4C`kZY4NE[BXERm2ee3C2
 R0
-w1730401857
-8../tb/tb_Cos.sv
-F../tb/tb_Cos.sv
-R27
-!i122 36
-L0 17 187
-R4
-R5
+!s105 Cos_n64_pd8_bw64_sv_unit
+S1
+R1
+w1740605860
+8../dut/cos_n64_pd8_bw64/Cos_n64_pd8_bw64.sv
+F../dut/cos_n64_pd8_bw64/Cos_n64_pd8_bw64.sv
+R58
+R2
 r1
 !s85 0
 31
-!s108 1730402020.000000
-!s107 ../tb/tb_Cos.sv|../tb/tb_func.sv|../dut/cos_n32_pd4_bw32/twoscomplement.v|../dut/cos_n32_pd4_bw32/TrigRangeReducer.v|../dut/cos_n32_pd4_bw32/multiplier.v|../dut/cos_n32_pd4_bw32/leadingOneDetector.v|../dut/cos_n32_pd4_bw32/full_subtractor.v|../dut/cos_n32_pd4_bw32/full_adder.v|../dut/cos_n32_pd4_bw32/FP_multiplier_bw32.v|../dut/cos_n32_pd4_bw32/FP_extract.v|../dut/cos_n32_pd4_bw32/FP_divider_bw32.v|../dut/cos_n32_pd4_bw32/FloatToFixed32.v|../dut/cos_n32_pd4_bw32/FixedToFloat32.v|../dut/cos_n32_pd4_bw32/divider_BW48_v3.v|../dut/cos_n32_pd4_bw32/CORDIC.v|../dut/cos_n32_pd4_bw32/CLZ32.v|../dut/cos_n32_pd4_bw32/Cos.v|
-!s90 -reportprogress|300|+define+COS_N32_PD4_BW32|-f|../filelist/filelist_cos_n32_pd4_bw32.f|
+!s108 1740608521.000000
+!s107 ..\tb\tb_func64.sv|../tb/tb_cos64.sv|../tb/tb_func64.sv|../dut/cos_n64_pd8_bw64/Cos_n64_pd8_bw64.sv|
+R47
 !i113 1
-!s92 +define+COS_N32_PD4_BW32
-R9
-ntb_@cos
-vtb_cos
-R26
-R17
-!i10b 1
-!s100 I]KF@e5HH4ZgY6GfLh1MT1
-I3;_681e?7oMe4hHIVgRKk2
-S1
-R0
-w1730654870
-8../tb/tb_cos.sv
-F../tb/tb_cos.sv
-R27
-!i122 91
-L0 17 191
-R4
+R48
 R5
+n@cos_n64_pd8_bw64
+vdivider_BW106_v3
+Z59 !s110 1739292214
+!i10b 1
+!s100 >2D[iR75B`dOFA>acPg340
+IIaoHj3gZGDjMAS_UU5C@Y0
+R0
+R50
+Z60 w1739292208
+8../dut/sin_n64_pd8_bw64/divider_BW106_v3.v
+F../dut/sin_n64_pd8_bw64/divider_BW106_v3.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z61 !s108 1739292214.000000
+Z62 !s107 ..\tb\tb_func64.sv|../tb/tb_sin64.sv|../tb/tb_func64.sv|../dut/sin_n64_pd8_bw64/twoscomplement.v|../dut/sin_n64_pd8_bw64/TrigRangeReducer.v|../dut/sin_n64_pd8_bw64/multiplier.v|../dut/sin_n64_pd8_bw64/leadingOneDetector.v|../dut/sin_n64_pd8_bw64/full_subtractor.v|../dut/sin_n64_pd8_bw64/full_adder.v|../dut/sin_n64_pd8_bw64/FP_multiplier_bw64.v|../dut/sin_n64_pd8_bw64/FP_extract.v|../dut/sin_n64_pd8_bw64/FP_divider_bw64.v|../dut/sin_n64_pd8_bw64/FloatToFixed64.v|../dut/sin_n64_pd8_bw64/FixedToFloat64.v|../dut/sin_n64_pd8_bw64/divider_BW106_v3.v|../dut/sin_n64_pd8_bw64/CORDIC.v|../dut/sin_n64_pd8_bw64/CLZ64.v|../dut/sin_n64_pd8_bw64/Sin.v|
+Z63 !s90 -reportprogress|300|+define+SIN_N64_PD8_BW64|-f|../filelist/filelist_sin_n64_pd8_bw64.f|
+!i113 1
+Z64 !s92 +define+SIN_N64_PD8_BW64
+R5
+ndivider_@b@w106_v3
+vdivider_BW114
+R6
+Z65 !s110 1740585618
+!i10b 1
+!s100 ;aGa<JdWGAN<5kYck:kjz2
+I6=:ZUX1:jiFXiF`A71h320
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+Z66 L0 64
+R2
 r1
 !s85 0
 31
@@ -495,122 +325,1789 @@ R20
 R21
 !i113 1
 R22
-R9
-Xtb_func_sv_unit
-R26
+R5
+ndivider_@b@w114
+vdivider_BW12
+R6
+R23
+!i10b 1
+!s100 nU?ZJ1L7OdFGcLkVKOF1j3
+I6hRH=l_7Wbk]I0GZ?lQfZ0
+R0
+R24
+S1
 R1
-VIcD=X>089>P`ohb5YAPBz2
+R25
+R26
+R27
+R66
+R2
 r1
 !s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+ndivider_@b@w12
+vdivider_BW226_v3
+Z67 !s110 1739295573
 !i10b 1
-!s100 FcX=?Y5mCGJK5d;XKemTC1
-IIcD=X>089>P`ohb5YAPBz2
+!s100 74EPYfFT6bcYSJclNJ12U2
+IKTj`SV@X5cIFD?EZ_`Gdb2
+R0
+R50
+Z68 w1739295564
+8../dut/sin_n128_pd8_bw128/divider_BW226_v3.v
+F../dut/sin_n128_pd8_bw128/divider_BW226_v3.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z69 !s108 1739295571.000000
+Z70 !s107 ..\tb\tb_func128.sv|../tb/tb_sin128.sv|../tb/tb_func128.sv|../dut/sin_n128_pd8_bw128/twoscomplement.v|../dut/sin_n128_pd8_bw128/TrigRangeReducer.v|../dut/sin_n128_pd8_bw128/multiplier.v|../dut/sin_n128_pd8_bw128/leadingOneDetector.v|../dut/sin_n128_pd8_bw128/full_subtractor.v|../dut/sin_n128_pd8_bw128/full_adder.v|../dut/sin_n128_pd8_bw128/FP_multiplier_bw128.v|../dut/sin_n128_pd8_bw128/FP_extract.v|../dut/sin_n128_pd8_bw128/FP_divider_bw128.v|../dut/sin_n128_pd8_bw128/FloatToFixed128.v|../dut/sin_n128_pd8_bw128/FixedToFloat128.v|../dut/sin_n128_pd8_bw128/divider_BW226_v3.v|../dut/sin_n128_pd8_bw128/CORDIC.v|../dut/sin_n128_pd8_bw128/CLZ128.v|../dut/sin_n128_pd8_bw128/Sin.v|
+R21
+!i113 1
+R22
+R5
+ndivider_@b@w226_v3
+vdivider_BW22_v3
+Z71 !s110 1739290354
+!i10b 1
+!s100 BMm<^JSB36Ej>@`7JO>AU2
+I@7;nI4jd0=W?bYe[9UN781
+R0
+R50
+Z72 w1739290324
+8../dut/sin_n16_pd8_bw16/divider_BW22_v3.v
+F../dut/sin_n16_pd8_bw16/divider_BW22_v3.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z73 !s108 1739290354.000000
+Z74 !s107 ..\tb\tb_func.sv|../tb/tb_sin.sv|../tb/tb_func.sv|../dut/sin_n16_pd8_bw16/twoscomplement.v|../dut/sin_n16_pd8_bw16/TrigRangeReducer.v|../dut/sin_n16_pd8_bw16/multiplier.v|../dut/sin_n16_pd8_bw16/leadingOneDetector.v|../dut/sin_n16_pd8_bw16/full_subtractor.v|../dut/sin_n16_pd8_bw16/full_adder.v|../dut/sin_n16_pd8_bw16/FP_multiplier_bw16.v|../dut/sin_n16_pd8_bw16/FP_extract.v|../dut/sin_n16_pd8_bw16/FP_divider_bw16.v|../dut/sin_n16_pd8_bw16/FloatToFixed16.v|../dut/sin_n16_pd8_bw16/FixedToFloat16.v|../dut/sin_n16_pd8_bw16/divider_BW22_v3.v|../dut/sin_n16_pd8_bw16/CORDIC.v|../dut/sin_n16_pd8_bw16/CLZ16.v|../dut/sin_n16_pd8_bw16/Sin.v|
+Z75 !s90 -reportprogress|300|+define+SIN_N16_PD8_BW16|-f|../filelist/filelist_sin_n16_pd8_bw16.f|
+!i113 1
+Z76 !s92 +define+SIN_N16_PD8_BW16
+R5
+ndivider_@b@w22_v3
+vdivider_BW25
+R6
+R32
+!i10b 1
+!s100 kMga14mD[AbWZOV86H`>G3
+I5b=hDJ_2Md8Qco2`nF[T21
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+R66
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+ndivider_@b@w25
+vdivider_BW48_v3
+Z77 !s110 1734302006
+!i10b 1
+!s100 >L@=;o:1lecm:7F05cSLX2
+IgefP<@KK9SQ0H95]4087P3
+R0
+R50
+Z78 w1732056942
+8../dut/cos_n32_pd16_bw32/divider_BW48_v3.v
+F../dut/cos_n32_pd16_bw32/divider_BW48_v3.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z79 !s108 1734302006.000000
+Z80 !s107 ..\tb\tb_func.sv|../tb/tb_cos.sv|../tb/tb_func.sv|../dut/cos_n32_pd16_bw32/twoscomplement.v|../dut/cos_n32_pd16_bw32/TrigRangeReducer.v|../dut/cos_n32_pd16_bw32/multiplier.v|../dut/cos_n32_pd16_bw32/leadingOneDetector.v|../dut/cos_n32_pd16_bw32/full_subtractor.v|../dut/cos_n32_pd16_bw32/full_adder.v|../dut/cos_n32_pd16_bw32/FP_multiplier_bw32.v|../dut/cos_n32_pd16_bw32/FP_extract.v|../dut/cos_n32_pd16_bw32/FP_divider_bw32.v|../dut/cos_n32_pd16_bw32/FloatToFixed32.v|../dut/cos_n32_pd16_bw32/FixedToFloat32.v|../dut/cos_n32_pd16_bw32/divider_BW48_v3.v|../dut/cos_n32_pd16_bw32/CORDIC.v|../dut/cos_n32_pd16_bw32/CLZ32.v|../dut/cos_n32_pd16_bw32/Cos.v|
+Z81 !s90 -reportprogress|300|+define+COS_N32_PD16_BW32|-f|../filelist/filelist_cos_n32_pd16_bw32.f|
+!i113 1
+Z82 !s92 +define+COS_N32_PD16_BW32
+R5
+ndivider_@b@w48_v3
+vdivider_BW54
+R6
+R40
+!i10b 1
+!s100 ?:g1T?9H<h:D:Em@AEgD90
+I3899jD;FWO0[;mgEJP2Qj0
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+R66
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+ndivider_@b@w54
+vexample_sim
+R6
+!s110 1731644089
+!i10b 1
+!s100 4oOUV_E64]7mUoTCm5L:d3
+IY`m1Y6;J6dn`;A3:aXDVB3
+R0
+!s105 tb_atan_sv_unit
+S1
+R50
+w1731101194
+8../tb/tb_atan.sv
+F../tb/tb_atan.sv
+L0 3
+R2
+r1
+!s85 0
+31
+!s108 1731644089.000000
+!s107 ../tb/tb_atan.sv|../tb/tb_func.sv|../dut/Atan/Float32ToFixed64.v|../dut/Atan/Fixed64ToFloat32.v|../dut/Atan/VCORDIC.v|../dut/Atan/CLZ64.v|../dut/Atan/Atan.v|
+!s90 -reportprogress|300|+define+ATAN_N32_PD16_BW32|-f|../filelist/filelist_atan.f|
+!i113 1
+!s92 +define+ATAN_N32_PD16_BW32
+R5
+vFixed32_32ToFloat64
+Z83 !s110 1737775246
+!i10b 1
+!s100 6]jjZTTGFceh@L[:W`Mg22
+I3EEMYNL2^CgOZ3cNmYWG:3
+R0
+R50
+Z84 w1737774678
+8../dut/cos_n64_pd8_bw64/Fixed32_32ToFloat64.v
+F../dut/cos_n64_pd8_bw64/Fixed32_32ToFloat64.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z85 !s108 1737775246.000000
+Z86 !s107 ..\tb\tb_func64.sv|../tb/tb_cos64.sv|../tb/tb_func64.sv|../dut/cos_n64_pd8_bw64/twoscomplement.v|../dut/cos_n64_pd8_bw64/TrigRangeReducer.v|../dut/cos_n64_pd8_bw64/multiplier.v|../dut/cos_n64_pd8_bw64/leadingOneDetector.v|../dut/cos_n64_pd8_bw64/full_subtractor.v|../dut/cos_n64_pd8_bw64/full_adder.v|../dut/cos_n64_pd8_bw64/FP_multiplier_bw64.v|../dut/cos_n64_pd8_bw64/FP_extract.v|../dut/cos_n64_pd8_bw64/FP_divider_bw64.v|../dut/cos_n64_pd8_bw64/FloatToFixed64.v|../dut/cos_n64_pd8_bw64/FloatToFixed32_32.v|../dut/cos_n64_pd8_bw64/Fixed32_32ToFloat64.v|../dut/cos_n64_pd8_bw64/FixedToFloat64.v|../dut/cos_n64_pd8_bw64/divider_BW106_v3.v|../dut/cos_n64_pd8_bw64/CORDIC.v|../dut/cos_n64_pd8_bw64/CLZ64.v|../dut/cos_n64_pd8_bw64/Cos.v|
+R47
+!i113 1
+R48
+R5
+n@fixed32_32@to@float64
+vFixed64ToFloat32
+Z87 !s110 1731712701
+!i10b 1
+!s100 d9IilAG5gHnT4bVFLZ<l^3
+I6EVGGokHni5?f0;^IUT312
+R0
+R50
+Z88 w1731712691
+8../dut/atan_n30_pd15_bw32/Fixed64ToFloat32.v
+F../dut/atan_n30_pd15_bw32/Fixed64ToFloat32.v
+L0 1
+R2
+r1
+!s85 0
+31
+Z89 !s108 1731712701.000000
+Z90 !s107 ..\tb\tb_func.sv|../tb/tb_atan.sv|../tb/tb_func.sv|../dut/atan_n30_pd15_bw32/Float32ToFixed64.v|../dut/atan_n30_pd15_bw32/Fixed64ToFloat32.v|../dut/atan_n30_pd15_bw32/VCORDIC.v|../dut/atan_n30_pd15_bw32/CLZ64.v|../dut/atan_n30_pd15_bw32/Atan.v|
+Z91 !s90 -reportprogress|300|+define+ATAN_N30_PD15_BW32|-f|../filelist/filelist_atan_n30_pd15_bw32.f|
+!i113 1
+Z92 !s92 +define+ATAN_N30_PD15_BW32
+R5
+n@fixed64@to@float32
+vFixedTOFloat
+R6
+R49
+!i10b 1
+!s100 Ueh1FZa2<eUd0@aUgnTJ60
+I4IWDFC4cF9BI`kd2BaB7K3
+R0
+R41
+S1
+R50
+R51
+R52
+R53
+L0 2920
+R2
+r1
+!s85 0
+31
+R54
+R55
+R56
+!i113 1
+R57
+R5
+n@fixed@t@o@float
+vFixedToFloat128
+R6
+R14
+!i10b 1
+!s100 iLN1m@_VneOM=FI621Wb11
+IRbhXe;Zc@KjQPzclm7c7I2
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 1830
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@fixed@to@float128
+vFixedToFloat16
+R6
+R23
+!i10b 1
+!s100 ^oZQ:dzVFfCW_BVF6a7QV0
+Id0iE1Uc?N81V:aOX2d^LH3
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 745
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@fixed@to@float16
+vFixedToFloat32
+R6
+R32
+!i10b 1
+!s100 0eeUY8]20ofD^9]K3oWYO3
+IL03EImUUf70ebJOP0;1?g3
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 971
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@fixed@to@float32
+vFixedToFloat64
+R6
+R40
+!i10b 1
+!s100 C1H>JC2EAB[>=T@`>LfRa1
+Im?DB32QRf;[0fCcL2=g1a1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1226
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@fixed@to@float64
+vFloat32ToFixed64
+R87
+!i10b 1
+!s100 ;JKL@j]Xn:XaJ^HF5<?2]3
+I7[heaXne^:;J0;Z<fbdfj2
+R0
+R50
+R88
+8../dut/atan_n30_pd15_bw32/Float32ToFixed64.v
+F../dut/atan_n30_pd15_bw32/Float32ToFixed64.v
+L0 1
+R2
+r1
+!s85 0
+31
+R89
+R90
+R91
+!i113 1
+R92
+R5
+n@float32@to@fixed64
+vFloatTOFixed
+R6
+R49
+!i10b 1
+!s100 G]nz=fLHGO:F@1O8jd>9]3
+I9k5IX]YlC3Mca_YNHgQIH0
+R0
+R41
+S1
+R50
+R51
+R52
+R53
+L0 1280
+R2
+r1
+!s85 0
+31
+R54
+R55
+R56
+!i113 1
+R57
+R5
+n@float@t@o@fixed
+vFloatToFixed128
+R6
+R65
+!i10b 1
+!s100 bLLKS4Xdc7i>OiWX82FNC3
+IbW^3AJnUnI@Q^ARYnQ?hl3
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 1798
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@float@to@fixed128
+vFloatToFixed16
+R6
+R23
+!i10b 1
+!s100 C18FBK3@NJX@o_Lmm7UIY3
+I^igZ2<MI>6`QQDDYVikHT2
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 716
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@float@to@fixed16
+vFloatToFixed32
+R6
+R32
+!i10b 1
+!s100 bY]L<zD]FO0^a;ISilma]1
+I5@S1]`Pgk<@l:9Knem<=@1
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 943
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@float@to@fixed32
+vFloatToFixed32_32
+R83
+!i10b 1
+!s100 UP6BffH;X7B59V]i:2B0g2
+I0]T?<g4KD4NPX<7ol2gJa1
+R0
+R50
+R84
+8../dut/cos_n64_pd8_bw64/FloatToFixed32_32.v
+F../dut/cos_n64_pd8_bw64/FloatToFixed32_32.v
+L0 1
+R2
+r1
+!s85 0
+31
+R85
+R86
+R47
+!i113 1
+R48
+R5
+n@float@to@fixed32_32
+vFloatToFixed64
+R6
+R40
+!i10b 1
+!s100 gRj0L1XhFS^eBn4b;>oQ43
+IcJk>fjoled`aio1;GPD5c2
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1193
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@float@to@fixed64
+vFP_cos_128_64
+R6
+R49
+!i10b 1
+!s100 NG6kI0FZ<3@CejhNK:WL80
+IE?@TQbBiW@C`ZZAzD?F]c3
+R0
+R41
+S1
+R50
+R51
+R52
+R53
+L0 2967
+R2
+r1
+!s85 0
+31
+R54
+R55
+R56
+!i113 1
+R57
+R5
+n@f@p_cos_128_64
+vFP_divider_128_15
+R6
+R65
+!i10b 1
+!s100 NNGBb9fnRINBom64>_Ye=3
+I4oH?A<1UZ5]]XULUMF27b2
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 607
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@f@p_divider_128_15
+vFP_divider_16_10
+R6
+R23
+!i10b 1
+!s100 gHcGRnniFfXz2G@l;2goZ0
+IXN8f0<kjIZakd_P40EZgN1
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 246
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@f@p_divider_16_10
+vFP_divider_32_15
+R6
+R32
+!i10b 1
+!s100 cNHkAh=kXNBNfKN95iG910
+IB[OgChP]?019lcR?OgAKI3
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 328
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@f@p_divider_32_15
+vFP_divider_64_15
+R6
+R40
+!i10b 1
+!s100 T]4_cNYGm?^4^EhdU^1640
+IjTZ87[SO_JL<I68z6[2YS2
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 383
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@f@p_divider_64_15
+vFP_divider_bw128
+R67
+!i10b 1
+!s100 ^i=NDiOEzOW1d[J==3>FA2
+IOfc`We55H7?W6IFUVLL8W1
+R0
+R50
+R68
+8../dut/sin_n128_pd8_bw128/FP_divider_bw128.v
+F../dut/sin_n128_pd8_bw128/FP_divider_bw128.v
+L0 1
+R2
+r1
+!s85 0
+31
+R69
+R70
+R21
+!i113 1
+R22
+R5
+n@f@p_divider_bw128
+vFP_divider_bw16
+R71
+!i10b 1
+!s100 :UMWD1H3:5DXYoQR>F;iN1
+IJ?>2VU0PbLcS;SZhNli0@0
+R0
+R50
+R72
+8../dut/sin_n16_pd8_bw16/FP_divider_bw16.v
+F../dut/sin_n16_pd8_bw16/FP_divider_bw16.v
+L0 1
+R2
+r1
+!s85 0
+31
+R73
+R74
+R75
+!i113 1
+R76
+R5
+n@f@p_divider_bw16
+vFP_divider_bw32
+R77
+!i10b 1
+!s100 1AK998fLeHoUK3YWdilfT0
+IEZ@<ClHd:[B0eDL625RPV0
+R0
+R50
+R78
+8../dut/cos_n32_pd16_bw32/FP_divider_bw32.v
+F../dut/cos_n32_pd16_bw32/FP_divider_bw32.v
+L0 1
+R2
+r1
+!s85 0
+31
+R79
+R80
+R81
+!i113 1
+R82
+R5
+n@f@p_divider_bw32
+vFP_divider_bw64
+R59
+!i10b 1
+!s100 1M86W3jz@069?BUhBGeaH2
+Ig=5I=6Ef:Yfjji>Mk=<E<1
+R0
+R50
+R60
+8../dut/sin_n64_pd8_bw64/FP_divider_bw64.v
+F../dut/sin_n64_pd8_bw64/FP_divider_bw64.v
+L0 1
+R2
+r1
+!s85 0
+31
+R61
+R62
+R63
+!i113 1
+R64
+R5
+n@f@p_divider_bw64
+vFP_extract
+R67
+!i10b 1
+!s100 a4Li6Fe0i77oCR:eTFM@j1
+IjQEIgER9J6iUo]WlYV9L?2
+R0
+R50
+R68
+8../dut/sin_n128_pd8_bw128/FP_extract.v
+F../dut/sin_n128_pd8_bw128/FP_extract.v
+L0 1
+R2
+r1
+!s85 0
+31
+R69
+R70
+R21
+!i113 1
+R22
+R5
+n@f@p_extract
+vFP_floor_128
+R6
+R65
+!i10b 1
+!s100 k8EeQ4k4T<9DenTQ3N>@>0
+Io`Bcc7_?CnA[kPGKB8CI@2
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 1583
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@f@p_floor_128
+vFP_floor_16
+R6
+R23
+!i10b 1
+!s100 CT27E;Zj8kNgWWmzldVlP2
+ITGMZ^oc:4?JKD[TE]5?We3
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 523
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@f@p_floor_16
+vFP_floor_32
+R6
+R32
+!i10b 1
+!s100 PWOd`BKZXOLTD^_KKMKij0
+I18^Y[lzj]mcPIJPSC_=7L2
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 750
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@f@p_floor_32
+vFP_floor_64
+R6
+R40
+!i10b 1
+!s100 :2:Id26JJ<JAPzT=f;1?52
+IP;`fbBKE3e:TRR53Ubo>]1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 993
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@f@p_floor_64
+vFP_mult_128_3_v2
+R6
+R65
+!i10b 1
+!s100 V[IE@QBzRlB9Y:2`@U?T03
+I6^34Pz;IC1ZManTR;DC^Z0
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 1662
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@f@p_mult_128_3_v2
+vFP_mult_16_3_v2
+R6
+R23
+!i10b 1
+!s100 z]A=9dj@>XO]8Dz@N=ZW=1
+IgVoUPzTjE16dUmRbIQh>g1
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 590
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@f@p_mult_16_3_v2
+vFP_mult_32_3_v2
+R6
+R32
+!i10b 1
+!s100 2RcBKoz40GM<>093FVC^z1
+IYo^UYaJQRl4h[i]g9:5XP2
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 817
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@f@p_mult_32_3_v2
+vFP_mult_64_3_v2
+R6
+R40
+!i10b 1
+!s100 m:ShT`<9JdaUiPI?BC36b3
+I=c<R1=KIPPo`Dm5S[zENZ2
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1066
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@f@p_mult_64_3_v2
+vFP_multiplier_bw128
+R67
+!i10b 1
+!s100 bfFiAcUoSPoACE3h3KXPZ3
+I;XdAB^NXVo_Fe6Njf4XQ80
+R0
+R50
+R68
+8../dut/sin_n128_pd8_bw128/FP_multiplier_bw128.v
+F../dut/sin_n128_pd8_bw128/FP_multiplier_bw128.v
+L0 1
+R2
+r1
+!s85 0
+31
+R69
+R70
+R21
+!i113 1
+R22
+R5
+n@f@p_multiplier_bw128
+vFP_multiplier_bw16
+R71
+!i10b 1
+!s100 lQjcb5n93Z=Lma0aTYeXQ2
+I;88[T1hGSOB0TVJzzR>`]0
+R0
+R50
+R72
+8../dut/sin_n16_pd8_bw16/FP_multiplier_bw16.v
+F../dut/sin_n16_pd8_bw16/FP_multiplier_bw16.v
+L0 1
+R2
+r1
+!s85 0
+31
+R73
+R74
+R75
+!i113 1
+R76
+R5
+n@f@p_multiplier_bw16
+vFP_multiplier_bw32
+R77
+!i10b 1
+!s100 I9>^DZzj[hEUQ^QfS@WFc2
+I]jnA__`]e10_JXPMPXg=>1
+R0
+R50
+R78
+8../dut/cos_n32_pd16_bw32/FP_multiplier_bw32.v
+F../dut/cos_n32_pd16_bw32/FP_multiplier_bw32.v
+L0 1
+R2
+r1
+!s85 0
+31
+R79
+R80
+R81
+!i113 1
+R82
+R5
+n@f@p_multiplier_bw32
+vFP_multiplier_bw64
+R59
+!i10b 1
+!s100 _<T4UR?gl2`EC;aHTYMAd3
+I[Rh@kP8>[GW`n75_>Pf`O3
+R0
+R50
+R60
+8../dut/sin_n64_pd8_bw64/FP_multiplier_bw64.v
+F../dut/sin_n64_pd8_bw64/FP_multiplier_bw64.v
+L0 1
+R2
+r1
+!s85 0
+31
+R61
+R62
+R63
+!i113 1
+R64
+R5
+n@f@p_multiplier_bw64
+vfull_adder
+R6
+R40
+!i10b 1
+!s100 k7L?BVJhb?UXk_eJGYO`;1
+I9PFBNCkVlZjA5N8;]Uf8K1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1047
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+vfull_subtractor
+R6
+R40
+!i10b 1
+!s100 T6Sj:VL0`>^KEao7_I87[0
+IzX@7ZN==OfLGVdY0P?D:43
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 53
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+vleadingOneDetector
+R67
+!i10b 1
+!s100 PY8oC[0aA2HF[n`NJcb__1
+IZC?[iPBDRG?zCzf<?kVe81
+R0
+R50
+R68
+8../dut/sin_n128_pd8_bw128/leadingOneDetector.v
+F../dut/sin_n128_pd8_bw128/leadingOneDetector.v
+L0 1
+R2
+r1
+!s85 0
+31
+R69
+R70
+R21
+!i113 1
+R22
+R5
+nleading@one@detector
+vLZC128_2
+R6
+R65
+!i10b 1
+!s100 NI]zK]K9;n6Ao5`UO79JK0
+I5I3Q02TGB:RASWjl:4jU60
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 879
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@l@z@c128_2
+vLZC16_2
+R6
+R23
+!i10b 1
+!s100 [M;<TMDCaJ[11>40zThfU3
+I@:`B^Jc2bP?U7l?5?:6733
+R0
+R24
+S1
+R1
+R25
+R26
+R27
+L0 435
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+n@l@z@c16_2
+vLZC32_2
+R6
+R32
+!i10b 1
+!s100 9HLlR=N;230NU_B[EKJfS1
+ILH;A4zOd05c`1_PV>mcz>2
+R0
+R15
+S1
+R1
+R33
+R34
+R35
+L0 574
+R2
+r1
+!s85 0
+31
+R36
+R37
+R38
+!i113 1
+R39
+R5
+n@l@z@c32_2
+vLZC64_2
+R6
+R40
+!i10b 1
+!s100 kNVH>b_LY7`QQU@Y;D=4I3
+Imoz4AVC1X@z<z?8IkS3YS1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 641
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c64_2
+vLZC_enc2
+R6
+R40
+!i10b 1
+!s100 5JH>n<VNTXQW>PSY9f41a2
+I5ZzbcfQeE<aRi4ia<ijYW3
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 573
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_enc2
+vLZC_Merge2
+R6
+R40
+!i10b 1
+!s100 Ue_RGA>?X`A4ohSk]82Kh0
+IEboo6ga7DE`AfdVDC6n]Z1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 581
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_@merge2
+vLZC_Merge3
+R6
+R40
+!i10b 1
+!s100 VXJ1:@3]_NF1iTEg[5L@50
+IHX@b3hG2MCXhNdYo1]FjA1
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 593
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_@merge3
+vLZC_Merge4
+R6
+R40
+!i10b 1
+!s100 FZ_JVdO]7cb2SN7@fc`Bh2
+IICo;JVzGP?5bMIbLDdbX>2
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 605
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_@merge4
+vLZC_Merge5
+R6
+R40
+!i10b 1
+!s100 ok`ZkIAB8V4E60:chQ?0H3
+ITnFU^SYgh8nZ[T^iC0]`53
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 617
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_@merge5
+vLZC_Merge6
+R6
+R40
+!i10b 1
+!s100 ]>[fbh>4;:83QR?fA10Q30
+IH1Hb4[b;aaD;aNFOM[R7P0
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 629
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+n@l@z@c_@merge6
+vLZC_Merge7
+R6
+R65
+!i10b 1
+!s100 cGSZCMDQ6nTENi3ch5YN<0
+I:<U_9CkUzi=L`TfVDF1k32
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 867
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@l@z@c_@merge7
+vmultiplier
+R6
+R40
+!i10b 1
+!s100 [8W^f4APljG`CKKmQQKA<2
+IHiC5>ZJ3?XU7Y?<1aX<J21
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1058
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+vSin
+R6
+R14
+!i10b 1
+!s100 4<7m9Xk1TVM`mE2QbV8[62
+ICTRDb3U_Jj4ID<Hf:G5G=0
+R0
+R15
+S1
+R1
+R16
+R17
+R18
+L0 3085
+R2
+r1
+!s85 0
+31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+n@sin
+vSin_n64_pd8_bw64
+R6
+Z93 !s110 1740606538
+!i10b 1
+!s100 ?S<EkM6gJbDaM@RaV2zQj1
+IMgIk]3iBR=RD8709GZKT92
+R0
+!s105 Sin_n64_pd8_bw64_sv_unit
+S1
+R1
+w1740605821
+8../dut/sin_n64_pd8_bw64/Sin_n64_pd8_bw64.sv
+F../dut/sin_n64_pd8_bw64/Sin_n64_pd8_bw64.sv
+R58
+R2
+r1
+!s85 0
+31
+Z94 !s108 1740606538.000000
+Z95 !s107 ..\tb\tb_func64.sv|../tb/tb_sin64.sv|../tb/tb_func64.sv|../dut/sin_n64_pd8_bw64/Sin_n64_pd8_bw64.sv|
+R63
+!i113 1
+R64
+R5
+n@sin_n64_pd8_bw64
+vtb_atan
+R6
+R7
+!i10b 1
+!s100 ]7E0eU9cENEdAUZzFK;UW1
+I]B[=l1dN8Zm>?7cjTP4Xn2
+R0
+!s105 tb_atan16_sv_unit
+S1
+R1
+w1738907155
+8../tb/tb_atan16.sv
+F../tb/tb_atan16.sv
+F..\tb\tb_func_atan_16.sv
+Z96 L0 17
+R2
+r1
+!s85 0
+31
+R12
+R13
+R3
+!i113 1
+R4
+R5
+vtb_Cos
+R6
+!s110 1730406803
+!i10b 1
+!s100 EPRmmBSkgH<RCPXmhT:U41
+I45<XGP=kV0bk2U<hoEW0B2
+R0
+!s105 tb_Cos_sv_unit
+S1
+R50
+w1730297968
+8../tb/tb_Cos.sv
+F../tb/tb_Cos.sv
+F..\tb\tb_func.sv
+R96
+R2
+r1
+!s85 0
+31
+!s108 1730406803.000000
+!s107 ..\tb\tb_func.sv|../dut/Cos/CLZ64.v|../dut/Cos/Fixed64ToFloat32.v|../dut/Cos/Float32ToFixed64.v|../tb/tb_Cos.sv|../tb/tb_func.sv|../dut/Cos/twoscomplement.v|../dut/Cos/TrigRangeReducer.v|../dut/Cos/multiplier.v|../dut/Cos/leadingOneDetector.v|../dut/Cos/full_subtractor.v|../dut/Cos/full_adder.v|../dut/Cos/FP_multiplier_bw32.v|../dut/Cos/FP_extract.v|../dut/Cos/FP_divider_bw32.v|../dut/Cos/FloatToFixed32.v|../dut/Cos/FixedToFloat32.v|../dut/Cos/divider_BW48_v3.v|../dut/Cos/CORDIC.v|../dut/Cos/CLZ32.v|../dut/Cos/Cos.v|
+!s90 -reportprogress|300|-f|../filelist/filelist_Cos.f|
+!i113 1
+R5
+ntb_@cos
+vtb_cos
+R6
+R40
+!i10b 1
+!s100 BGNizQQi9MM7SJbUz;4=k1
+IYBV6EZAk4?@egK3P@Yz7:3
+R0
+!s105 tb_cos64_sv_unit
+S1
+R1
+w1740608687
+8../tb/tb_cos64.sv
+F../tb/tb_cos64.sv
+Z97 F..\tb\tb_func64.sv
+R96
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
+Xtb_func128_sv_unit
+R6
+R14
+!i10b 1
+!s100 cQc06`9HmVdiSK_HSRlVe1
+IL:T?T;GdFR1EW?S`NP3NJ1
+VL:T?T;GdFR1EW?S`NP3NJ1
 !i103 1
 S1
-R0
-w1727890706
-8../tb/tb_func.sv
-R27
-!i122 124
-L0 17 0
-R5
+R1
+w1738042459
+8../tb/tb_func128.sv
+F../tb/tb_func128.sv
+R96
+R2
+r1
+!s85 0
 31
+R19
+R20
+R21
+!i113 1
+R22
+R5
+Xtb_func32_sv_unit
 R6
-R16
-R7
-!i113 1
-R8
-R9
-vtb_sin
-R26
-R10
+R32
 !i10b 1
-!s100 z=c1VUkz@3Hj9:9i]<@BC0
-IOTASZJVa`1[ZAc^@:mTh03
+!s100 99N4[e0X3can5?hVlTXc00
+IWNUi4F_L4OJP;fWSMmWen3
+VWNUi4F_L4OJP;fWSMmWen3
+!i103 1
 S1
-R0
-w1731975575
-8../tb/tb_sin.sv
-F../tb/tb_sin.sv
-R27
-!i122 119
-L0 17 211
-R4
-R5
+R1
+w1740430750
+8../tb/tb_func32.sv
+F../tb/tb_func32.sv
+R96
+R2
 r1
 !s85 0
 31
-R12
-R13
-R14
+R36
+R37
+R38
 !i113 1
-R15
-R9
-vTrigRangeReducer
-R10
+R39
+R5
+Xtb_func64_sv_unit
+R6
+R40
 !i10b 1
-!s100 hfRIVi0_bGlJVGfK:ICIb0
-IbcnzDH[7:aX1o:kl;S_KL1
-R0
-R11
-8../dut/sin_n32_pd32_bw32/TrigRangeReducer.v
-F../dut/sin_n32_pd32_bw32/TrigRangeReducer.v
-!i122 119
-L0 1 93
-R4
+!s100 i6f:54V:8CDW2>U0lbQaA3
+IGQ7L3g<z64gnO3^`XD2o>0
+VGQ7L3g<z64gnO3^`XD2o>0
+!i103 1
+S1
+R1
+w1738034994
+8../tb/tb_func64.sv
+F../tb/tb_func64.sv
+R96
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
 R5
+Xtb_func_atan_128_sv_unit
+R6
+!s110 1739224165
+!i10b 1
+!s100 06@Gnc`g9EWHTgzMJfdjI0
+IY]?U>IKj0k>l=FM2nB0Uz0
+VY]?U>IKj0k>l=FM2nB0Uz0
+!i103 1
+S1
+R50
+w1738952796
+8../tb/tb_func_atan_128.sv
+F../tb/tb_func_atan_128.sv
+R96
+R2
+r1
+!s85 0
+31
+!s108 1739224165.000000
+!s107 ..\tb\tb_func_atan_128.sv|../tb/tb_atan128.sv|../tb/tb_func_atan_128.sv|../dut/atan_n64_pd8_bw128/FloatToFixed128.v|../dut/atan_n64_pd8_bw128/FixedToFloat128.v|../dut/atan_n64_pd8_bw128/VCORDIC.v|../dut/atan_n64_pd8_bw128/CLZ128.v|../dut/atan_n64_pd8_bw128/Atan.v|
+!s90 -reportprogress|300|+define+ATAN_N64_PD8_BW128|-f|../filelist/filelist_atan_n64_pd8_bw128.f|
+!i113 1
+!s92 +define+ATAN_N64_PD8_BW128
+R5
+Xtb_func_atan_16_sv_unit
+R6
+R7
+!i10b 1
+!s100 _A4<4mf0dN]]05hMW1DMd1
+IGZic_A]LLfY<C@XTh@>3a3
+VGZic_A]LLfY<C@XTh@>3a3
+!i103 1
+S1
+R1
+Z98 w1734310306
+8../tb/tb_func_atan_16.sv
+F../tb/tb_func_atan_16.sv
+R96
+R2
 r1
 !s85 0
 31
 R12
 R13
-R14
+R3
 !i113 1
-R15
-R9
+R4
+R5
+Xtb_func_atan_64_sv_unit
+R6
+!s110 1739224650
+!i10b 1
+!s100 CigA3WSTmAghS?I0mECSI1
+IHIKTeFeV>Zh[gaG0:WZbl3
+VHIKTeFeV>Zh[gaG0:WZbl3
+!i103 1
+S1
+R50
+w1738943109
+8../tb/tb_func_atan_64.sv
+F../tb/tb_func_atan_64.sv
+R96
+R2
+r1
+!s85 0
+31
+!s108 1739224650.000000
+!s107 ..\tb\tb_func_atan_64.sv|../tb/tb_atan64.sv|../tb/tb_func_atan_64.sv|../dut/atan_n64_pd8_bw64/FloatToFixed64.v|../dut/atan_n64_pd8_bw64/FixedToFloat64.v|../dut/atan_n64_pd8_bw64/VCORDIC.v|../dut/atan_n64_pd8_bw64/CLZ64.v|../dut/atan_n64_pd8_bw64/Atan.v|
+!s90 -reportprogress|300|+define+ATAN_N64_PD8_BW64|-f|../filelist/filelist_atan_n64_pd8_bw64.f|
+!i113 1
+!s92 +define+ATAN_N64_PD8_BW64
+R5
+Xtb_func_sv_unit
+R6
+R23
+!i10b 1
+!s100 aTE`Cjh_^nFKTM2j1:Pb;2
+IoJ5P56I828?]E5>mNb<E10
+VoJ5P56I828?]E5>mNb<E10
+!i103 1
+S1
+R1
+R98
+8../tb/tb_func.sv
+F../tb/tb_func.sv
+R96
+R2
+r1
+!s85 0
+31
+R28
+R29
+R30
+!i113 1
+R31
+R5
+vtb_sin
+R6
+R93
+!i10b 1
+!s100 OLTilm4Z91?Cm>BMEGLQ`1
+IS>k:kl3WITNlhWgYT@lm^2
+R0
+!s105 tb_sin64_sv_unit
+S1
+R1
+w1740582387
+8../tb/tb_sin64.sv
+F../tb/tb_sin64.sv
+R97
+R96
+R2
+r1
+!s85 0
+31
+R94
+R95
+R63
+!i113 1
+R64
+R5
+vTrigRangeReducer
+R6
+R40
+!i10b 1
+!s100 ;FHP>IXTO@i?BjWQQI=4V2
+IPc_<U=SK@@?T9?iI>iHl;0
+R0
+R41
+S1
+R1
+R42
+R43
+R44
+L0 1145
+R2
+r1
+!s85 0
+31
+R45
+R46
+R47
+!i113 1
+R48
+R5
 n@trig@range@reducer
 vtwoscomplement
-R10
+R67
 !i10b 1
-!s100 VAD2<Ek<V[_o3o4`Kb2eT2
-IF;a0joKC5=cWBWSG8Sz_z3
+!s100 ?PTVfk^h:CMVLnKbkN`WX1
+IT>5n?99oLL8O0_z22CSBa0
 R0
-R11
-8../dut/sin_n32_pd32_bw32/twoscomplement.v
-F../dut/sin_n32_pd32_bw32/twoscomplement.v
-!i122 119
-R25
-R4
+R50
+R68
+8../dut/sin_n128_pd8_bw128/twoscomplement.v
+F../dut/sin_n128_pd8_bw128/twoscomplement.v
+L0 1
+R2
+r1
+!s85 0
+31
+R69
+R70
+R21
+!i113 1
+R22
 R5
+vVCORDIC
+R6
+R7
+!i10b 1
+!s100 _8c02X1eNni^C^S8;OVai0
+I`7]bFLD=EinEHC_Ig>n9o1
+R0
+R8
+S1
+R1
+R9
+R10
+R11
+L0 98
+R2
 r1
 !s85 0
 31
 R12
 R13
-R14
+R3
 !i113 1
-R15
-R9
-vVCORDIC
-R1
-!i10b 1
-!s100 5X58=T@=NDzj<;RGGW?5^3
-IbY95dCKdRRA0Nzm5kVf5;3
-R0
-R2
-8../dut/atan_n30_pd30_bw32/VCORDIC.v
-F../dut/atan_n30_pd30_bw32/VCORDIC.v
-!i122 124
-L0 1 1361
 R4
 R5
-r1
-!s85 0
-31
-R6
-R16
-R7
-!i113 1
-R8
-R9
 n@v@c@o@r@d@i@c

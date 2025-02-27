@@ -35,40 +35,22 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
 
 
   var iterperround = 0
-
   if (pipeline_depth == 16) {
     iterperround = 1
-
-
   }
   else if (pipeline_depth == 8) {
-
-
     iterperround = 2
-
   }
   else if (pipeline_depth == 4) {
-
     iterperround = 4
-
-
   }
-
   else if (pipeline_depth == 2) {
-
     iterperround = 8
-
-
   }
 
   else if (pipeline_depth == 1) {
-
     iterperround = 16
-
-
   }
-
-
 
   val atantable16 = Wire(Vec(16, UInt(bw.W))) // mux
   atantable16(0) := 3217.U
@@ -87,7 +69,6 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable16(13) := 0.U
   atantable16(14) := 0.U
   atantable16(15) := 0.U
-
 
   val atantable = Wire(Vec(32, UInt(32.W))) // mux
   atantable(0) := 210828720.U //Q4.28 fixed point of 0.785398 == 45 deg
@@ -121,7 +102,7 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable(28) := 1.U //Q4.28 fixed point of 0.000000
   atantable(29) := 0.U //Q4.28 fixed point of 0.000000
   atantable(30) := 0.U //Q4.28 fixed point of 0.000000
-  atantable(31) := 843314880.U //Q4.28 fixed point of 3.141593
+  atantable(31) := 0.U //Q4.28 fixed point of 3.141593
 
   val atantable64 = Wire(Vec(64, UInt(64.W))) // mux
   atantable64(0) := 905502432259640320L.U // Q4.60 fixed point of 0.785398
@@ -189,10 +170,7 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   atantable64(62) := 0.U // Q4.60 fixed point of 0.000000
   atantable64(63) := 0.U // Q4.60 fixed point of 0.000000
 
-
   val atantable128_64 = Wire(Vec(64, UInt(128.W))) // mux
-
-
   atantable128_64(0) := scala.BigInt("0000000000000000C90FDAA22168C000", 16).U(128.W)
   atantable128_64(1) := scala.BigInt("000000000000000076B19C1586ED3C00", 16).U(128.W)
   atantable128_64(2) := scala.BigInt("00000000000000003EB6EBF25901BA00", 16).U(128.W)
@@ -261,7 +239,6 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
   val x = Wire(Vec(rounds + 1, SInt(bw.W)))
   val y = Wire(Vec(rounds + 1, SInt(bw.W)))
   val z = Wire(Vec(rounds + 1, SInt(bw.W)))
-
   val xr = RegInit(VecInit(Seq.fill(rounds + 1)(0.S(bw.W))))
   val yr = RegInit(VecInit(Seq.fill(rounds + 1)(0.S(bw.W))))
   val zr = RegInit(VecInit(Seq.fill(rounds + 1)(0.S(bw.W))))
@@ -271,121 +248,82 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
     val tofixedx0 = Module(new FloatToFixed16())
     val tofixedy0 = Module(new FloatToFixed16())
     val tofixedz0 = Module(new FloatToFixed16())
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
     tofixedz0.io.in := io.in_z0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = tofixedz0.io.out
-
     z(0) := fixedz0.asSInt
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
-
     zr(0) := fixedz0.asSInt
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
-
-
   }
   else   if(bw ==32){
-
      val tofixedx0 = Module(new FloatToFixed32())
      val tofixedy0 = Module(new FloatToFixed32())
      val tofixedz0 = Module(new FloatToFixed32())
-
-    tofixedx0.io.in := io.in_x0
-    tofixedy0.io.in := io.in_y0
-    tofixedz0.io.in := io.in_z0
-
+     tofixedx0.io.in := io.in_x0
+     tofixedy0.io.in := io.in_y0
+     tofixedz0.io.in := io.in_z0
      val fixedx0 = tofixedx0.io.out
      val fixedy0 = tofixedy0.io.out
      val fixedz0 = tofixedz0.io.out
-
-    z(0) := fixedz0.asSInt
-    x(0) := fixedx0.asSInt
-    y(0) := fixedy0.asSInt
-
-    zr(0) := fixedz0.asSInt
-    xr(0) := fixedx0.asSInt
-    yr(0) := fixedy0.asSInt
-
+     z(0) := fixedz0.asSInt
+     x(0) := fixedx0.asSInt
+     y(0) := fixedy0.asSInt
+     zr(0) := fixedz0.asSInt
+     xr(0) := fixedx0.asSInt
+     yr(0) := fixedy0.asSInt
   }
-
   else if(bw ==64){
 
     val tofixedx0 = Module(new FloatToFixed64())
     val tofixedy0 = Module(new FloatToFixed64())
     val tofixedz0 = Module(new FloatToFixed64())
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
     tofixedz0.io.in := io.in_z0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = tofixedz0.io.out
-
     z(0) := fixedz0.asSInt
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
-
     zr(0) := fixedz0.asSInt
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
-
-
   }
-
 
   else if(bw ==128){
 
     val tofixedx0 = Module(new FloatToFixed128())
     val tofixedy0 = Module(new FloatToFixed128())
     val tofixedz0 = Module(new FloatToFixed128())
-
     tofixedx0.io.in := io.in_x0
     tofixedy0.io.in := io.in_y0
     tofixedz0.io.in := io.in_z0
-
     val fixedx0 = tofixedx0.io.out
     val fixedy0 = tofixedy0.io.out
     val fixedz0 = tofixedz0.io.out
-
     z(0) := fixedz0.asSInt
     x(0) := fixedx0.asSInt
     y(0) := fixedy0.asSInt
-
     zr(0) := fixedz0.asSInt
     xr(0) := fixedx0.asSInt
     yr(0) := fixedy0.asSInt
-
-
-
   }
 
-
-
-
-
-
-
-  /* Floating point inputs converted to fixed point */
-
-
-
-  if (bw == 16 && pipeline_depth == 16) {
+    if (bw == 16 && pipeline_depth == 16) {
 
     var iter = 0
     for (n <- 0 to rounds - 1 by iterperround) {
 
-
       val fxxterm = Mux(yr(n) < 0.S(16.W), -xr(n), xr(n))
       val fxyterm = Mux(yr(n) < 0.S(16.W), -yr(n), yr(n))
       val fxthetaterm = Mux(yr(n) < 0.S(16.W), -atantable16(n), atantable16(n))
-
 
       x(n + 1) := xr(n) + (fxyterm >> n.asUInt).asSInt
       y(n + 1) := yr(n) - (fxxterm >> n.asUInt).asSInt
@@ -397,7 +335,6 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
 
       iter = iter + 1
     }
-
 
     val tofloatxout = Module(new FixedToFloat16())
     val tofloatyout = Module(new FixedToFloat16())
@@ -474,11 +411,9 @@ class VCORDIC(bw: Int ,  pipeline_depth: Int , rounds: Int) extends Module {
       iter = iter + 1
     }
 
-
     val tofloatxout = Module(new FixedToFloat64())
     val tofloatyout = Module(new FixedToFloat64())
     val tofloatzout = Module(new FixedToFloat64())
-
 
     tofloatxout.io.in := xr(iter).asUInt
     tofloatyout.io.in := yr(iter).asUInt

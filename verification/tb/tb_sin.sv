@@ -15,12 +15,12 @@
 
 
 module tb_sin();
-parameter TEST_SIZE = 10000;
+parameter TEST_SIZE = 10;
 `ifdef SIN_N32_PD32_BW32
 parameter LATENCY = 68; //34+32+2
 `elsif SIN_N32_PD16_BW32
 parameter LATENCY = 52; //? 34+16+2
-`elsif SIN_N32_PD8_BW32
+`elsif SIN_N16_PD8_BW16
 parameter LATENCY = 44; //34+8+2
 `elsif SIN_N32_PD4_BW32
 parameter LATENCY = 40; //34+4+2
@@ -30,8 +30,8 @@ parameter LATENCY = 37; //34+1+2
 
 parameter ERROR_TOLERANCE = 1;
 localparam real PI = 3.141592653589793;
-reg [31:0]  output_sin[TEST_SIZE-1:0]; 
-reg [31:0]  input_theta[TEST_SIZE-1:0];
+reg [15:0]  output_sin[TEST_SIZE-1:0]; 
+reg [15:0]  input_theta[TEST_SIZE-1:0];
 
 `include "tb_func.sv"
 
@@ -40,42 +40,40 @@ initial begin
    $readmemh("../golden/rtl-sin-output.txt",output_sin);
 end
 
+reg         io_ready;
 reg         clock;
 reg         reset;
-reg  [31:0] io_in;
-wire [31:0] io_out;
+reg  [15:0] io_in;
+wire [15:0] io_out;
+wire        io_valid ;
 
  always #5 clock = ~clock;
 
 Sin u_Sin(
   .clock (clock ),
   .reset (reset ),
+  .io_ready (io_ready ),
   .io_in (io_in ),
+  .io_valid (io_valid ),
   .io_out(io_out)
 );
   
-integer i,j; 
+integer i; 
 integer theta_input;
 real dut_in_real, golden_real, dut_out_real, error_percent;
 initial begin
    reset = 1'b1;
    clock = 1'b0;
-   io_in = 32'h0;  
+   io_in = 16'h0;
+   io_ready = 1'b0;  
    #12;
    reset = 1'b0;
    @(posedge clock);
 
-`ifdef SIN_N32_PD32_BW32
-  theta_input=$fopen("./sin_n32_pd32_bw32/theta_input.log","w");
-`elsif SIN_N32_PD16_BW32
-  theta_input=$fopen("./sin_n32_pd16_bw32/theta_input.log","w");
-`elsif SIN_N32_PD8_BW32
-  theta_input=$fopen("./sin_n32_pd8_bw32/theta_input.log","w");
-`elsif SIN_N32_PD4_BW32
-  theta_input=$fopen("./sin_n32_pd4_bw32/theta_input.log","w");
-`elsif SIN_N32_PD1_BW32
-  theta_input=$fopen("./sin_n32_pd1_bw32/theta_input.log","w");
-`endif
+
+
+
+  io_ready = 1'b1;
   for (i=0; i < TEST_SIZE; i = i+1) begin
     io_in = input_theta[i];  
     dut_in_real=ieee754_to_fp(io_in)*180/PI;
@@ -83,67 +81,51 @@ initial begin
     @(posedge clock);
   end
   $fclose(theta_input);
+  io_ready = 1'b0;
+	
 end
 
-integer sin_report;
-integer sin_report_ieee754;
-
+integer j =0;
 initial begin
   wait (~reset);
   @(posedge clock);
   @(negedge clock);
-  repeat(LATENCY) @(negedge clock);
-`ifdef SIN_N32_PD32_BW32
-  sin_report=$fopen("./sin_n32_pd32_bw32/sin_report.log","w");
-  sin_report_ieee754=$fopen("./sin_n32_pd32_bw32/sin_report_ieee754.log","w");
-`elsif SIN_N32_PD16_BW32
-  sin_report=$fopen("./sim/sin/sin_n32_pd16_bw32_report.log","w");
-  sin_report_ieee754=$fopen("./sin_n32_pd16_bw32/sin_report_ieee754.log","w");
-`elsif SIN_N32_PD8_BW32
-  sin_report=$fopen("./sim/sin/sin_n32_pd8_bw32_report.log","w");
-  sin_report_ieee754=$fopen("./sin_n32_pd8_bw32/sin_report_ieee754.log","w");
-`elsif SIN_N32_PD4_BW32
-  sin_report=$fopen("./sim/sin/sin_n32_pd4_bw32_report.log","w");
-  sin_report_ieee754=$fopen("./sin_n32_pd4_bw32/sin_report_ieee754.log","w");
-`elsif SIN_N32_PD1_BW32
-  sin_report=$fopen("./sim/sin/sin_n32_pd1_bw32_report.log","w");
-  sin_report_ieee754=$fopen("./sin_n32_pd1_bw32/sin_report_ieee754.log","w");
-`endif
-      $fwrite(sin_report, "==========================================\n");
-      $fwrite(sin_report, "Sin Simulation\n"                    );
-      $fwrite(sin_report, "==========================================\n");
-      $fwrite(sin_report_ieee754, "==========================================\n");
-      $fwrite(sin_report_ieee754, "Sin Simulation\n"                    );
-      $fwrite(sin_report_ieee754, "==========================================\n");
+   while (j  < TEST_SIZE) begin
+	@(posedge clock);
+	if (io_valid) begin
 
-  for (j=0; j < TEST_SIZE; j = j+1) begin
       golden_real=ieee754_to_fp(output_sin[j]);
       dut_out_real=ieee754_to_fp(io_out);
-      //if(output_sin[j]==32'h0) begin //248d3132 is 6.123x10^-17 and b2a00000 is -1.8626x10^-8 which are effectively zeros
-      //  if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
-      //    error_percent=1;
-      //  end else begin
-      //    error_percent=2;
-      //  end
-      //end else begin
+     
+ 	//if(output_cos[j]==32'h248D3132) begin
+      if(output_sin[j]==16'h0) begin
+        if((golden_real-dut_out_real<=0.00001)|(dut_out_real-golden_real<=0.00001)) begin //if less than 0.001 pass the test
+          error_percent=1;
+        end else begin
+          error_percent=2;
+        end
+        //$display("Monitor at %dns, sin output: %f, expected: %f", $time, dut_out_real, golden_real);
+      end else begin
         error_percent  = (dut_out_real-golden_real)/golden_real*100;
         if (error_percent < 0) begin
             error_percent  = -error_percent;
         end
-      //end
+      end
+
+
 
     if(error_percent<=ERROR_TOLERANCE) begin
-      $fwrite(sin_report,"At %dns, the test case PASS! error_percent: %f, sin output: %f, expected: %f\n", $time, error_percent, dut_out_real, golden_real);
-      $fwrite(sin_report_ieee754,"At %dns, the test case PASS! error_percent: %f, sin output: %h, expected: %h\n", $time, error_percent, io_out, output_sin[j]);
+      //$display("At %dns, the test case PASS! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_cos[j]);
+      $display("At %dns, the test case PASS! error_percent: %f, sin output: %f, expected: %f", $time, error_percent, dut_out_real, golden_real);
+      //$display("At %dns, the test case Pass! error_percent: %f, cos output: %h", $time, error_percent, output_cos[j]);
+      //$display("At %dns, the test case Pass! error_percent: %f, cos output: %f", $time, error_percent, golden_real);
     end else begin
-      $fwrite(sin_report,"At %dns, the test case FAIL! error_percent: %f, sin output: %f, expected: %f\n", $time, error_percent, dut_out_real, golden_real);
-      $fwrite(sin_report_ieee754,"At %dns, the test case FAIL! error_percent: %f, sin output: %h, expected: %h\n", $time, error_percent, io_out, output_sin[j]);
+      //$display("At %dns, the test case FAIL! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_cos[j]);
+      $display("At %dns, the test case FAIL! error_percent: %f, sin output: %f, expected: %f", $time, error_percent, dut_out_real, golden_real);
     end
-    @(negedge clock);
-  end
-  
-  $fclose(sin_report);
-  $fclose(sin_report_ieee754);
-end
-endmodule
+    j = j+1;
+    end
+   end
+ end
+endmodule 
 

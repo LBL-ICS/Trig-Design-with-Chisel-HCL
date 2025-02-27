@@ -34,7 +34,9 @@ vsim work.tb_sin -t 1ns
 ################## #################### mus  ####################################
 add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/clock
 add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/reset
+add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/io_ready
 add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/io_in
+add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/io_valid
 add wave -noupdate -format logic -radix hexadecimal tb_sin/u_Sin/io_out
 
 add wave -position insertpoint /tb_sin/u_Sin/reducer/clock
@@ -54,12 +56,5 @@ add wave -position insertpoint /tb_sin/u_Sin/cordic/tofloatyout/io_in
 add wave -position insertpoint /tb_sin/u_Sin/cordic/tofloatyout/io_out
 add wave -position insertpoint /tb_sin/u_Sin/cordic/tofloatzout/io_in
 add wave -position insertpoint /tb_sin/u_Sin/cordic/tofloatzout/io_out
-
-add wave -position insertpoint /tb_sin/u_Sin/reducer/divider/io_in_a
-add wave -position insertpoint /tb_sin/u_Sin/reducer/divider/io_out_s
-add wave -position insertpoint /tb_sin/u_Sin/reducer/extractor/io_in_a
-add wave -position insertpoint /tb_sin/u_Sin/reducer/extractor/io_out_frac
-add wave -position insertpoint /tb_sin/u_Sin/reducer/mul/io_in_a
-add wave -position insertpoint /tb_sin/u_Sin/reducer/mul/io_out_s
 
 run 1us                                                                            

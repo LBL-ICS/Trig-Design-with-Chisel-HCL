@@ -18,7 +18,7 @@ class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
     val out = Output(UInt(bw.W))
     val valid = Output(Bool())
   })
-
+  override def desiredName = s"Cos_n${rounds}_pd${pipeline_depth}_bw${bw}"
   /** Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
  are known to already be inside (0, 2*PI) this step should be removed. */
   val reducer = Module(new TrigRangeReducer(bw))
@@ -30,7 +30,7 @@ class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
   val PI : SInt = 0.S
   val THREE_PI_DIV_TWO : SInt = 0.S
 
-if(bw ==16) {
+if (bw ==16) {
   val PI_DIV_TWO = 0x1922.S
   val TWO_PI = 0x6488.S
   val PI = 0x3244.S
@@ -259,27 +259,27 @@ object CosMain extends App {
 object Cos_16bw_8pd_16n extends App {
   (new ChiselStage).execute(
     Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n16_pd8_bw16" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(16, 16,16)))
+    Seq(ChiselGeneratorAnnotation(() => new Cos(16, 8,16)))
   )
 }
 
 object Cos_32bw_8pd_32n extends App {
   (new ChiselStage).execute(
     Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n32_pd8_bw32" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 16,32)))
+    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 8,32)))
   )
 }
 
 object Cos_64bw_8pd_64n extends App {
   (new ChiselStage).execute(
     Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd8_bw64" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(64, 16,64)))
+    Seq(ChiselGeneratorAnnotation(() => new Cos(64, 8,64)))
   )
 }
 
 object Cos_128bw_8pd_64n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n128_pd8_bw128" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 16,64)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd8_bw128" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 8,64)))
   )
 }

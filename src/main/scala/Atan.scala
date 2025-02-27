@@ -19,7 +19,7 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
 
   }
   )
-
+  override def desiredName = s"Atan_n${rounds}_pd${pipeline_depth}_bw${bw}"
   /** for bw = 32, if 6 digits of precision are good enough, z = atan(y) is PI/2 to 6 decimal places by y=1E7,
   and it is also 0 to 6 decimal places by y=1E-7. Going farther outside that range will not change the
    result inside of 6 decimal places; this is important because 1E7 to 1E-7 is representable by a Q32.32
@@ -36,20 +36,10 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     val inputmag = 0.U ## io.in(14, 0)
     val vcordic = Module(new VCORDIC(bw, pipeline_depth, rounds))
     vcordic.io.in_x0 := 0x3C00.U //This is 1.0f
-
-
-
-
-
-
     vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(14, 0)).asUInt,
       Mux(inputmag.asSInt <= y_lower_bound, (inputsign ## y_lower_bound(14, 0)).asUInt, io.in))
-
     vcordic.io.in_z0 := 0.U
-
     io.out := vcordic.io.out_z
-
-
   }
 
   else if (bw == 32) {
@@ -59,17 +49,9 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     val inputmag = 0.U ## io.in(30, 0)
     val vcordic = Module(new VCORDIC(bw, pipeline_depth, rounds))
     vcordic.io.in_x0 := 0x3f800000L.U //This is 1.0f
-
-
-
-
-
-
-    vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(30, 0)).asUInt,
+   vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(30, 0)).asUInt,
       Mux(inputmag.asSInt <= y_lower_bound, (inputsign ## y_lower_bound(30, 0)).asUInt, io.in))
-
     vcordic.io.in_z0 := 0.U
-
     io.out := vcordic.io.out_z
   }
 
@@ -82,21 +64,10 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     val inputmag = 0.U ## io.in(62, 0)
     val vcordic = Module(new VCORDIC(bw, pipeline_depth, rounds))
     vcordic.io.in_x0 := 0x3FF0000000000000L.U //This is 1.0f
-
-
-
-
-
     vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(62, 0)).asUInt,
       Mux(inputmag.asSInt <= y_lower_bound, (inputsign ## y_lower_bound(62, 0)).asUInt, io.in))
-
     vcordic.io.in_z0 := 0.U
-
     io.out := vcordic.io.out_z
-
-
-
-
   }
 
   else if( bw ==64){
@@ -107,21 +78,10 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     val inputmag = 0.U ## io.in(62, 0)
     val vcordic = Module(new VCORDIC(bw, pipeline_depth, rounds))
     vcordic.io.in_x0 := 0x3FF0000000000000L.U //This is 1.0f
-
-
-
-
-
     vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(62, 0)).asUInt,
       Mux(inputmag.asSInt <= y_lower_bound, (inputsign ## y_lower_bound(62, 0)).asUInt, io.in))
-
     vcordic.io.in_z0 := 0.U
-
     io.out := vcordic.io.out_z
-
-
-
-
   }
 
   else if( bw ==128){
@@ -132,21 +92,10 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     val inputmag = 0.U ## io.in(126, 0)
     val vcordic = Module(new VCORDIC(bw, pipeline_depth, rounds))
     vcordic.io.in_x0 := scala.BigInt("3FFF0000000000000000000000000000", 16).U(128.W) //This is 1.0f
-
-
-
-
-
     vcordic.io.in_y0 := Mux(inputmag.asSInt > y_upper_bound, (inputsign ## y_upper_bound(126, 0)).asUInt,
       Mux(inputmag.asSInt <= y_lower_bound, (inputsign ## y_lower_bound(126, 0)).asUInt, io.in))
-
     vcordic.io.in_z0 := 0.U
-
     io.out := vcordic.io.out_z
-
-
-
-
   }
 
 
@@ -156,58 +105,30 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
 
 
   var latency=1
-
   if(bw == 32 && (pipeline_depth == 1)){
-
     latency = ((rounds/16)*pipeline_depth)+1
   }
   else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
     latency = ((rounds / 16) * pipeline_depth) + 2
   }
-
-
-
-
   else if (bw == 64 && (pipeline_depth == 1) ){
-
     latency = ((rounds / 16) * pipeline_depth) - 2
-
-
   }
-
   else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
-
     latency = ((rounds / 16) * pipeline_depth) +  1
-
-
   }
 
   else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-
     latency = ((rounds / 16) * pipeline_depth) + 1
-
-
   }
 
   else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-
     latency = ((rounds / 16) * pipeline_depth) + 1
-
-
   }
 
   else if (bw == 128 && (pipeline_depth == 1) ){
-
     latency = ((rounds / 16) * pipeline_depth) - 2
-
-
   }
-
-
-
-
-
-
 
 
   val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
@@ -216,7 +137,6 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     shift_reg(i) := shift_reg(i - 1)
   }
   io.valid := shift_reg((latency) - 1)
-
 }
 
 
@@ -233,7 +153,7 @@ object AtanMain extends App {
 
 object Atan extends App {
   (new ChiselStage).execute(
-    Array("--target", "verilog"),
+    Array("--target", "systemverilog","--target-dir", "verification/dut/atan_n64_pd8_bw128"),
     Seq(ChiselGeneratorAnnotation(() => new Atan(128, 8,64)))
   )
 }
