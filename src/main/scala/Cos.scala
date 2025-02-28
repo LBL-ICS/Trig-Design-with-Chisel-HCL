@@ -138,8 +138,6 @@ if (bw ==16) {
 
   else if (bw == 128){
 
-
-
     val PI_DIV_TWO = scala.BigInt("1921fb5443d6f4000", 16).S(128.W)
     val TWO_PI = scala.BigInt("6487ed5110bba8000", 16).S(128.W)
     val PI = scala.BigInt("3243f6a8885dd4000", 16).S(128.W)
@@ -176,10 +174,6 @@ if (bw ==16) {
     }
 
   }
-
-
-
-
 
   var latency=1
 
@@ -235,12 +229,6 @@ if (bw ==16) {
     shift_reg(i) := shift_reg(i-1)
   }
   io.valid := shift_reg((latency) - 1)
-
-
-
-
-
-
 
 
 }
