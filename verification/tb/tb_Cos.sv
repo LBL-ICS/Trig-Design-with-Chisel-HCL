@@ -16,17 +16,6 @@
 
 module tb_cos();
 parameter TEST_SIZE = 10;
-`ifdef COS_N32_PD32_BW32
-parameter LATENCY = 67; //34+32+1
-`elsif COS_N32_PD16_BW32
-parameter LATENCY = 51; //? 34+16+1
-`elsif COS_N16_PD8_BW16
-parameter LATENCY = 31; //? 34+8+1
-`elsif COS_N32_PD4_BW32
-parameter LATENCY = 40; // 34+4+2
-`elsif COS_N32_PD1_BW32
-parameter LATENCY = 37; //34+1+2
-`endif
 
 parameter ERROR_TOLERANCE = 10;
 localparam real PI = 3.141592653589793;
@@ -51,7 +40,7 @@ wire        io_valid ;
 
  always #5 clock = ~clock;
 
-Cos u_Cos(
+Cos_n16_pd16_bw16 u_Cos_n16_pd16_bw16(
   .clock (clock ),
   .reset (reset ),
   .io_ready (io_ready ),

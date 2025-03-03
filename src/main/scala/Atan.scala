@@ -27,6 +27,7 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     */
 
   // rounds/pd * pd = total number of regs
+  var latency= (pipeline_depth)+1
 
   if(bw == 16){
 
@@ -54,7 +55,6 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     vcordic.io.in_z0 := 0.U
     io.out := vcordic.io.out_z
   }
-
 
   else if( bw ==64){
 
@@ -98,48 +98,13 @@ class Atan (bw: Int , pipeline_depth: Int, rounds : Int) extends Module {
     io.out := vcordic.io.out_z
   }
 
-
-
-
-
-
-
-  var latency=1
-  if(bw == 32 && (pipeline_depth == 1)){
-    latency = ((rounds/16)*pipeline_depth)+1
-  }
-  else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
-    latency = ((rounds / 16) * pipeline_depth) + 2
-  }
-  else if (bw == 64 && (pipeline_depth == 1) ){
-    latency = ((rounds / 16) * pipeline_depth) - 2
-  }
-  else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
-    latency = ((rounds / 16) * pipeline_depth) +  1
-  }
-
-  else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-    latency = ((rounds / 16) * pipeline_depth) + 1
-  }
-
-  else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-    latency = ((rounds / 16) * pipeline_depth) + 1
-  }
-
-  else if (bw == 128 && (pipeline_depth == 1) ){
-    latency = ((rounds / 16) * pipeline_depth) - 2
-  }
-
-
-  val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
+    val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
   shift_reg(0) := io.ready
   for (i <- 1 until latency) {
     shift_reg(i) := shift_reg(i - 1)
   }
   io.valid := shift_reg((latency) - 1)
 }
-
-
 
 object AtanMain extends App {
   (new ChiselStage).execute(
@@ -153,7 +118,7 @@ object AtanMain extends App {
 
 object Atan extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog","--target-dir", "verification/dut/atan_n64_pd8_bw128"),
-    Seq(ChiselGeneratorAnnotation(() => new Atan(128, 8,64)))
+    Array("--target", "systemverilog","--target-dir", "verification/dut/atan_n64_pd64_bw128"),
+    Seq(ChiselGeneratorAnnotation(() => new Atan(128, 64,64)))
   )
 }

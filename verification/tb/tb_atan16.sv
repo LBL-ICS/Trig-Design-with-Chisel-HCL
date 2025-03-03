@@ -16,17 +16,6 @@
 
 module tb_atan();
 parameter TEST_SIZE = 5;
-`ifdef ATAN_N30_PD30_BW32
-parameter LATENCY = 32;
-`elsif ATAN_N16_PD8_BW16
-parameter LATENCY = 9; //16+1
-`elsif ATAN_N30_PD10_BW32
-parameter LATENCY = 12;
-`elsif ATAN_N30_PD5_BW32
-parameter LATENCY = 7;
-`elsif ATAN_N30_PD1_BW32
-parameter LATENCY = 3;
-`endif
 
 parameter ERROR_TOLERANCE = 10;
 localparam real PI = 3.141592653589793;
@@ -49,7 +38,7 @@ wire        io_valid ;
 
  always #5 clock = ~clock;
 
-Atan u_Atan(
+Atan_n16_pd16_bw16 u_Atan_n16_pd16_bw16(
   .clock (clock ),
   .reset (reset ),
   .io_ready (io_ready ),
@@ -58,7 +47,7 @@ Atan u_Atan(
   .io_out(io_out)
 );
   
-integer i,j; 
+integer i; 
 real dut_in_real, golden_real, dut_out_real, error_percent;
 initial begin
    reset = 1'b1;
@@ -78,14 +67,16 @@ initial begin
   end
    io_ready = 1'b0;
 end
-
+integer j =0;
 initial begin
   wait (~reset);
   @(posedge clock);
   @(negedge clock);
-  repeat(LATENCY) @(negedge clock);
-  for (j=0; j < TEST_SIZE; j = j+1) begin
-      golden_real=ieee754_to_fp(output_theta[j])*180/PI;
+   while (j  < TEST_SIZE) begin
+	@(posedge clock);
+	if (io_valid) begin
+
+       golden_real=ieee754_to_fp(output_theta[j])*180/PI;
       dut_out_real=ieee754_to_fp(io_out)*180/PI;
       //golden_real=ieee754_to_fp(output_theta[j]);
       //dut_out_real=ieee754_to_fp(io_out);
@@ -111,10 +102,9 @@ initial begin
     end else begin
       //$display("At %dns, the test case FAIL! error_percent: %f, cos output: %h, expected: %h", $time, error_percent, io_out, output_theta[j]);
       $display("At %dns, the test case FAIL! error_percent: %f, arctan output: %f, expected: %f", $time, error_percent, dut_out_real, golden_real);
+   end
+    j = j+1;
     end
-    @(negedge clock);
-  end
-  
-end
-endmodule
-
+   end
+ end
+endmodule 

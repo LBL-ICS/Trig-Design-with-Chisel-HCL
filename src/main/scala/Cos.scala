@@ -21,14 +21,13 @@ class Cos(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
   override def desiredName = s"Cos_n${rounds}_pd${pipeline_depth}_bw${bw}"
   /** Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
  are known to already be inside (0, 2*PI) this step should be removed. */
+
   val reducer = Module(new TrigRangeReducer(bw))
-
-
-
   val PI_DIV_TWO : SInt = 0.S
   val TWO_PI : SInt = 0.S
   val PI : SInt = 0.S
   val THREE_PI_DIV_TWO : SInt = 0.S
+  var latency=1
 
 if (bw ==16) {
   val PI_DIV_TWO = 0x1922.S
@@ -38,13 +37,10 @@ if (bw ==16) {
   var tofixedz0 = Module(new FloatToFixed16())
   reducer.io.in := io.in
   tofixedz0.io.in := reducer.io.out
-
   val cordic = Module(new CORDIC(bw, pipeline_depth, rounds))
   cordic.io.in_x0 := 14556.U //This is k ~ .607 as a half precision IEEE 754 float
   cordic.io.in_y0 := 0.U
    val theta = Mux(tofixedz0.io.out.asSInt < 0.S, tofixedz0.io.out.asSInt + TWO_PI, tofixedz0.io.out.asSInt)
-
-
    val outmode = cordic.io.out_mode
   when(theta >= THREE_PI_DIV_TWO) {
     cordic.io.in_mode := 2.U
@@ -56,7 +52,6 @@ if (bw ==16) {
     cordic.io.in_z0 := theta.asUInt
     cordic.io.in_mode := 0.U
   }
-
   when(outmode === 2.U) {
     io.out := cordic.io.out_x
   }.elsewhen(outmode === 1.U) {
@@ -64,10 +59,8 @@ if (bw ==16) {
   }.otherwise {
     io.out := cordic.io.out_x
   }
-
 }
   else if (bw ==32){
-
      val PI_DIV_TWO = 0x1921fb60L.S
      val TWO_PI = 0x6487ed80L.S
      val PI = 0x3243f6c0L.S
@@ -90,7 +83,6 @@ if (bw ==16) {
       cordic.io.in_z0 := theta.asUInt
       cordic.io.in_mode := 0.U
     }
-
     when(outmode === 2.U) {
       io.out := cordic.io.out_x
     }.elsewhen(outmode === 1.U) {
@@ -98,7 +90,6 @@ if (bw ==16) {
     }.otherwise {
       io.out := cordic.io.out_x
     }
-
   }
 
   else if (bw == 64){
@@ -125,7 +116,6 @@ if (bw ==16) {
       cordic.io.in_z0 := theta.asUInt
       cordic.io.in_mode := 0.U
     }
-
     when(outmode === 2.U) {
       io.out := cordic.io.out_x
     }.elsewhen(outmode === 1.U) {
@@ -133,7 +123,6 @@ if (bw ==16) {
     }.otherwise {
       io.out := cordic.io.out_x
     }
-
   }
 
   else if (bw == 128){
@@ -142,10 +131,6 @@ if (bw ==16) {
     val TWO_PI = scala.BigInt("6487ed5110bba8000", 16).S(128.W)
     val PI = scala.BigInt("3243f6a8885dd4000", 16).S(128.W)
     val THREE_PI_DIV_TWO = scala.BigInt("4b65f1fccc34c8000", 16).S(128.W)
-
-
-
-
     var tofixedz0 = Module(new FloatToFixed128)
     reducer.io.in := io.in
     tofixedz0.io.in := reducer.io.out
@@ -164,7 +149,6 @@ if (bw ==16) {
       cordic.io.in_z0 := theta.asUInt
       cordic.io.in_mode := 0.U
     }
-
     when(outmode === 2.U) {
       io.out := cordic.io.out_x
     }.elsewhen(outmode === 1.U) {
@@ -172,55 +156,13 @@ if (bw ==16) {
     }.otherwise {
       io.out := cordic.io.out_x
     }
-
   }
 
-  var latency=1
-
-  if(bw == 32 && (pipeline_depth == 1)){
-
-     latency = ((rounds/16)*pipeline_depth)+19
+  if(bw == 32 || bw ==64 || bw == 128){
+    latency = (pipeline_depth)+20
   }
-  else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
-     latency = ((rounds / 16) * pipeline_depth) + 20
-  }
-
-
-
-
-  else if (bw == 64 && (pipeline_depth == 1) ){
-
-    latency = ((rounds / 16) * pipeline_depth) + 17  //
-
-
-  }
-
-  else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
-
-    latency = ((rounds / 16) * pipeline_depth) + 15 //
-
-
-  }
-
-  else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-
-    latency = ((rounds / 16) * pipeline_depth) + 20  //
-
-
-  }
-
-  else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-
-    latency = ((rounds / 16) * pipeline_depth) + 20  //
-
-
-  }
-
-  else if (bw == 128 && (pipeline_depth == 1) ){
-
-    latency = ((rounds / 16) * pipeline_depth) +17  //
-
-
+  else if (bw == 16){
+    latency = (pipeline_depth)+15
   }
 
   val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
@@ -229,8 +171,6 @@ if (bw ==16) {
     shift_reg(i) := shift_reg(i-1)
   }
   io.valid := shift_reg((latency) - 1)
-
-
 }
 
 object CosMain extends App {
@@ -246,28 +186,28 @@ object CosMain extends App {
 
 object Cos_16bw_8pd_16n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n16_pd8_bw16" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(16, 8,16)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n16_pd16_bw16" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(16, 16,16)))
   )
 }
 
 object Cos_32bw_8pd_32n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n32_pd8_bw32" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 8,32)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n32_pd32_bw32" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(32, 32,32)))
   )
 }
 
 object Cos_64bw_8pd_64n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd8_bw64" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(64, 8,64)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd64_bw64" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(64, 64,64)))
   )
 }
 
 object Cos_128bw_8pd_64n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd8_bw128" ),
-    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 8,64)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/cos_n64_pd64_bw128" ),
+    Seq(ChiselGeneratorAnnotation(() => new Cos(128, 64,64)))
   )
 }

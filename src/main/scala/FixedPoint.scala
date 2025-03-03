@@ -85,7 +85,6 @@ class FloatToFixed128 extends Module {
   io.out := Mux(io.in(127) === 1.U, 0.U - data, data)
 }
 
-
 class Float32ToFixed64 extends Module {
   /* Converts a single precision float to a Q32.32 fixed point number */
   val io = IO(new Bundle() {
@@ -210,7 +209,6 @@ class CLZ128 extends Module{
   io.out := Mux(io.in === 0.U, 128.U, zeros)
 }
 
-
 class FixedToFloat16 extends Module {
   /* Converts a Q4.12 fixed point number to a half precision float */
   val io = IO(new Bundle() {
@@ -232,7 +230,6 @@ class FixedToFloat16 extends Module {
   io.out := io.in(15) ## exp.asUInt ## frac(9,0)
 }
 
-
 class FixedToFloat32 extends Module {
   /* Converts a Q4.28 fixed point number to a single precision float */
   /* Q4.28 means a fixed point number w/ 4 integer bits, 28 fractional */
@@ -240,7 +237,6 @@ class FixedToFloat32 extends Module {
     val in : UInt = Input(UInt(32.W))
     val out : UInt = Output(UInt(32.W))
   })
-
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(8.W))
   val frac = Wire(SInt(23.W))
@@ -256,14 +252,12 @@ class FixedToFloat32 extends Module {
   io.out := io.in(31) ## exp.asUInt ## frac(22,0)
 }
 
-
 class FixedToFloat64 extends Module {
   /* Converts a Q4.60 fixed point number to a double precision float */
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(64.W))
     val out : UInt = Output(UInt(64.W))
   })
-
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(11.W))
   val frac = Wire(SInt(52.W))
@@ -279,14 +273,12 @@ class FixedToFloat64 extends Module {
   io.out := io.in(63) ## exp.asUInt ## frac(51,0)
 }
 
-
 class FixedToFloat128 extends Module {
   /* Converts a Q64.64 fixed point number to a quad precision float */
   val io = IO(new Bundle() {
     val in : UInt = Input(UInt(128.W))
     val out : UInt = Output(UInt(128.W))
   })
-
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(15.W))
   val frac = Wire(SInt(112.W))
@@ -302,7 +294,6 @@ class FixedToFloat128 extends Module {
   io.out := io.in(127) ## exp.asUInt ## frac(111,0)
 }
 
-
 class Fixed64ToFloat32 extends Module {
   /* Converts a Q32.32 fixed point number to a single precision float */
 
@@ -310,7 +301,6 @@ class Fixed64ToFloat32 extends Module {
     val in : UInt = Input(UInt(64.W))
     val out : UInt = Output(UInt(32.W))
   })
-
   val sign  = Wire(SInt(1.W))
   val exp = Wire(SInt(8.W))
   val frac = Wire(SInt(64.W))
@@ -326,4 +316,57 @@ class Fixed64ToFloat32 extends Module {
   io.out := io.in(63) ## exp.asUInt ## frac(22,0)
 }
 
-
+class FixedToFloat(bw: Int) extends Module {
+  val io = IO(new Bundle() {
+    val in : UInt = Input(UInt(bw.W))
+    val out : UInt = Output(UInt(bw.W))
+  })
+  val(expval, fracval) = bw match{
+    case 16 => (5,10)
+    case 32 => (8,23)
+    case 64 => (11,52)
+    case 128 => (15,112)
+  }
+  val sign  = Wire(SInt(1.W))
+  val exp = Wire(SInt(expval.W))
+  val frac = Wire(SInt(fracval.W))
+  val data = Wire(UInt(bw.W))
+  data := Mux(io.in(bw-1) === 1.U, (~io.in).asUInt + 1.U, io.in)
+  sign := io.in(bw-1).asSInt
+  if (bw ==16){
+    val clz16 = Module(new CLZ16())
+    clz16.io.in := data.asUInt
+    val leadingzeros = Wire(UInt(19.W))
+    leadingzeros := 0x0L.U(15.W) ## clz16.io.out(3,0)
+    exp := ((4.S - 1.S) - leadingzeros.asSInt) + 15.S
+    frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (16.U - 10.U));
+    io.out := io.in(15) ## exp.asUInt ## frac(9,0)
+  }
+  else if (bw ==32){
+    val clz32 = Module(new CLZ32())
+    clz32.io.in := data.asUInt
+    val leadingzeros = Wire(UInt(19.W))
+    leadingzeros := 0x0L.U(14.W) ## clz32.io.out(4,0)
+    exp := ((4.S - 1.S) - leadingzeros.asSInt) + 127.S
+    frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (32.U - 23.U));
+    io.out := io.in(31) ## exp.asUInt ## frac(22,0)
+  }
+  else if(bw ==64){
+    val clz64 = Module(new CLZ64())
+    clz64.io.in := data.asUInt
+    val leadingzeros = Wire(UInt(19.W))
+    leadingzeros := 0x0L.U(13.W) ## clz64.io.out(5,0)
+    exp := ((4.S - 1.S) - leadingzeros.asSInt) + 1023.S
+    frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (64.U - 52.U));
+    io.out := io.in(63) ## exp.asUInt ## frac(51,0)
+  }
+  else if (bw==128){
+    val clz128 = Module(new CLZ128())
+    clz128.io.in := data.asUInt
+    val leadingzeros = Wire(UInt(19.W))
+    leadingzeros := 0x0L.U(12.W) ## clz128.io.out(6,0)
+    exp := ((64.S - 1.S) - leadingzeros.asSInt) + 16383.S
+    frac := (((data.asSInt << (leadingzeros + 1.U).asUInt)).asSInt >> (128.U - 112.U));
+    io.out := io.in(127) ## exp.asUInt ## frac(111,0)
+  }
+}

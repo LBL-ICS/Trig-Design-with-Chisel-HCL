@@ -16,17 +16,6 @@
 
 module tb_sin();
 parameter TEST_SIZE = 10;
-`ifdef SIN_N32_PD32_BW32
-parameter LATENCY = 68; //34+32+2
-`elsif SIN_N32_PD16_BW32
-parameter LATENCY = 52; //? 34+16+2
-`elsif SIN_N16_PD8_BW16
-parameter LATENCY = 44; //34+8+2
-`elsif SIN_N32_PD4_BW32
-parameter LATENCY = 40; //34+4+2
-`elsif SIN_N32_PD1_BW32
-parameter LATENCY = 37; //34+1+2
-`endif
 
 parameter ERROR_TOLERANCE = 1;
 localparam real PI = 3.141592653589793;
@@ -49,7 +38,7 @@ wire        io_valid ;
 
  always #5 clock = ~clock;
 
-Sin u_Sin(
+Sin_n16_pd16_bw16 u_Sin_n16_pd16_bw16(
   .clock (clock ),
   .reset (reset ),
   .io_ready (io_ready ),

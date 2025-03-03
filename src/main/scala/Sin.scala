@@ -11,8 +11,7 @@ import circt.stage.{ChiselStage, FirtoolOption}
 
 
 class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
-  require((pipeline_depth == 1 || pipeline_depth == 2 || pipeline_depth == 4 || pipeline_depth ==16 || pipeline_depth == 8))
-  val io = IO(new Bundle() {
+    val io = IO(new Bundle() {
     val in = Input(UInt(bw.W))
     val ready = Input(Bool())
     val out = Output(UInt(bw.W))
@@ -22,7 +21,7 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
   override def desiredName = s"Sin_n${rounds}_pd${pipeline_depth}_bw${bw}"
   /* Range reduction necessary to reduce angles to within (0, 2*PI). This is very slow, and if angles of interest
    are known to already be inside (0, 2*PI) this step should be removed. */
-
+  var latency=1
   private val reducer = Module(new TrigRangeReducer(bw))
   val PI_DIV_TWO : SInt = 0.S
   val TWO_PI : SInt = 0.S
@@ -163,33 +162,13 @@ class Sin(bw: Int, pipeline_depth: Int, rounds : Int) extends Module {
     }
   }
 
-  var latency=1
 
-  if(bw == 32 && (pipeline_depth == 1)){
-    latency = ((rounds/16)*pipeline_depth)+19
+  if(bw == 32 || bw ==64 || bw == 128){
+    latency = (pipeline_depth)+20
   }
-  else if (bw == 32 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)) {
-    latency = ((rounds / 16) * pipeline_depth) + 20
-  }
+  else if (bw == 16){
+    latency = (pipeline_depth)+15
 
-  else if (bw == 64 && (pipeline_depth == 1) ){
-    latency = ((rounds / 16) * pipeline_depth) + 17  //
-  }
-
-  else if (bw == 16 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16 || pipeline_depth == 1)){
-    latency = ((rounds / 16) * pipeline_depth) + 15 //
-  }
-
-  else if (bw == 64 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-    latency = ((rounds / 16) * pipeline_depth) + 20  //
-  }
-
-  else if (bw == 128 && (pipeline_depth == 2 || pipeline_depth ==  4 ||pipeline_depth == 8 ||pipeline_depth == 16)){
-    latency = ((rounds / 16) * pipeline_depth) + 20  //
-  }
-
-  else if (bw == 128 && (pipeline_depth == 1) ){
-    latency = ((rounds / 16) * pipeline_depth) +17  //
   }
 
   val shift_reg = RegInit(VecInit.fill(latency)(0.U(bw.W)))
@@ -213,28 +192,28 @@ object SinMain extends App {
 
 object Sin_16bw_8pd_16n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n16_pd8_bw16" ),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(16, 8,16)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n16_pd16_bw16" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(16, 16,16)))
   )
 }
 
 object Sin_32bw_8pd_32n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n32_pd8_bw32" ),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(32, 8,32)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n32_pd32_bw32" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(32, 32,32)))
   )
 }
 
 object Sin_64bw_8pd_64n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n64_pd8_bw64" ),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(64, 8,64)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n64_pd64_bw64" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(64, 64,64)))
   )
 }
 
 object Sin_128bw_8pd_64n extends App {
   (new ChiselStage).execute(
-    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n64_pd8_bw128" ),
-    Seq(ChiselGeneratorAnnotation(() => new Sin(128, 8,64)))
+    Array("--target", "systemverilog", "--target-dir", "verification/dut/sin_n64_pd64_bw128" ),
+    Seq(ChiselGeneratorAnnotation(() => new Sin(128, 64,64)))
   )
 }
